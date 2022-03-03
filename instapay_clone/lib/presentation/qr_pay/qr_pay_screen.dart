@@ -4,6 +4,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'package:flutter/foundation.dart';
 
@@ -16,7 +17,7 @@ class QrPayScreen extends StatefulWidget {
 
 class _QrPayScreenState extends State<QrPayScreen> {
   Barcode? result;
-
+  final String _url = 'https://book.instapay.kr';
   QRViewController? controller;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -30,6 +31,10 @@ class _QrPayScreenState extends State<QrPayScreen> {
     controller!.resumeCamera();
   }
 
+  void _launchURL() async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
+  }
+
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
@@ -39,6 +44,44 @@ class _QrPayScreenState extends State<QrPayScreen> {
           child: Stack(
             children: [
               _buildQrView(context),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 63.0,
+                    bottom: 230,
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                    },
+                    icon: const Icon(
+                      Icons.flash_on,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 63.0,
+                    top: 230,
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      _launchURL();
+                    },
+                    icon: const Icon(
+                      Icons.menu_book_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 80),
                 child: Row(
