@@ -18,10 +18,8 @@ class MainScreen extends StatelessWidget {
       const HistorySearchScreen(),
       const SettingScreen(),
     ];
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
         child: _children[viewModel.curIndex],
-      ),
-    );
+      );
   }
 }
