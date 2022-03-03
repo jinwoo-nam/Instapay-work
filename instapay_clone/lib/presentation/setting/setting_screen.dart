@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/presentation/setting/components/list_widget.dart';
+import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -8,6 +10,7 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
+    final viewModel = context.watch<SettingViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -47,36 +50,54 @@ class SettingScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: BottomNavigationBar(
-          currentIndex: mainViewModel.curIndex,
-          type: BottomNavigationBarType.fixed,
-          onTap: mainViewModel.onBottomNavTap,
-          selectedItemColor: Colors.teal,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.qr_code,
-                ),
-                label: ('QR 결제')),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.wallet_travel,
-                ),
-                label: ('내 지갑')),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                ),
-                label: ('내역 조회')),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                ),
-                label: ('설정')),
-          ],
-        ),
+      body: Stack(
+        children: [
+          ListView(
+            children:
+                viewModel.settingList.map((e) => ListWidget(data: e)).toList(),
+            // children: [
+            //   Padding(padding: EdgeInsets.all(10)),
+            //   ListWidget(),
+            //   ListWidget(),
+            //   ListWidget(),
+            //   ListWidget(),
+            //   ListWidget(),
+            //   ListWidget(),
+            //   ListWidget(),
+            // ],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomNavigationBar(
+              currentIndex: mainViewModel.curIndex,
+              type: BottomNavigationBarType.fixed,
+              onTap: mainViewModel.onBottomNavTap,
+              selectedItemColor: Colors.teal,
+              items: const [
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.qr_code,
+                    ),
+                    label: ('QR 결제')),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.wallet_travel,
+                    ),
+                    label: ('내 지갑')),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.search,
+                    ),
+                    label: ('내역 조회')),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.settings,
+                    ),
+                    label: ('설정')),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
