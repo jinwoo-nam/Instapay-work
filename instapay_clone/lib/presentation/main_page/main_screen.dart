@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<MainScreenViewModel>();
     return Scaffold(
-      body: const SafeArea(
-        child: Text('main screen'),
+      body: SafeArea(
+        child: viewModel.children[viewModel.curIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        onTap: viewModel.onBottomNavTap,
+        currentIndex: viewModel.curIndex,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),
@@ -22,6 +28,10 @@ class MainScreen extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: '내역',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: '설정',
           ),
         ],
       ),
