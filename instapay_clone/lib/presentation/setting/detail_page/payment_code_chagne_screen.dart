@@ -134,7 +134,9 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   child: IconButton(
                       onPressed: () {
                         setState(() {
-                          pinCodeList.removeLast();
+                          if(pinCodeList.isNotEmpty) {
+                            pinCodeList.removeLast();
+                          }
                         });
                       },
                       icon: const Icon(
