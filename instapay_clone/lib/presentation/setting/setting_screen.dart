@@ -55,16 +55,6 @@ class SettingScreen extends StatelessWidget {
           ListView(
             children:
                 viewModel.settingList.map((e) => ListWidget(data: e)).toList(),
-            // children: [
-            //   Padding(padding: EdgeInsets.all(10)),
-            //   ListWidget(),
-            //   ListWidget(),
-            //   ListWidget(),
-            //   ListWidget(),
-            //   ListWidget(),
-            //   ListWidget(),
-            //   ListWidget(),
-            // ],
           ),
           Align(
             alignment: Alignment.bottomCenter,
