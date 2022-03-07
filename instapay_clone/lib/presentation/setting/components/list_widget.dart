@@ -8,9 +8,8 @@ import 'package:instapay_clone/presentation/setting/detail_page/service_terminat
 import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use_screen.dart';
 
 class ListWidget extends StatelessWidget {
-  SettingListData data;
-
-  ListWidget({Key? key, required this.data}) : super(key: key);
+  final SettingListData data;
+  const ListWidget({Key? key, required this.data}) : super(key: key);
 
 
   @override

@@ -7,9 +7,14 @@ class NoticeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        title: Text('공지사항'),
+        backgroundColor: Colors.indigo,
       ),
-      body: Text(''),
+      body: ListView(
+        children: [
+          
+        ],
+      ),
     );
   }
 }
