@@ -30,7 +30,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text('서비스 해지'),
+        title: const Text('서비스 해지'),
       ),
       body: Column(
         children: [
@@ -41,12 +41,11 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                         '1. 해지안내\n수집된 개인정보 및 결제수단 관련 정보는 모두 삭제되며 모바일 지로는 모두 해지처리 됩니다.'
-                        '\n\n단 일부 기록은 관련 법령에 의하여 일정기간 동안 보존됩니다.\n'),
-                    Text(
+                        '\n\n단 일부 기록은 관련 법령에 의하여 일정기간 동안 보존됩니다.\n\n'
                         '2. 해지사유\n다음번에는 회원님께 보다 나은 서비스를 제공할 수 있도록 해지 이유를 알려주십시오.'),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     ...viewModel.reasonList.map(
@@ -78,7 +77,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 250,
                       child: TextField(
                         enabled: _curType == ServiceTerminationReasonType.Etc
@@ -90,18 +89,18 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                         onChanged: (text) {
                           setState(() {});
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           disabledBorder: OutlineInputBorder(
                             borderSide:
-                                const BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.black),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                const BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.black),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                                const BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.black),
                           ),
                         ),
                       ),
@@ -137,9 +136,9 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                                       const PaymentCodeWidget()),
                             );
                           },
-                child: Text('다음'),
+                child: const Text('다음'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(300, 40),
+                  minimumSize: const Size(300, 40),
                   primary: Colors.teal,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),

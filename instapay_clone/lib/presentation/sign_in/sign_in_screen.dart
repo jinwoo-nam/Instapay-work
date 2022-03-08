@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -18,7 +19,8 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isKeyboardSelected = selected;
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(microseconds: 1000), curve: Curves.easeInBack);
+          duration: const Duration(microseconds: 1000),
+          curve: Curves.easeInBack);
     });
   }
 
@@ -53,13 +55,13 @@ class _SignInScreenState extends State<SignInScreen> {
     final rootViewModel = context.watch<RootViewModel>();
 
     return Scaffold(
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
         appBar: AppBar(
           toolbarHeight: 130,
           centerTitle: false,
           elevation: 0,
-          backgroundColor: Colors.indigo,
-          title: Text(
+          backgroundColor: color.mainNavy,
+          title: const Text(
             '사용자 인증',
             style: TextStyle(
               color: Colors.white,
@@ -90,14 +92,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Ink.image(
-                              image: NetworkImage(
-                                'https://pixlok.com/wp-content/uploads/2021/04/Google-Icon-PNG-768x768.jpg',
-                              ),
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.cover,
+                          children: const [
+                            Image(
+                              image: AssetImage('imgs/login-google@2x.png'),
+                              height: 20,
+                              width: 20,
                             ),
                             SizedBox(
                               width: 8,
@@ -129,14 +128,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Ink.image(
-                              image: NetworkImage(
-                                'https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM=s360-rw',
-                              ),
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.cover,
+                          children: const [
+                            Image(
+                              image: AssetImage('imgs/login-naver@2x.png'),
+                              height: 20,
+                              width: 20,
                             ),
                             SizedBox(
                               width: 8,
@@ -168,14 +164,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Ink.image(
-                            image: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJvERkBbVGSuQKx7MgIR6RTQyHvWtkX9fzpuC5GbtuGUe15fpgraCptc4baOP1-rLCq2E&usqp=CAU',
-                            ),
-                            height: 40,
-                            width: 40,
-                            fit: BoxFit.cover,
+                        children: const [
+                          Image(
+                            image:
+                                AssetImage('imgs/Left Black Logo Large@2x.png'),
                           ),
                           SizedBox(
                             width: 8,
@@ -195,22 +187,22 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0,bottom: 20),
+                const Padding(
+                  padding: EdgeInsets.only(top: 50.0, bottom: 20),
                   child: Text(
                     '또는',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 33),
+                        fontSize: 25),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextField(
                     focusNode: _focusNode,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Email Address',
                       hintStyle: TextStyle(color: Colors.white),
                       enabledBorder: UnderlineInputBorder(
