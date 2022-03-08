@@ -4,6 +4,8 @@ import 'package:instapay_clone/presentation/my_wallet/components/payment_method.
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/color.dart' as color;
+
 class MyWalletScreen extends StatelessWidget {
   const MyWalletScreen({Key? key}) : super(key: key);
 
@@ -15,7 +17,7 @@ class MyWalletScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 120,
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
         title: Text(
           viewModel.isSelectedDelete == false ? '내 지갑' : '삭제 선택',
           style: const TextStyle(fontSize: 25),
@@ -24,18 +26,22 @@ class MyWalletScreen extends StatelessWidget {
           viewModel.isSelectedDelete == false
               ? IconButton(
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.add,
-                    size: 30,
+                  icon: Image.asset(
+                    'imgs/wallet-plus@2x.png',
+                    color: Colors.white,
+                    width: 20,
+                    height: 20,
                   ),
                 )
               : IconButton(
                   onPressed: () {
                     viewModel.onDeleteButtonClick();
                   },
-                  icon: const Icon(
-                    Icons.highlight_off_outlined,
-                    size: 30,
+                  icon: Image.asset(
+                    'imgs/exit_x@2x.png',
+                    color: Colors.white,
+                    width: 20,
+                    height: 20,
                   ),
                 ),
           IconButton(
@@ -44,9 +50,11 @@ class MyWalletScreen extends StatelessWidget {
                   ? viewModel.onDeleteButtonClick()
                   : viewModel.deletePaymentMethod();
             },
-            icon: const Icon(
-              Icons.delete,
-              size: 30,
+            icon: Image.asset(
+              'imgs/wallet-trash@2x.png',
+              color: Colors.white,
+              width: 20,
+              height: 20,
             ),
           ),
         ],
@@ -81,26 +89,33 @@ class MyWalletScreen extends StatelessWidget {
               currentIndex: mainViewModel.curIndex,
               type: BottomNavigationBarType.fixed,
               onTap: mainViewModel.onBottomNavTap,
-              selectedItemColor: Colors.teal,
-              items: const [
-                BottomNavigationBarItem(
+              selectedItemColor: color.mainSelectColor,
+              items: [
+                const BottomNavigationBarItem(
                     icon: Icon(
                       Icons.qr_code,
                     ),
                     label: ('QR 결제')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.wallet_travel,
+                    icon: Image.asset(
+                      'imgs/tab-wallet@2x.png',
+                      color: color.mainSelectColor,
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('내 지갑')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.search,
+                    icon: Image.asset(
+                      'imgs/tab-search@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('내역 조회')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.settings,
+                    icon: Image.asset(
+                      'imgs/tab-setting@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('설정')),
               ],

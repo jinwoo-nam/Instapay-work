@@ -3,6 +3,7 @@ import 'package:instapay_clone/presentation/history_search/components/bill_box_s
 import 'package:instapay_clone/presentation/history_search/components/monthly_screen.dart';
 import 'package:instapay_clone/presentation/history_search/components/recently_screen.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class HistorySearchScreen extends StatelessWidget {
@@ -18,13 +19,13 @@ class HistorySearchScreen extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 80,
           centerTitle: false,
-          backgroundColor: Colors.indigo,
+          backgroundColor: color.mainNavy,
           title: const Text('내역 조회'),
-          bottom: TabBar(
-            labelColor: Colors.teal,
+          bottom: const TabBar(
+            labelColor: color.mainSelectColor,
             unselectedLabelColor: Colors.white,
             indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(width: 5.0, color: Colors.teal),
+              borderSide: BorderSide(width: 5.0, color: color.mainSelectColor),
             ),
             labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
             tabs: [
@@ -49,26 +50,33 @@ class HistorySearchScreen extends StatelessWidget {
                 currentIndex: mainViewModel.curIndex,
                 type: BottomNavigationBarType.fixed,
                 onTap: mainViewModel.onBottomNavTap,
-                selectedItemColor: Colors.teal,
-                items: const [
-                  BottomNavigationBarItem(
+                selectedItemColor: color.mainSelectColor,
+                items: [
+                  const BottomNavigationBarItem(
                       icon: Icon(
                         Icons.qr_code,
                       ),
                       label: ('QR 결제')),
                   BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.wallet_travel,
+                      icon: Image.asset(
+                        'imgs/tab-wallet@2x.png',
+                        width: 20,
+                        height: 20,
                       ),
                       label: ('내 지갑')),
                   BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.search,
+                      icon: Image.asset(
+                        'imgs/tab-search@2x.png',
+                        color: color.mainSelectColor,
+                        width: 20,
+                        height: 20,
                       ),
                       label: ('내역 조회')),
                   BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.settings,
+                      icon: Image.asset(
+                        'imgs/tab-setting@2x.png',
+                        width: 20,
+                        height: 20,
                       ),
                       label: ('설정')),
                 ],

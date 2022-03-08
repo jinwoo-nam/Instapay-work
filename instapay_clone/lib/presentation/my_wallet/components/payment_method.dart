@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class PaymentMethod extends StatefulWidget {
-  String title;
-  double balance;
-  String unit;
+  final String title;
+  final double balance;
+  final String unit;
 
-  PaymentMethod({
+  const PaymentMethod({
     Key? key,
     required this.title,
     required this.balance,
@@ -25,29 +26,71 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 8,
+        vertical: 5,
         horizontal: 25,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         minLeadingWidth: 0,
-        tileColor: Colors.grey,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(widget.title), Text('${widget.balance}')],
-        ),
-        leading: Visibility(
-          visible: viewModel.isSelectedDelete,
-          child: IconButton(
-            icon: const Icon(
-              Icons.radio_button_off,
-              size: 15,
+        tileColor: color.lightGrey,
+        title: Row(
+          children: [
+            viewModel.isSelectedDelete == true
+                ? IconButton(
+                    onPressed: () {
+
+                    },
+                    icon: widget.title == 'INC'
+                        ? Image.asset(
+                            'imgs/wallet-instacoin@2x.png',
+                            width: 20,
+                            height: 20,
+                          )
+                        : Image.asset(
+                            'imgs/select-empty@2x.png',
+                            width: 15,
+                            height: 15,
+                          ),
+                  )
+                : IconButton(
+                    onPressed: null,
+                    icon: widget.title == 'INC'
+                        ? Image.asset(
+                            'imgs/wallet-instacoin@2x.png',
+                            width: 20,
+                            height: 20,
+                          )
+                        : Image.asset(
+                            'imgs/wallet-bankaccount@2x.png',
+                            width: 20,
+                            height: 20,
+                          ),
+                  ),
+            const SizedBox(
+              width: 5,
             ),
-            onPressed: () {},
-          ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.title),
+                Text('${widget.balance} ${widget.unit}'),
+              ],
+            ),
+          ],
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.star_border),
+          icon: widget.title == 'INC'
+              ? Image.asset(
+                  'imgs/wallet-starfilled@2x.png',
+                  width: 20,
+                  height: 20,
+                )
+              : Image.asset(
+                  'imgs/wallet-starempty@2x.png',
+                  width: 20,
+                  height: 20,
+                ),
           onPressed: () {},
         ),
       ),

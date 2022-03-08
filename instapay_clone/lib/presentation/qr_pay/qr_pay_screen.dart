@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
@@ -108,7 +109,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       type: BottomNavigationBarType.fixed,
                       onTap: mainViewModel.onBottomNavTap,
                       unselectedItemColor: Colors.white,
-                      selectedItemColor: Colors.teal,
+                      selectedItemColor: color.mainSelectColor,
                       items: [
                         BottomNavigationBarItem(
                             icon: Icon(

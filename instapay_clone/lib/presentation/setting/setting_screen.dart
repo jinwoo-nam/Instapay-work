@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/setting/components/list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 120,
         centerTitle: false,
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -40,7 +41,7 @@ class SettingScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text('Event'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.teal,
+                  primary: color.mainSelectColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -63,25 +64,32 @@ class SettingScreen extends StatelessWidget {
               type: BottomNavigationBarType.fixed,
               onTap: mainViewModel.onBottomNavTap,
               selectedItemColor: Colors.teal,
-              items: const [
-                BottomNavigationBarItem(
+              items: [
+                const BottomNavigationBarItem(
                     icon: Icon(
                       Icons.qr_code,
                     ),
                     label: ('QR 결제')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.wallet_travel,
+                    icon: Image.asset(
+                      'imgs/tab-wallet@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('내 지갑')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.search,
+                    icon: Image.asset(
+                      'imgs/tab-search@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('내역 조회')),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.settings,
+                    icon: Image.asset(
+                      'imgs/tab-setting@2x.png',
+                      color: color.mainSelectColor,
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('설정')),
               ],
