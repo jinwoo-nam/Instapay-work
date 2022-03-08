@@ -201,6 +201,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextField(
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
                     focusNode: _focusNode,
                     decoration: const InputDecoration(
                       hintText: 'Email Address',
