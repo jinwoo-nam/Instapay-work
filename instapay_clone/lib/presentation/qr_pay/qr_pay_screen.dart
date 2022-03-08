@@ -56,11 +56,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       onPressed: () async {
                         await controller?.toggleFlash();
                       },
-                      icon: const Icon(
-                        Icons.flash_on,
-                        color: Colors.white,
-                        size: 40,
-                      ),
+                      icon: Image.asset('imgs/home-flash@2x.png'),
                     ),
                   ),
                 ),
@@ -75,35 +71,19 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       onPressed: () async {
                         _launchURL();
                       },
-                      icon: const Icon(
-                        Icons.menu_book_outlined,
-                        color: Colors.white,
-                        size: 35,
-                      ),
+                      icon: Image.asset('imgs/booksearch-small@2x.png'),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Insta',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 35,
-                        ),
-                      ),
-                      Text(
-                        'Pay',
-                        style: TextStyle(
-                          color: Colors.teal,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                const Padding(
+                  padding: EdgeInsets.only(top: 80),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Image(
+                      image: AssetImage('imgs/home-logo@2x.png'),
+                      width: 140,
+                      height: 40,
+                    ),
                   ),
                 ),
                 const Padding(
@@ -129,25 +109,34 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       onTap: mainViewModel.onBottomNavTap,
                       unselectedItemColor: Colors.white,
                       selectedItemColor: Colors.teal,
-                      items: const [
+                      items: [
                         BottomNavigationBarItem(
                             icon: Icon(
                               Icons.qr_code,
                             ),
                             label: ('QR 결제')),
                         BottomNavigationBarItem(
-                            icon: Icon(
-                              Icons.wallet_travel,
+                            icon: Image.asset(
+                              'imgs/tab-wallet@2x.png',
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
                             ),
                             label: ('내 지갑')),
                         BottomNavigationBarItem(
-                            icon: Icon(
-                              Icons.search,
+                            icon: Image.asset(
+                              'imgs/tab-search@2x.png',
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
                             ),
                             label: ('내역 조회')),
                         BottomNavigationBarItem(
-                            icon: Icon(
-                              Icons.settings,
+                            icon: Image.asset(
+                              'imgs/tab-setting@2x.png',
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
                             ),
                             label: ('설정')),
                       ],
