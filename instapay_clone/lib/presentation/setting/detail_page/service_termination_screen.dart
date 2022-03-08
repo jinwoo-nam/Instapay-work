@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/domain/model/service_termination_reason_data.dart';
+import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
+import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ServiceTerminationScreen extends StatefulWidget {
   const ServiceTerminationScreen({Key? key}) : super(key: key);
@@ -9,126 +13,142 @@ class ServiceTerminationScreen extends StatefulWidget {
 }
 
 class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
-  String _selected = 'male';
+  ServiceTerminationReasonType _curType = ServiceTerminationReasonType.None;
+  final _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SettingViewModel>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         title: Text('서비스 해지'),
       ),
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                  '1. 해지안내\n수집된 개인정보 및 결제수단 관련 정보는 모두 삭제되며 모바일 지로는 모두 해지처리 됩니다.'
-                  '\n\n단 일부 기록은 관련 법령에 의하여 일정기간 동안 보존됩니다.\n'),
-              Text('2. 해지사유\n다음번에는 회원님께 보다 나은 서비스를 제공할 수 있도록 해지 이유를 알려주십시오.'),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '필요없음(유용하지 않음)',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
+      body: Column(
+        children: [
+          Expanded(
+            flex: 10,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                        '1. 해지안내\n수집된 개인정보 및 결제수단 관련 정보는 모두 삭제되며 모바일 지로는 모두 해지처리 됩니다.'
+                        '\n\n단 일부 기록은 관련 법령에 의하여 일정기간 동안 보존됩니다.\n'),
+                    Text(
+                        '2. 해지사유\n다음번에는 회원님께 보다 나은 서비스를 제공할 수 있도록 해지 이유를 알려주십시오.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ...viewModel.reasonList.map(
+                      (e) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _curType = e.type;
+                            _controller.text = '';
+                            _focusNode.unfocus();
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 10, left: 25, right: 25),
+                          child: Row(
+                            children: [
+                              Icon(
+                                _curType == e.type
+                                    ? Icons.circle
+                                    : Icons.circle_outlined,
+                                color: Colors.black,
+                                size: 17,
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(e.title)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 250,
+                      child: TextField(
+                        enabled: _curType == ServiceTerminationReasonType.Etc
+                            ? true
+                            : false,
+                        controller: _controller,
+                        focusNode: _focusNode,
+                        maxLines: 4,
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(width: 1, color: Colors.black),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(width: 1, color: Colors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(width: 1, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                title: const Text('필요없음(유용하지 않음)'),
               ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '이용이 불편함',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('이용이 불편함'),
-              ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '잦은 소프트웨어 오류',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('잦은 소프트웨어 오류'),
-              ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '개인정보 유출 등 보안 우려',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('개인정보 유출 등 보안 우려'),
-              ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '사용가능한 은행계좌나 신용카드가 없음',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('사용가능한 은행계좌나 신용카드가 없음'),
-              ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '시험삼아 사용해 봄',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('시험삼아 사용해 봄'),
-              ),
-              ListTile(
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Radio<String>(
-                  value: '기타',
-                  groupValue: _selected,
-                  onChanged: (value) {
-                    setState(() {
-                      _selected = value!;
-                    });
-                  },
-                ),
-                title: const Text('기타'),
-              ),
-            ],
+            ),
           ),
-        ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: ElevatedButton(
+                onPressed: _curType == ServiceTerminationReasonType.None
+                    ? null
+                    : _curType == ServiceTerminationReasonType.Etc
+                        ? _controller.text.trim() == ''
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PaymentCodeWidget()),
+                                );
+                              }
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PaymentCodeWidget()),
+                            );
+                          },
+                child: Text('다음'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(300, 40),
+                  primary: Colors.teal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

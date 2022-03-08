@@ -90,10 +90,11 @@ class _InquiryScreenState extends State<InquiryScreen> {
                       ),
                     ),
                   ),
-
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Center(
                 child: SizedBox(
                   width: 400,

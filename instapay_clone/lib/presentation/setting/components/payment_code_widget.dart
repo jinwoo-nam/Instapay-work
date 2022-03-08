@@ -1,27 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
 
-class PaymentCodeChangeScreen extends StatelessWidget {
-  const PaymentCodeChangeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const PaymentCodeWidget();
-  }
-}
-
-/*
-class PaymentCodeChangeScreen extends StatefulWidget {
-  const PaymentCodeChangeScreen({Key? key}) : super(key: key);
+class PaymentCodeWidget extends StatefulWidget {
+  const PaymentCodeWidget({Key? key}) : super(key: key);
 
   @override
-  State<PaymentCodeChangeScreen> createState() =>
-      _PaymentCodeChangeScreenState();
+  State<PaymentCodeWidget> createState() =>
+      _PaymentCodeWidget();
 }
 
-class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
+class _PaymentCodeWidget extends State<PaymentCodeWidget> {
   int numIndex = 0;
   String code = '';
   List<String> pinCodeList = [];
@@ -262,4 +251,3 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
     }
   }
 }
-*/

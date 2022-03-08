@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/notice_list_data.dart';
+import 'package:instapay_clone/domain/model/service_termination_reason_data.dart';
 import 'package:instapay_clone/domain/model/setting_list_data.dart';
 import 'package:instapay_clone/domain/model/terms_of_use_list_data.dart';
 
@@ -102,4 +103,16 @@ class SettingViewModel with ChangeNotifier {
         '(이하 "수취인"이라 함)에게 자금을 이동하게 하는 전자금융거래를 말한다.',
     ),
   ];
+
+  final reasonList = [
+    ServiceTerminationReasonData(title: '필요없음 (유용하지 않음)',type: ServiceTerminationReasonType.Useless),
+    ServiceTerminationReasonData(title: '이용이 불편함',type: ServiceTerminationReasonType.UnComfortable),
+    ServiceTerminationReasonData(title: '잦은 소프트웨어 오류',type: ServiceTerminationReasonType.SoftwareIssues),
+    ServiceTerminationReasonData(title: '개인정보 유출 등 보안 우려',type: ServiceTerminationReasonType.SecurityIssues),
+    ServiceTerminationReasonData(title: '사용 가능한 은행계좌나 신용카드가 없음',type: ServiceTerminationReasonType.NoAccount),
+    ServiceTerminationReasonData(title: '시험삼아 사용해봄',type: ServiceTerminationReasonType.Testing),
+    ServiceTerminationReasonData(title: '기타',type: ServiceTerminationReasonType.Etc),
+  ];
+
+
 }
