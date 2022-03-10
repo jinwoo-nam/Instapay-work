@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/setting/components/address_search_screen.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 
 class AddressScreen extends StatelessWidget {
   const AddressScreen({Key? key}) : super(key: key);
@@ -8,16 +10,29 @@ class AddressScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('주소'),
-        backgroundColor: Colors.indigo,
+        title: const Text('주소'),
+        backgroundColor: color.mainNavy,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddressSearchScreen()),
+              );
+            },
+            icon: Image.asset(
+              'imgs/wallet-plus@2x.png',
+              width: 20,
+              height: 20,
+            ),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.delete),
+            icon: Image.asset(
+              'imgs/wallet-trash@2x.png',
+              width: 20,
+              height: 20,
+            ),
           ),
         ],
       ),
