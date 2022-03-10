@@ -8,8 +8,6 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//import 'package:flutter/foundation.dart';
-
 class QrPayScreen extends StatefulWidget {
   const QrPayScreen({Key? key}) : super(key: key);
 
@@ -81,7 +79,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       top: 230,
                     ),
                     child: IconButton(
-                      onPressed: () async {
+                      onPressed: () {
                         _launchURL();
                       },
                       icon: Image.asset('imgs/booksearch-small@2x.png'),

@@ -7,8 +7,7 @@ class PaymentCodeWidget extends StatefulWidget {
   const PaymentCodeWidget({Key? key}) : super(key: key);
 
   @override
-  State<PaymentCodeWidget> createState() =>
-      _PaymentCodeWidget();
+  State<PaymentCodeWidget> createState() => _PaymentCodeWidget();
 }
 
 class _PaymentCodeWidget extends State<PaymentCodeWidget> {
@@ -75,7 +74,6 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                   ),
                   onPressed: () {},
                 ),
-                Text(code),
               ],
             ),
           ),
@@ -109,9 +107,9 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                       child: Text(num),
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                         foregroundColor:
-                        MaterialStateProperty.all(color.mainNavy),
+                            MaterialStateProperty.all(color.mainNavy),
                         textStyle: MaterialStateProperty.all(
                           const TextStyle(
                             fontSize: 20,
@@ -119,7 +117,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                           ),
                         ),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
                             side: BorderSide(color: Colors.white),
@@ -131,21 +129,22 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(right: 30, top: 10, bottom: 15),
+                      const EdgeInsets.only(right: 30, top: 10, bottom: 15),
                   child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if(pinCodeList.isNotEmpty) {
-                            pinCodeList.removeLast();
-                          }
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.backspace,
-                        size: 45,
-                        color: color.mainSelectColor,
-                      )),
-                )
+                    onPressed: () {
+                      setState(() {
+                        if (pinCodeList.isNotEmpty) {
+                          pinCodeList.removeLast();
+                        }
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.backspace,
+                      size: 45,
+                      color: color.mainSelectColor,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -157,20 +156,23 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
   Widget showPinCode(int index) {
     return pinCodeList.length >= index + 1
         ? pinCodeList.length == index + 1
-        ? Text(
-      pinCodeList[index],
-      style: const TextStyle(fontSize: 20, color: color.mainSelectColor),
-    )
+            ? Text(
+                pinCodeList[index],
+                style: const TextStyle(
+                    fontSize: 20,
+                    color: color.mainSelectColor,
+                    fontWeight: FontWeight.bold),
+              )
+            : const Icon(
+                Icons.circle,
+                size: 16,
+                color: color.mainSelectColor,
+              )
         : const Icon(
-      Icons.circle,
-      size: 16,
-      color: color.mainSelectColor,
-    )
-        : const Icon(
-      Icons.circle,
-      size: 16,
-      color: Colors.black38,
-    );
+            Icons.circle,
+            size: 16,
+            color: Colors.black38,
+          );
   }
 
   final numList = const [
@@ -249,7 +251,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
       code = str;
       // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(str)));
       pinCodeList.clear();
-      Navigator.pop(context,true);
+      Navigator.pop(context, true);
     }
   }
 }

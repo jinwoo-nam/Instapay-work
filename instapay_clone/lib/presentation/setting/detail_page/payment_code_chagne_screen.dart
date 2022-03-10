@@ -1,18 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 
-class PaymentCodeChangeScreen extends StatelessWidget {
-  const PaymentCodeChangeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const PaymentCodeWidget();
-  }
-}
-
-/*
 class PaymentCodeChangeScreen extends StatefulWidget {
   const PaymentCodeChangeScreen({Key? key}) : super(key: key);
 
@@ -25,6 +15,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
   int numIndex = 0;
   String code = '';
   List<String> pinCodeList = [];
+  List<String> pinCodeListAgain = [];
 
   @override
   void initState() {
@@ -36,18 +27,23 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
   Widget build(BuildContext context) {
     numIndex = 0;
     return Scaffold(
+      backgroundColor: color.mainNavy,
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
-        title: Text('결제 코드'),
+        backgroundColor: color.mainNavy,
+        title: const Text('결제코드 설정'),
+        elevation: 0,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0),
+          const Padding(
+            padding: EdgeInsets.only(top: 60.0),
             child: Text(
-              '결제코드를 입력해 주세요',
-              style: TextStyle(fontSize: 16),
+              '결제 시 사용할 개인코드를 6자리 숫자로 입력해주세요.',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
           ),
           Padding(
@@ -69,23 +65,31 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                 Divider(
                   height: 25,
                   thickness: 1.3,
-                  color: Colors.teal,
+                  color: pinCodeList.length < 6
+                      ? color.mainSelectColor
+                      : Colors.white,
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: const Text(
-                    '결제 코드를 잊으셨습니까?',
-                    style: TextStyle(
-                      color: Colors.teal,
-                    ),
-                  ),
-                  onPressed: () {},
+                const SizedBox(
+                  height: 20,
                 ),
-                Text(code),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    showPinCodeAgain(0),
+                    showPinCodeAgain(1),
+                    showPinCodeAgain(2),
+                    showPinCodeAgain(3),
+                    showPinCodeAgain(4),
+                    showPinCodeAgain(5),
+                  ],
+                ),
+                Divider(
+                  height: 25,
+                  thickness: 1.3,
+                  color: pinCodeList.length == 6
+                      ? color.mainSelectColor
+                      : Colors.white,
+                ),
               ],
             ),
           ),
@@ -119,9 +123,9 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                       child: Text(num),
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                         foregroundColor:
-                        MaterialStateProperty.all(Colors.indigo),
+                            MaterialStateProperty.all(color.mainNavy),
                         textStyle: MaterialStateProperty.all(
                           const TextStyle(
                             fontSize: 20,
@@ -129,7 +133,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                           ),
                         ),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
                             side: BorderSide(color: Colors.white),
@@ -140,22 +144,47 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   },
                 ),
                 Padding(
-                  padding:
-                  const EdgeInsets.only(right: 30, top: 10, bottom: 15),
-                  child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if(pinCodeList.isNotEmpty) {
-                            pinCodeList.removeLast();
-                          }
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.backspace,
-                        size: 45,
-                        color: Colors.teal,
-                      )),
-                )
+                  padding: const EdgeInsets.only(
+                      left: 30, right: 30, top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: pinCodeList.length == 6 &&
+                                pinCodeListAgain.length == 6
+                            ? () {}
+                            : null,
+                        child: const Text('다음'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(280, 45),
+                          primary: color.mainSelectColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              if (pinCodeListAgain.isNotEmpty) {
+                                pinCodeListAgain.removeLast();
+                              } else if (pinCodeList.isNotEmpty) {
+                                pinCodeList.removeLast();
+                              }
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.backspace,
+                            size: 45,
+                            color: color.mainSelectColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -167,20 +196,47 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
   Widget showPinCode(int index) {
     return pinCodeList.length >= index + 1
         ? pinCodeList.length == index + 1
-        ? Text(
-      '${pinCodeList[index]}',
-      style: TextStyle(fontSize: 20, color: Colors.teal),
-    )
-        : Icon(
-      Icons.circle,
-      size: 16,
-      color: Colors.teal,
-    )
-        : Icon(
-      Icons.circle,
-      size: 16,
-      color: Colors.black38,
-    );
+            ? Text(
+                pinCodeList[index],
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: color.mainSelectColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : const Icon(
+                Icons.circle,
+                size: 16,
+                color: color.mainSelectColor,
+              )
+        : const Icon(
+            Icons.circle,
+            size: 16,
+            color: Colors.grey,
+          );
+  }
+
+  Widget showPinCodeAgain(int index) {
+    return pinCodeListAgain.length >= index + 1
+        ? pinCodeListAgain.length == index + 1
+            ? Text(
+                pinCodeListAgain[index],
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: color.mainSelectColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : const Icon(
+                Icons.circle,
+                size: 16,
+                color: color.mainSelectColor,
+              )
+        : const Icon(
+            Icons.circle,
+            size: 16,
+            color: Colors.grey,
+          );
   }
 
   final numList = const [
@@ -220,46 +276,79 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
   }
 
   void onButtonClick(String num) {
-    switch (num) {
-      case ' ':
-        break;
-      case '1':
-        pinCodeList.add('1');
-        break;
-      case '2':
-        pinCodeList.add('2');
-        break;
-      case '3':
-        pinCodeList.add('3');
-        break;
-      case '4':
-        pinCodeList.add('4');
-        break;
-      case '5':
-        pinCodeList.add('5');
-        break;
-      case '6':
-        pinCodeList.add('6');
-        break;
-      case '7':
-        pinCodeList.add('7');
-        break;
-      case '8':
-        pinCodeList.add('8');
-        break;
-      case '9':
-        pinCodeList.add('9');
-        break;
-      case '0':
-        pinCodeList.add('0');
-        break;
+    if (pinCodeList.length < 6) {
+      switch (num) {
+        case ' ':
+          break;
+        case '1':
+          pinCodeList.add('1');
+          break;
+        case '2':
+          pinCodeList.add('2');
+          break;
+        case '3':
+          pinCodeList.add('3');
+          break;
+        case '4':
+          pinCodeList.add('4');
+          break;
+        case '5':
+          pinCodeList.add('5');
+          break;
+        case '6':
+          pinCodeList.add('6');
+          break;
+        case '7':
+          pinCodeList.add('7');
+          break;
+        case '8':
+          pinCodeList.add('8');
+          break;
+        case '9':
+          pinCodeList.add('9');
+          break;
+        case '0':
+          pinCodeList.add('0');
+          break;
+      }
+    } else if (pinCodeListAgain.length < 6) {
+      switch (num) {
+        case ' ':
+          break;
+        case '1':
+          pinCodeListAgain.add('1');
+          break;
+        case '2':
+          pinCodeListAgain.add('2');
+          break;
+        case '3':
+          pinCodeListAgain.add('3');
+          break;
+        case '4':
+          pinCodeListAgain.add('4');
+          break;
+        case '5':
+          pinCodeListAgain.add('5');
+          break;
+        case '6':
+          pinCodeListAgain.add('6');
+          break;
+        case '7':
+          pinCodeListAgain.add('7');
+          break;
+        case '8':
+          pinCodeListAgain.add('8');
+          break;
+        case '9':
+          pinCodeListAgain.add('9');
+          break;
+        case '0':
+          pinCodeListAgain.add('0');
+          break;
+      }
     }
-    if (pinCodeList.length >= 6) {
-      String str = pinCodeList.join('');
-      code = str;
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(str)));
-      pinCodeList.clear();
+    if (pinCodeList.length == 6 && pinCodeListAgain.length == 6) {
+      //Navigator.pop(context, true);
     }
   }
 }
-*/
