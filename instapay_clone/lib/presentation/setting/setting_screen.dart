@@ -63,11 +63,13 @@ class SettingScreen extends StatelessWidget {
               currentIndex: mainViewModel.curIndex,
               type: BottomNavigationBarType.fixed,
               onTap: mainViewModel.onBottomNavTap,
-              selectedItemColor: Colors.teal,
+              selectedItemColor: color.mainSelectColor,
               items: [
-                const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.qr_code,
+                BottomNavigationBarItem(
+                    icon: Image.asset(
+                      'imgs/tab-qr@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('QR 결제')),
                 BottomNavigationBarItem(

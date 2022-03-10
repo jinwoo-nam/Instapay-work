@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instapay_clone/di/provider_setup.dart';
 import 'package:instapay_clone/presentation/root_page/root_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   runApp(
@@ -18,6 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

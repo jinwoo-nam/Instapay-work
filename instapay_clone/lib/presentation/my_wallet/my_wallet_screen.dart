@@ -91,9 +91,11 @@ class MyWalletScreen extends StatelessWidget {
               onTap: mainViewModel.onBottomNavTap,
               selectedItemColor: color.mainSelectColor,
               items: [
-                const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.qr_code,
+                BottomNavigationBarItem(
+                    icon: Image.asset(
+                      'imgs/tab-qr@2x.png',
+                      width: 20,
+                      height: 20,
                     ),
                     label: ('QR 결제')),
                 BottomNavigationBarItem(

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 
 class PaymentCodeWidget extends StatefulWidget {
   const PaymentCodeWidget({Key? key}) : super(key: key);
@@ -26,14 +27,14 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
     numIndex = 0;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
-        title: Text('결제 코드'),
+        backgroundColor: color.mainNavy,
+        title: const Text('결제 코드'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0),
+          const Padding(
+            padding: EdgeInsets.only(top: 60.0),
             child: Text(
               '결제코드를 입력해 주세요',
               style: TextStyle(fontSize: 16),
@@ -55,10 +56,10 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                     showPinCode(5),
                   ],
                 ),
-                Divider(
+                const Divider(
                   height: 25,
                   thickness: 1.3,
-                  color: Colors.teal,
+                  color: color.mainSelectColor,
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
@@ -69,7 +70,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                   child: const Text(
                     '결제 코드를 잊으셨습니까?',
                     style: TextStyle(
-                      color: Colors.teal,
+                      color: color.mainSelectColor,
                     ),
                   ),
                   onPressed: () {},
@@ -110,7 +111,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                         backgroundColor:
                         MaterialStateProperty.all(Colors.white),
                         foregroundColor:
-                        MaterialStateProperty.all(Colors.indigo),
+                        MaterialStateProperty.all(color.mainNavy),
                         textStyle: MaterialStateProperty.all(
                           const TextStyle(
                             fontSize: 20,
@@ -142,7 +143,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                       icon: const Icon(
                         Icons.backspace,
                         size: 45,
-                        color: Colors.teal,
+                        color: color.mainSelectColor,
                       )),
                 )
               ],
@@ -157,15 +158,15 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
     return pinCodeList.length >= index + 1
         ? pinCodeList.length == index + 1
         ? Text(
-      '${pinCodeList[index]}',
-      style: TextStyle(fontSize: 20, color: Colors.teal),
+      pinCodeList[index],
+      style: const TextStyle(fontSize: 20, color: color.mainSelectColor),
     )
-        : Icon(
+        : const Icon(
       Icons.circle,
       size: 16,
-      color: Colors.teal,
+      color: color.mainSelectColor,
     )
-        : Icon(
+        : const Icon(
       Icons.circle,
       size: 16,
       color: Colors.black38,
@@ -248,6 +249,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
       code = str;
       // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(str)));
       pinCodeList.clear();
+      Navigator.pop(context,true);
     }
   }
 }

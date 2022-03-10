@@ -27,8 +27,8 @@ class _InquiryScreenState extends State<InquiryScreen> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = [];
-    for (String city in _menuItems) {
-      items.add(DropdownMenuItem(value: city, child: Text(city)));
+    for (String item in _menuItems) {
+      items.add(DropdownMenuItem(value: item, child: Text(item)));
     }
     return items;
   }
@@ -119,7 +119,6 @@ class _InquiryScreenState extends State<InquiryScreen> {
   }
 
   void changedDropDownItem(String? selected) {
-    //print("Selected city $selectedCity, we are going to refresh the UI");
     if (selected != null) {
       setState(() {});
     }
