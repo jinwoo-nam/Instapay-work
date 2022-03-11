@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/terms_of_use_list_data.dart';
+import 'package:instapay_clone/domain/model/setting/terms_of_use_list_data.dart';
 
 class TermsOfUseDetailScreen extends StatelessWidget {
   final TermsOfUseListData data;

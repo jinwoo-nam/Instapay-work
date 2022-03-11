@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/setting_list_data.dart';
-import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/address_screen.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/inquiry_screen.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/notice_screen.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/payment_code_chagne_screen.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/service_termination_screen.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use_screen.dart';
+import 'package:instapay_clone/domain/model/setting/setting_list_data.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/address/address_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/inquiry/inquiry_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/notice/notice_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/service_termination/service_termination_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use/terms_of_use_screen.dart';
 
-class ListWidget extends StatelessWidget {
+class SettingListWidget extends StatelessWidget {
   final SettingListData data;
 
-  const ListWidget({Key? key, required this.data}) : super(key: key);
+  const SettingListWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/transaction_success_screen.dart';
-import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/address_screen.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/address/address_screen.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 
 class OrderScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
-import 'package:instapay_clone/presentation/setting/components/list_widget.dart';
+import 'package:instapay_clone/presentation/setting/components/setting_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
@@ -20,6 +20,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
     final viewModel = context.watch<SettingViewModel>();
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -57,8 +58,9 @@ class SettingScreen extends StatelessWidget {
       body: Stack(
         children: [
           ListView(
-            children:
-                viewModel.settingList.map((e) => ListWidget(data: e)).toList(),
+            children: state.settingList
+                .map((e) => SettingListWidget(data: e))
+                .toList(),
           ),
           Align(
             alignment: Alignment.bottomCenter,

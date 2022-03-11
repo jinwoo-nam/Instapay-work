@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/service_termination_reason_data.dart';
-import 'package:instapay_clone/presentation/setting/components/payment_code_widget.dart';
+import 'package:instapay_clone/domain/model/setting/service_termination_reason_data.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +27,8 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SettingViewModel>();
+    final state = viewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
@@ -48,7 +50,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    ...viewModel.reasonList.map(
+                    ...state.reasonList.map(
                       (e) => GestureDetector(
                         onTap: () {
                           setState(() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/notice_list_data.dart';
-import 'package:instapay_clone/presentation/setting/detail_page/notice_detail_screen.dart';
+import 'package:instapay_clone/domain/model/setting/notice_list_data.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/notice/notice_detail_screen.dart';
 
 class NoticeListWidget extends StatelessWidget {
   final NoticeListData data;
