@@ -40,8 +40,7 @@ final settingList = [
   SettingListData(
       title: '주소지',
       isTrailing: true,
-      type: SettingType.address,
-      subTitle: '등록된 주소지가 없습니다.'),
+      type: SettingType.address),
   SettingListData(
       title: '앱 정보',
       isTrailing: false,

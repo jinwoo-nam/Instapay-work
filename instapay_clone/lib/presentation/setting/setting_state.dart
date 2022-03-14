@@ -5,7 +5,6 @@ import 'package:instapay_clone/domain/model/setting/service_termination_reason_d
 import 'package:instapay_clone/domain/model/setting/setting_list_data.dart';
 import 'package:instapay_clone/domain/model/setting/terms_of_use_list_data.dart';
 
-
 part 'setting_state.freezed.dart';
 
 part 'setting_state.g.dart';
@@ -19,7 +18,10 @@ class SettingState with _$SettingState {
     @Default([]) List<ServiceTerminationReasonData> reasonList,
     @Default([]) List<AddressData> searchAddressList,
     @Default([]) List<AddressData> addressList,
-    @Default(false) isSearch,
+    @Default(false) bool isAddressSearchClicked,
+    AddressData? defaultAddress,
+    @Default(false) bool addressDeleteEnable,
+    AddressData? deleteSelectedAddress,
   }) = _SettingState;
 
   factory SettingState.fromJson(Map<String, dynamic> json) =>

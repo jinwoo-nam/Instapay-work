@@ -5,8 +5,22 @@ import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
-class AddressScreen extends StatelessWidget {
+class AddressScreen extends StatefulWidget {
   const AddressScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddressScreen> createState() => _AddressScreenState();
+}
+
+class _AddressScreenState extends State<AddressScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final viewModel = context.read<SettingViewModel>();
+      viewModel.clearAddressState();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +34,42 @@ class AddressScreen extends StatelessWidget {
           backgroundColor: color.mainNavy,
           actions: [
             IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddressSearchScreen()),
-                );
+              onPressed: () async {
+                if (state.addressDeleteEnable == false) {
+                  final newAddress = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddressSearchScreen()),
+                  );
+                  if (newAddress != null) {
+                    viewModel.setDefaultAddress(newAddress);
+                  }
+                } else {
+                  viewModel.clickAddressDelete();
+                }
               },
-              icon: Image.asset(
-                'imgs/wallet-plus@2x.png',
-                width: 20,
-                height: 20,
-              ),
+              icon: (state.addressDeleteEnable == false)
+                  ? Image.asset(
+                      'imgs/wallet-plus@2x.png',
+                      width: 20,
+                      height: 20,
+                    )
+                  : Image.asset(
+                      'imgs/exit_x@2x.png',
+                      width: 20,
+                      height: 20,
+                    ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                if (state.addressDeleteEnable == false) {
+                  viewModel.clickAddressDelete();
+                } else {
+                  if (state.deleteSelectedAddress != null) {
+                    viewModel.deleteAddress(state.deleteSelectedAddress!);
+                  }
+                }
+              },
               icon: Image.asset(
                 'imgs/wallet-trash@2x.png',
                 width: 20,
@@ -43,13 +78,38 @@ class AddressScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            const SizedBox(height: 20,),
-            ...state.addressList.map((e) {
-              return AddressListWidget(data: e);
-            }).toList(),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              ...state.addressList.map((e) {
+                return GestureDetector(
+                  onTap: () {
+                    if (state.addressDeleteEnable) {
+                      viewModel.setDeleteSelectedAddress(e);
+                    } else {
+                      viewModel.setDefaultAddress(e);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Visibility(
+                        visible: state.addressDeleteEnable,
+                        child: (state.deleteSelectedAddress == e)
+                            ? const Icon(Icons.circle)
+                            : const Icon(Icons.circle_outlined),
+                      ),
+                      Expanded(child: AddressListWidget(data: e)),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
         ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/address/address_register_screen.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/address/address_search_result_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_state.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
@@ -86,7 +87,7 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  ...(state.isSearch == false)
+                  ...(state.isAddressSearchClicked == false)
                       ? [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,9 +130,25 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
         )
       ];
     } else {
-      return state.searchAddressList
-          .map((e) => AddressSearchResultWidget(data: e))
-          .toList();
+      return state.searchAddressList.map((e) {
+        return GestureDetector(
+          onTap: () async{
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddressRegisterScreen(
+                  data: e,
+                ),
+              ),
+            );
+
+            if(result != null) {
+              Navigator.pop(context,result);
+            }
+          },
+          child: AddressSearchResultWidget(data: e),
+        );
+      }).toList();
     }
   }
 }

@@ -7,6 +7,9 @@ import 'package:instapay_clone/presentation/setting/detail_page/notice/notice_sc
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/service_termination/service_termination_screen.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use/terms_of_use_screen.dart';
+import 'package:instapay_clone/presentation/setting/setting_state.dart';
+import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:provider/provider.dart';
 
 class SettingListWidget extends StatelessWidget {
   final SettingListData data;
@@ -15,6 +18,9 @@ class SettingListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SettingViewModel>();
+    final state = viewModel.state;
+
     return Padding(
       padding: const EdgeInsets.only(left: 32, right: 32),
       child: Column(
@@ -32,8 +38,11 @@ class SettingListWidget extends StatelessWidget {
                       ),
                     ],
                   )
-                : Text(data.title),
-            subtitle: data.subTitle != null ? Text(data.subTitle!) : null,
+                : Text(
+                    data.title,
+                    style: const TextStyle(height: 1.3),
+                  ),
+            subtitle: getSubtitle(state),
             trailing: data.isTrailing == true
                 ? const Icon(
                     Icons.arrow_forward_ios_outlined,
@@ -52,7 +61,9 @@ class SettingListWidget extends StatelessWidget {
                   if (check != null && check == true) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const PaymentCodeChangeScreen()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const PaymentCodeChangeScreen()),
                     );
                   }
                   break;
@@ -97,11 +108,31 @@ class SettingListWidget extends StatelessWidget {
             },
           ),
           const Divider(
-            height: 1,
+            height: 8,
             color: Colors.black,
           )
         ],
       ),
     );
+  }
+
+  Text? getSubtitle(SettingState state) {
+    if (data.title == '주소지') {
+      if (state.addressList.isEmpty) {
+        return const Text(
+          '등록된 주소지가 없습니다.',
+          style: TextStyle(height: 1.1),
+        );
+      } else {
+        return Text(
+          '[${state.defaultAddress!.postCode}] ${state.defaultAddress!.address}',
+          style: const TextStyle(
+            height: 1.2,
+          ),
+        );
+      }
+    } else {
+      return data.subTitle != null ? Text(data.subTitle!) : null;
+    }
   }
 }

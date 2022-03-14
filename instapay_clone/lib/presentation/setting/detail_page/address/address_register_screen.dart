@@ -171,7 +171,13 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                         contact: contactController.text.trim(),
                         name: nameController.text.trim(),
                       ));
-                      Navigator.pop(context, true);
+                      Navigator.pop(context, AddressData(
+                        address: widget.data.address,
+                        postCode: widget.data.postCode,
+                        detailAddress: detailController.text.trim(),
+                        contact: contactController.text.trim(),
+                        name: nameController.text.trim(),
+                      ));
                     },
               child: const Text(
                 '확인',

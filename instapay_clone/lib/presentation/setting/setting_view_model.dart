@@ -64,7 +64,7 @@ class SettingViewModel with ChangeNotifier {
         success: (address) {
           _state = state.copyWith(
             searchAddressList: address,
-            isSearch: true,
+            isAddressSearchClicked: true,
           );
         },
         error: (message) {});
@@ -75,7 +75,7 @@ class SettingViewModel with ChangeNotifier {
   void clearSearchAddressList() {
     _state = state.copyWith(
       searchAddressList: [],
-      isSearch: false,
+      isAddressSearchClicked: false,
     );
 
     notifyListeners();
@@ -91,6 +91,50 @@ class SettingViewModel with ChangeNotifier {
         },
         error: (message) {});
 
+    notifyListeners();
+  }
+
+  void deleteAddress(AddressData address) async {
+    await deleteAddressUseCase(address);
+
+    final addressList = await getAddressUseCase();
+    addressList.when(
+        success: (address) {
+          _state = state.copyWith(addressList: address);
+        },
+        error: (message) {});
+
+    if (address == state.defaultAddress) {
+      if (state.addressList.isNotEmpty) {
+        setDefaultAddress(state.addressList[0]);
+      } else {
+        setDefaultAddress(null);
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void setDefaultAddress(AddressData? address) {
+    _state = state.copyWith(defaultAddress: address);
+    notifyListeners();
+  }
+
+  void clickAddressDelete() {
+    _state = state.copyWith(
+        addressDeleteEnable: !_state.addressDeleteEnable,
+        deleteSelectedAddress: null);
+    notifyListeners();
+  }
+
+  void setDeleteSelectedAddress(AddressData address) {
+    _state = state.copyWith(deleteSelectedAddress: address);
+    notifyListeners();
+  }
+
+  void clearAddressState() {
+    _state = state.copyWith(deleteSelectedAddress: null);
+    _state = state.copyWith(addressDeleteEnable: false);
     notifyListeners();
   }
 }
