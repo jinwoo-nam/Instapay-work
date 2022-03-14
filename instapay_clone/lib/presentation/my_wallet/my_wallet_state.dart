@@ -8,6 +8,7 @@ class MyWalletState with _$MyWalletState {
   factory MyWalletState({
     @Default([]) List<BankAccountData> accountList,
     @Default(false) bool isSelectedDelete,
+    BankAccountData? deleteSelectAccount,
   }) = _MyWalletState;
   factory MyWalletState.fromJson(Map<String, dynamic> json) => _$MyWalletStateFromJson(json);
 }

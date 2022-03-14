@@ -31,12 +31,11 @@ class MyWalletScreen extends StatelessWidget {
                     final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const BankAccountRegisterScreen()),
+                        builder: (context) => const BankAccountRegisterScreen(),
+                      ),
                     );
-
                     if (result != null) {
-                      
+                      viewModel.addBankAccountData(result);
                     }
                   },
                   icon: Image.asset(
@@ -59,9 +58,13 @@ class MyWalletScreen extends StatelessWidget {
                 ),
           IconButton(
             onPressed: () {
-              state.isSelectedDelete == false
-                  ? viewModel.onDeleteButtonClick()
-                  : viewModel.deletePaymentMethod();
+              if (state.isSelectedDelete == false) {
+                viewModel.onDeleteButtonClick();
+              } else {
+                if (state.deleteSelectAccount != null) {
+                  viewModel.deleteBankAccountData(state.deleteSelectAccount!);
+                }
+              }
             },
             icon: Image.asset(
               'imgs/wallet-trash@2x.png',
@@ -74,27 +77,26 @@ class MyWalletScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          ListView(
-            children: const [
-              Padding(
-                padding: EdgeInsets.all(8),
-              ),
-              PaymentMethodWidget(
-                title: 'INC',
-                balance: 0,
-                unit: '',
-              ),
-              PaymentMethodWidget(
-                title: 'Deposit',
-                balance: 0,
-                unit: 'KRW',
-              ),
-              PaymentMethodWidget(
-                title: 'Ethereum',
-                balance: 0,
-                unit: 'ETH',
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 15),
+            child: ListView(
+              children: [
+                ...state.accountList
+                    .map(
+                      (e) => GestureDetector(
+                        onTap: state.isSelectedDelete == true
+                            ? () {
+                                viewModel.setDeleteSelectedBankAccountData(e);
+                              }
+                            : null,
+                        child: PaymentMethodWidget(
+                          data: e,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -105,34 +107,38 @@ class MyWalletScreen extends StatelessWidget {
               selectedItemColor: color.mainSelectColor,
               items: [
                 BottomNavigationBarItem(
-                    icon: Image.asset(
-                      'imgs/tab-qr@2x.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                    label: ('QR 결제')),
+                  icon: Image.asset(
+                    'imgs/tab-qr@2x.png',
+                    width: 20,
+                    height: 20,
+                  ),
+                  label: ('QR 결제'),
+                ),
                 BottomNavigationBarItem(
-                    icon: Image.asset(
-                      'imgs/tab-wallet@2x.png',
-                      color: color.mainSelectColor,
-                      width: 20,
-                      height: 20,
-                    ),
-                    label: ('내 지갑')),
+                  icon: Image.asset(
+                    'imgs/tab-wallet@2x.png',
+                    color: color.mainSelectColor,
+                    width: 20,
+                    height: 20,
+                  ),
+                  label: ('내 지갑'),
+                ),
                 BottomNavigationBarItem(
-                    icon: Image.asset(
-                      'imgs/tab-search@2x.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                    label: ('내역 조회')),
+                  icon: Image.asset(
+                    'imgs/tab-search@2x.png',
+                    width: 20,
+                    height: 20,
+                  ),
+                  label: ('내역 조회'),
+                ),
                 BottomNavigationBarItem(
-                    icon: Image.asset(
-                      'imgs/tab-setting@2x.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                    label: ('설정')),
+                  icon: Image.asset(
+                    'imgs/tab-setting@2x.png',
+                    width: 20,
+                    height: 20,
+                  ),
+                  label: ('설정'),
+                ),
               ],
             ),
           ),

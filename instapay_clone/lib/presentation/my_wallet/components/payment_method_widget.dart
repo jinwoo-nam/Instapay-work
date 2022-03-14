@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class PaymentMethodWidget extends StatefulWidget {
-  final String title;
-  final double balance;
-  final String unit;
+  final BankAccountData data;
 
   const PaymentMethodWidget({
     Key? key,
-    required this.title,
-    required this.balance,
-    required this.unit,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -28,7 +25,7 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 5,
-        horizontal: 25,
+        horizontal: 5,
       ),
       child: ListTile(
         contentPadding:
@@ -39,22 +36,28 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
           children: [
             state.isSelectedDelete == true
                 ? IconButton(
-                    onPressed: () {},
-                    icon: widget.title == 'INC'
+                    onPressed: null,
+                    icon: widget.data.title == 'INC'
                         ? Image.asset(
                             'imgs/wallet-instacoin@2x.png',
                             width: 20,
                             height: 20,
                           )
-                        : Image.asset(
-                            'imgs/select-empty@2x.png',
-                            width: 15,
-                            height: 15,
-                          ),
+                        : (state.deleteSelectAccount != widget.data)
+                            ? Image.asset(
+                                'imgs/select-empty@2x.png',
+                                width: 15,
+                                height: 15,
+                              )
+                            : Image.asset(
+                                'imgs/select-filled@2x.png',
+                                width: 15,
+                                height: 15,
+                              ),
                   )
                 : IconButton(
                     onPressed: null,
-                    icon: widget.title == 'INC'
+                    icon: widget.data.title == 'INC'
                         ? Image.asset(
                             'imgs/wallet-instacoin@2x.png',
                             width: 20,
@@ -72,14 +75,16 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.title),
-                Text('${widget.balance} ${widget.unit}'),
+                Text(widget.data.title),
+                (widget.data.accountNumber.trim().isEmpty)
+                    ? Text('${widget.data.balance} ${widget.data.unit}')
+                    : Text(widget.data.accountNumber),
               ],
             ),
           ],
         ),
         trailing: IconButton(
-          icon: widget.title == 'INC'
+          icon: widget.data.title == 'INC'
               ? Image.asset(
                   'imgs/wallet-starfilled@2x.png',
                   width: 20,

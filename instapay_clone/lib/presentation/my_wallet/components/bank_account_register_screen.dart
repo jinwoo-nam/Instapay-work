@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
 import 'package:instapay_clone/ui/color.dart' as color;

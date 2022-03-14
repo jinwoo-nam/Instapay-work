@@ -1,8 +1,14 @@
+import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
+import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
+import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/delete_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/get_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/register_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/search_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/setting_repository_impl.dart';
+import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
+import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
+import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/delete_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.dart';
@@ -23,6 +29,10 @@ Future<List<SingleChildWidget>> getProviders() async {
   final registerAddressRepository = RegisterAddressRepositoryImpl();
   final deleteAddressRepository = DeleteAddressRepositoryImpl();
 
+  final getBankAccountRepository = GetBankAccountRepositoryImpl();
+  final addBankAccountRepository = AddBankAccountRepositoryImpl();
+  final deleteBankAccountRepository = DeleteBankAccountRepositoryImpl();
+
   return [
     ChangeNotifierProvider<RootViewModel>(
       create: (context) => RootViewModel(),
@@ -31,7 +41,12 @@ Future<List<SingleChildWidget>> getProviders() async {
       create: (context) => MainScreenViewModel(),
     ),
     ChangeNotifierProvider<MyWalletViewModel>(
-      create: (context) => MyWalletViewModel(),
+      create: (context) => MyWalletViewModel(
+        getBankAccountUseCase: GetBankAccountUseCase(getBankAccountRepository),
+        addBankAccountUseCase: AddBankAccountUseCase(addBankAccountRepository),
+        deleteBankAccountUseCase:
+            DeleteBankAccountUseCase(deleteBankAccountRepository),
+      ),
     ),
     ChangeNotifierProvider<SettingViewModel>(
       create: (context) => SettingViewModel(
@@ -39,7 +54,8 @@ Future<List<SingleChildWidget>> getProviders() async {
         getNoticeDataUseCase: GetNoticeDataUseCase(settingRepository),
         searchAddressUseCase: SearchAddressUseCase(searchAddressRepository),
         getAddressUseCase: GetAddressUseCase(getAddressRepository),
-        registerAddressUseCase: RegisterAddressUseCase(registerAddressRepository),
+        registerAddressUseCase:
+            RegisterAddressUseCase(registerAddressRepository),
         deleteAddressUseCase: DeleteAddressUseCase(deleteAddressRepository),
       ),
     ),

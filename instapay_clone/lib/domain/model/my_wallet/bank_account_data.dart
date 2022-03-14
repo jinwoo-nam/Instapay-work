@@ -8,9 +8,9 @@ part 'bank_account_data.g.dart';
 class BankAccountData with _$BankAccountData {
   factory BankAccountData({
     required String title,
-    double? balance,
-    String? accountNumber,
-    String? unit,
+    @Default(0) double balance,
+    @Default('') String accountNumber,
+    @Default('') String unit,
   }) = _BankAccountData;
 
   factory BankAccountData.fromJson(Map<String, dynamic> json) =>
