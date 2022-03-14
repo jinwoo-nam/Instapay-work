@@ -7,6 +7,6 @@ class RegisterAddressUseCase {
   RegisterAddressUseCase(this.repository);
 
   Future<void> call(AddressData address) async {
-    repository.registerAddress(address);
+    await repository.registerAddress(address);
   }
 }

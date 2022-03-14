@@ -20,17 +20,17 @@ class NoticeListWidget extends StatelessWidget {
               children: [
                 Text(
                   data.date,
-                  style: TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13),
                 ),
                 Text(
                   data.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                   ),
                 ),
               ],
             ),
-            trailing: Icon(
+            trailing: const Icon(
               Icons.arrow_forward_ios_outlined,
             ),
             onTap: () {
@@ -40,7 +40,7 @@ class NoticeListWidget extends StatelessWidget {
               );
             },
           ),
-          Divider(
+          const Divider(
             height: 30,
             color: Colors.black,
           )

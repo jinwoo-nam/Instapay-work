@@ -7,6 +7,6 @@ class DeleteAddressUseCase {
   DeleteAddressUseCase(this.repository);
 
   Future<void> call(AddressData address) async {
-    repository.deleteAddress(address);
+    await repository.deleteAddress(address);
   }
 }

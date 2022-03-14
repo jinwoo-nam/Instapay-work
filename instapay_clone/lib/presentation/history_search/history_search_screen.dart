@@ -37,7 +37,7 @@ class HistorySearchScreen extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            TabBarView(
+            const TabBarView(
               children: [
                 RecentlyScreen(),
                 MonthlyScreen(),

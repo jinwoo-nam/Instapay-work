@@ -16,7 +16,7 @@ class TermsOfUseListWidget extends StatelessWidget {
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(data.title),
-            trailing: Icon(
+            trailing: const Icon(
               Icons.arrow_forward_ios_outlined,
             ),
             onTap: () {
@@ -26,7 +26,7 @@ class TermsOfUseListWidget extends StatelessWidget {
               );
             },
           ),
-          Divider(
+          const Divider(
             height: 5,
             color: Colors.black,
           )

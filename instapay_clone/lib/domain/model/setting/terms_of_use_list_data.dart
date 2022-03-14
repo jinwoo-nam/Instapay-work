@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'terms_of_use_list_data.freezed.dart';
 part 'terms_of_use_list_data.g.dart';

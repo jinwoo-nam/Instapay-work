@@ -3,12 +3,12 @@ import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart'
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
-class PaymentMethod extends StatefulWidget {
+class PaymentMethodWidget extends StatefulWidget {
   final String title;
   final double balance;
   final String unit;
 
-  const PaymentMethod({
+  const PaymentMethodWidget({
     Key? key,
     required this.title,
     required this.balance,
@@ -16,13 +16,14 @@ class PaymentMethod extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PaymentMethod> createState() => _PaymentMethodState();
+  State<PaymentMethodWidget> createState() => _PaymentMethodWidgetState();
 }
 
-class _PaymentMethodState extends State<PaymentMethod> {
+class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MyWalletViewModel>();
+    final state = viewModel.state;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -36,11 +37,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
         tileColor: color.lightGrey,
         title: Row(
           children: [
-            viewModel.isSelectedDelete == true
+            state.isSelectedDelete == true
                 ? IconButton(
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     icon: widget.title == 'INC'
                         ? Image.asset(
                             'imgs/wallet-instacoin@2x.png',

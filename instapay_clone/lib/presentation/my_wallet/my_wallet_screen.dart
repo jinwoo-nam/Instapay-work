@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
-import 'package:instapay_clone/presentation/my_wallet/components/payment_method.dart';
+import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
+import 'package:instapay_clone/presentation/my_wallet/components/payment_method_widget.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -13,19 +14,31 @@ class MyWalletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
     final viewModel = context.watch<MyWalletViewModel>();
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 120,
         backgroundColor: color.mainNavy,
         title: Text(
-          viewModel.isSelectedDelete == false ? '내 지갑' : '삭제 선택',
+          state.isSelectedDelete == false ? '내 지갑' : '삭제 선택',
           style: const TextStyle(fontSize: 25),
         ),
         actions: [
-          viewModel.isSelectedDelete == false
+          state.isSelectedDelete == false
               ? IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const BankAccountRegisterScreen()),
+                    );
+
+                    if (result != null) {
+                      
+                    }
+                  },
                   icon: Image.asset(
                     'imgs/wallet-plus@2x.png',
                     color: Colors.white,
@@ -46,7 +59,7 @@ class MyWalletScreen extends StatelessWidget {
                 ),
           IconButton(
             onPressed: () {
-              viewModel.isSelectedDelete == false
+              state.isSelectedDelete == false
                   ? viewModel.onDeleteButtonClick()
                   : viewModel.deletePaymentMethod();
             },
@@ -62,21 +75,21 @@ class MyWalletScreen extends StatelessWidget {
       body: Stack(
         children: [
           ListView(
-            children: [
-              const Padding(
+            children: const [
+              Padding(
                 padding: EdgeInsets.all(8),
               ),
-              PaymentMethod(
+              PaymentMethodWidget(
                 title: 'INC',
                 balance: 0,
                 unit: '',
               ),
-              PaymentMethod(
+              PaymentMethodWidget(
                 title: 'Deposit',
                 balance: 0,
                 unit: 'KRW',
               ),
-              PaymentMethod(
+              PaymentMethodWidget(
                 title: 'Ethereum',
                 balance: 0,
                 unit: 'ETH',

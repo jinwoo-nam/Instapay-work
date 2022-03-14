@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/my_wallet/my_wallet_state.dart';
 
 class MyWalletViewModel with ChangeNotifier {
-  bool _isSelectedDelete = false;
-  bool get isSelectedDelete => _isSelectedDelete;
+  MyWalletState _state = MyWalletState();
 
-  void onDeleteButtonClick(){
-    _isSelectedDelete = !_isSelectedDelete;
+  MyWalletState get state => _state;
+
+  void onDeleteButtonClick() {
+    _state = state.copyWith(isSelectedDelete: state.isSelectedDelete);
     notifyListeners();
   }
 
-  void deletePaymentMethod(){
-
-  }
+  void deletePaymentMethod() {}
 }

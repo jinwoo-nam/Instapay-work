@@ -8,6 +8,6 @@ class GetAddressUseCase {
   GetAddressUseCase(this.repository);
 
   Future<Result<List<AddressData>>> call() async {
-    return repository.getAddressData();
+    return await repository.getAddressData();
   }
 }

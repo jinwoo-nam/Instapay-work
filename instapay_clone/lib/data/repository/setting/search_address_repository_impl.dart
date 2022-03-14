@@ -7,7 +7,7 @@ class SearchAddressRepositoryImpl implements SearchAddressRepository {
   final _dataSource = SearchAddressDataSource();
 
   @override
-  Future<Result<List<AddressData>>> getAddressData(String query) async {
-    return await _dataSource.getAddress(query);
+  Future<Result<List<AddressData>>> searchAddressData(String query) async {
+    return await _dataSource.searchAddress(query);
   }
 }

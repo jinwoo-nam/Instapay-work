@@ -2,7 +2,7 @@ import 'package:instapay_clone/core/result.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
 
 class SearchAddressDataSource {
-  Future<Result<List<AddressData>>> getAddress(String query) async {
+  Future<Result<List<AddressData>>> searchAddress(String query) async {
     try {
       List<AddressData> arr = [];
       for (int i = 0; i < 10; i++) {

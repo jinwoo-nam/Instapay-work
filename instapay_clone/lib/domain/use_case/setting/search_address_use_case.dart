@@ -8,7 +8,7 @@ class SearchAddressUseCase {
   SearchAddressUseCase(this.repository);
 
   Future<Result<List<AddressData>>> call(String query) async {
-    final addressList = repository.getAddressData(query);
+    final addressList = await repository.searchAddressData(query);
 
     return addressList;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/notice/notice_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class NoticeScreen extends StatelessWidget {
@@ -13,8 +14,8 @@ class NoticeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('공지사항'),
-        backgroundColor: Colors.indigo,
+        title: const Text('공지사항'),
+        backgroundColor: color.mainNavy,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),

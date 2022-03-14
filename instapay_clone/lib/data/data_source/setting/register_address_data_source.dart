@@ -5,8 +5,8 @@ class RegisterAddressDataSource {
  Future<void> registerAddress(AddressData address) async{
    try {
      addressList.add(address);
-   } on Exception catch(e) {
-     print(e.toString());
+   } on Exception {
+
    }
  }
 }

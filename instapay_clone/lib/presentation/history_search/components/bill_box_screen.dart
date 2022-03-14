@@ -5,7 +5,7 @@ class BillBoxScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('청구서가 없습니다.'),
     );
   }

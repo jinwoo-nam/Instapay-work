@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/service_termination_reason_data.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class ServiceTerminationScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
         title: const Text('서비스 해지'),
       ),
       body: Column(
@@ -72,7 +73,8 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                                 size: 17,
                               ),
                               Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(e.title)),
                             ],
                           ),
@@ -107,44 +109,41 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: ElevatedButton(
-                onPressed: _curType == ServiceTerminationReasonType.None
-                    ? null
-                    : _curType == ServiceTerminationReasonType.Etc
-                        ? _controller.text.trim() == ''
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: ElevatedButton(
+                        onPressed: _curType == ServiceTerminationReasonType.None
                             ? null
-                            : () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaymentCodeWidget()),
-                                );
-                              }
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PaymentCodeWidget()),
-                            );
-                          },
-                child: const Text('다음'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(300, 40),
-                  primary: Colors.teal,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
+                            : _curType == ServiceTerminationReasonType.Etc
+                                ? _controller.text.trim() == ''
+                                    ? null
+                                    : () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const PaymentCodeWidget()),
+                                        );
+                                      }
+                                : () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentCodeWidget()),
+                                    );
+                                  },
+                        child: const Text('다음'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(350, 50),
+                          primary: color.mainSelectColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

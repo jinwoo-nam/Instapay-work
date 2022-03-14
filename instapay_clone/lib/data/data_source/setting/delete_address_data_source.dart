@@ -5,8 +5,8 @@ class DeleteAddressDataSource {
   Future<void> deleteAddress(AddressData address) async{
     try {
       addressList.remove(address);
-    } on Exception catch(e) {
-      print(e.toString());
+    } on Exception {
+
     }
   }
 }

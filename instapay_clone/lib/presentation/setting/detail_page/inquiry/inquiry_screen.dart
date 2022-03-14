@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 
 class InquiryScreen extends StatefulWidget {
   const InquiryScreen({Key? key}) : super(key: key);
@@ -37,8 +38,8 @@ class _InquiryScreenState extends State<InquiryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('문의하기'),
-        backgroundColor: Colors.indigo,
+        title: const Text('문의하기'),
+        backgroundColor: color.mainNavy,
       ),
       body: Padding(
         padding:
@@ -51,22 +52,22 @@ class _InquiryScreenState extends State<InquiryScreen> {
               SizedBox(
                 width: 150,
                 child: DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '문의유형 선택',
                   ),
                   items: _dropDownMenuItems,
                   onChanged: changedDropDownItem,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: '제목 입력',
                   ),
                 ),
               ),
-              Container(
+              const SizedBox(
                 height: 7 * 24,
                 child: TextField(
                   maxLines: 10,
@@ -77,11 +78,11 @@ class _InquiryScreenState extends State<InquiryScreen> {
                 ),
               ),
               Row(
-                children: [
+                children: const [
                   Text('회신 주소'),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                           left: 16.0, right: 16, top: 8, bottom: 8),
                       child: TextField(
                         decoration: InputDecoration(
@@ -92,7 +93,7 @@ class _InquiryScreenState extends State<InquiryScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(
@@ -101,9 +102,9 @@ class _InquiryScreenState extends State<InquiryScreen> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('보내기'),
+                    child: const Text('보내기'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.teal,
+                      primary: color.mainSelectColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use/terms_of_use_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class TermsOfUseScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class TermsOfUseScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('이용약관'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),

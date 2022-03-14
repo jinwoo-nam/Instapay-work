@@ -209,7 +209,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       builder: (context) => const PaymentCodeWidget()),
                 );
                 if (isPinRight != null && isPinRight) {
-                  bool? isCheck = await Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const TransactionSuccessScreen()),
                   );

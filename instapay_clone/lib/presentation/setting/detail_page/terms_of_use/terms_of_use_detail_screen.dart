@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/terms_of_use_list_data.dart';
+import 'package:instapay_clone/ui/color.dart' as color;
 
 class TermsOfUseDetailScreen extends StatelessWidget {
   final TermsOfUseListData data;
@@ -10,7 +11,7 @@ class TermsOfUseDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: color.mainNavy,
         title: Text(data.title),
       ),
       body: Padding(
