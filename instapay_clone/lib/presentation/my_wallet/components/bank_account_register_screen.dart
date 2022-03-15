@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
+
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -44,12 +45,13 @@ class _BankAccountRegisterScreenState extends State<BankAccountRegisterScreen> {
               children: [
                 const Text('은행'),
                 Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: TextField(
-                  controller: bankController,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: TextField(
+                      controller: bankController,
+                    ),
+                  ),
                 ),
-                    )),
               ],
             ),
             Row(
@@ -57,11 +59,11 @@ class _BankAccountRegisterScreenState extends State<BankAccountRegisterScreen> {
                 const Text('계좌'),
                 Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: TextField(
-                  controller: accountController,
-                ),
-                    )),
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: TextField(
+                    controller: accountController,
+                  ),
+                )),
               ],
             ),
             ElevatedButton(

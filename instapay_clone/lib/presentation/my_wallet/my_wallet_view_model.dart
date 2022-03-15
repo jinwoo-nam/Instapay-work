@@ -39,10 +39,21 @@ class MyWalletViewModel with ChangeNotifier {
     final accountList = await getBankAccountUseCase();
     accountList.when(
         success: (list) {
-          _state = state.copyWith(accountList: list);
+          _state = state.copyWith(
+            accountList: list,
+          );
         },
         error: (message) {});
 
+    notifyListeners();
+  }
+
+  void setDefaultAccount(BankAccountData account) async {
+    await addBankAccountUseCase.addDefaultAccount(account);
+
+    _state = state.copyWith(
+      defaultAccount: account,
+    );
     notifyListeners();
   }
 

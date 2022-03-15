@@ -10,4 +10,9 @@ class GetBankAccountUseCase {
   Future<Result<List<BankAccountData>>> call() async {
     return await repository.getBankAccount();
   }
+
+  Future<Result<BankAccountData?>> getDefaultAccount() async {
+    return await repository.getDefaultAccount();
+  }
+
 }

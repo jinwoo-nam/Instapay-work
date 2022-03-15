@@ -38,6 +38,8 @@ class _QrPayScreenState extends State<QrPayScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
+
+
     return Scaffold(
       body: Column(
         children: <Widget>[

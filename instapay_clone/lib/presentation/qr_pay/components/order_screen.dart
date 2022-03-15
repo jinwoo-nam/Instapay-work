@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
+import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/transaction_success_screen.dart';
+import 'package:instapay_clone/presentation/qr_pay/qr_pay_state.dart';
+import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/address/address_screen.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -12,51 +17,55 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final _menuItems = [
-    'Deposit 0 KR',
-    'Ethereum 0.00',
-    '결제수단 추가',
-  ];
-
-  List<DropdownMenuItem<String>> _dropDownMenuItems = [];
-
   @override
   void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
     super.initState();
+    Future.microtask(() {
+      final viewModel = context.read<QrPayViewModel>();
+      viewModel.fetchBankAccountData();
+      viewModel.fetchDefaultAddress();
+    });
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+  List<DropdownMenuItem<String>> getDropDownMenuItems(
+      List<BankAccountData> account) {
     List<DropdownMenuItem<String>> items = [];
-    for (String item in _menuItems) {
-      if (item == '결제수단 추가') {
-        items.add(
-          DropdownMenuItem(
-            value: item,
-            child: Row(
-              children: [
-                const Icon(Icons.add_circle),
-                Text(item),
-              ],
+    for (BankAccountData item in account) {
+      items.add(
+        DropdownMenuItem(
+          value: item.title,
+          child: (item.accountNumber.length > 3)
+              ? Text(
+                  item.title + ' ' + '[${item.accountNumber.substring(0, 4)}..]',
+                )
+              : Text(
+                  item.title + ' ' + item.accountNumber,
+                ),
+        ),
+      );
+    }
+    items.add(
+      DropdownMenuItem(
+        value: '결제수단 추가',
+        child: Row(
+          children: const [
+            Icon(Icons.add_circle),
+            SizedBox(
+              width: 10,
             ),
-          ),
-        );
-      } else {
-        items.add(DropdownMenuItem(value: item, child: Text(item)));
-      }
-    }
+            Text('결제수단 추가'),
+          ],
+        ),
+      ),
+    );
     return items;
-  }
-
-  void changedDropDownItem(String? selected) {
-    if (selected != null) {
-      if (selected == '결제수단 추가') {}
-      setState(() {});
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<QrPayViewModel>();
+    final state = viewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('결제'),
@@ -64,174 +73,207 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListView(
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 150,
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        value: getDefaultValue(state),
+                        items: getDropDownMenuItems(state.accountList),
+                        onChanged: (selected) async {
+                          if (selected != null && selected == '결제수단 추가') {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const BankAccountRegisterScreen(),
+                              ),
+                            );
+                            if (result != null) {
+                              viewModel.addBankAccountData(result);
+                            }
+                          }
+                        },
+                      ),
                     ),
-                    value: _menuItems[0],
-                    items: _dropDownMenuItems,
-                    onChanged: changedDropDownItem,
-                  ),
-                ),
-                const Divider(
-                  color: Colors.black,
-                  height: 40,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        '가맹점',
-                        style: TextStyle(fontSize: 15),
+                    const Divider(
+                      color: Colors.black,
+                      height: 40,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            '가맹점',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          Text(
+                            '인스타북스',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '인스타북스',
-                        style: TextStyle(fontSize: 15),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            '상품명',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          Text(
+                            '요범사훈(운명에 속지 말고 주인공이 되자)',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        '상품명',
-                        style: TextStyle(fontSize: 15),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            '주문 번호',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          Text(
+                            'Z29-H48TH',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '요범사훈(운명에 속지 말고 주인공이 되자)',
-                        style: TextStyle(fontSize: 15),
+                    ),
+                    const Divider(
+                      color: Colors.black,
+                      height: 40,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            '결제 금액',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          Text(
+                            '9540 원',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        '주문 번호',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      Text(
-                        'Z29-H48TH',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  color: Colors.black,
-                  height: 40,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        '결제 금액',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      Text(
-                        '9540 원',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: Center(child: Text('[EVENT 20% 할인] [만원이하 배송료 포함]')),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AddressScreen()),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child:
+                          Center(child: Text('[EVENT 20% 할인] [만원이하 배송료 포함]')),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddressScreen()),
+                        );
+                        viewModel.fetchDefaultAddress();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              '배송지 ',
-                              style: TextStyle(fontSize: 15),
+                            Row(
+                              children: [
+                                const Text(
+                                  '배송지 ',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                Image.asset(
+                                  'imgs/pay-address-edit@2x.png',
+                                  width: 13,
+                                  height: 13,
+                                ),
+                              ],
                             ),
-                            Image.asset(
-                              'imgs/pay-address-edit@2x.png',
-                              width: 13,
-                              height: 13,
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Expanded(
+                              child: state.defaultAddress == null
+                                  ? const Text('등록된 주소지가 없습니다.')
+                                  : Text(
+                                      '[${state.defaultAddress!.postCode}] ${state.defaultAddress!.address} ${state.defaultAddress!.detailAddress}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.black38),
+                                      maxLines: 4,
+                                    ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          width: 50,
-                        ),
-                        const Expanded(
-                          child: Text(
-                            '[06279] 서울특별시 강남구 도곡로 78길 13 (대치동, 대치동 삼성 3차 아파트) 123123123123',
-                            style:
-                                TextStyle(fontSize: 13, color: Colors.black38),
-                            maxLines: 4,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 150,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    bool? isPinRight = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PaymentCodeWidget()),
+                    );
+                    if (isPinRight != null && isPinRight) {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const TransactionSuccessScreen()),
+                      );
+
+                      Navigator.pop(context, true);
+                    }
+                  },
+                  child: const Text(
+                    '다음',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(350, 50),
+                    primary: color.mainSelectColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
                     ),
                   ),
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: () async {
-                bool? isPinRight = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PaymentCodeWidget()),
-                );
-                if (isPinRight != null && isPinRight) {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TransactionSuccessScreen()),
-                  );
-
-                  Navigator.pop(context,true);
-                }
-              },
-              child: const Text(
-                '다음',
-                style: TextStyle(fontSize: 18),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(350, 50),
-                primary: color.mainSelectColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
+  }
+
+  String? getDefaultValue(QrPayState state) {
+    if (state.defaultAccount != null) {
+      return state.defaultAccount!.title;
+    }
+    return null;
   }
 }

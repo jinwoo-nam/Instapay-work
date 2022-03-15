@@ -11,4 +11,9 @@ class GetAddressRepositoryImpl implements GetAddressRepository {
     return await _dataSource.getAddressList();
   }
 
+  @override
+  Future<Result<AddressData?>> getDefaultAddressData() async {
+    return await _dataSource.getDefaultAddress();
+  }
+
 }

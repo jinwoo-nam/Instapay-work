@@ -9,4 +9,9 @@ class AddBankAccountUseCase {
   Future<void> call(BankAccountData account) async {
     await repository.addBankAccount(account);
   }
+
+  Future<void> addDefaultAccount(BankAccountData? account) async {
+    await repository.addDefaultAccount(account);
+  }
+
 }

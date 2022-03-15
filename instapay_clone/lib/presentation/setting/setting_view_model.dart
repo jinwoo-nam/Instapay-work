@@ -46,6 +46,10 @@ class SettingViewModel with ChangeNotifier {
         },
         error: (message) {});
 
+    if (state.defaultAddress == null && state.addressList.isNotEmpty) {
+      setDefaultAddress(state.addressList[0]);
+    }
+
     final settingList = await getSettingDataUseCase.getSettingListData();
     final termsOfUse = await getSettingDataUseCase.getTermsOfUseListData();
     final reason =
@@ -115,8 +119,11 @@ class SettingViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDefaultAddress(AddressData? address) {
-    _state = state.copyWith(defaultAddress: address);
+  void setDefaultAddress(AddressData? address) async {
+    _state = state.copyWith(
+      defaultAddress: address,
+    );
+    await registerAddressUseCase.setDefaultAddress(address);
     notifyListeners();
   }
 

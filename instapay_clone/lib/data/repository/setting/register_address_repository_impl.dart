@@ -7,7 +7,12 @@ class RegisterAddressRepositoryImpl implements RegisterAddressRepository {
 
   @override
   Future<void> registerAddress(AddressData address) async {
-    return await _dataSource.registerAddress(address);
+    await _dataSource.registerAddress(address);
+  }
+
+  @override
+  Future<void> setDefaultAddress(AddressData? address) async {
+    await _dataSource.setDefaultAddress(address);
   }
 
 }

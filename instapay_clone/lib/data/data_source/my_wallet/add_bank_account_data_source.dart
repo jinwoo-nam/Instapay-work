@@ -7,4 +7,10 @@ class AddBankAccountDataSource {
       bankAccountList.add(account);
     } on Exception {}
   }
+
+  Future<void> addDefaultAccount(BankAccountData? account) async {
+    try {
+      defaultAccount = account;
+    } on Exception {}
+  }
 }

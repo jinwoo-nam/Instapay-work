@@ -7,6 +7,11 @@ class AddBankAccountRepositoryImpl implements AddBankAccountRepository {
 
   @override
   Future<void> addBankAccount(BankAccountData account) async {
-    return await _dataSource.addBankAccount(account);
+    await _dataSource.addBankAccount(account);
+  }
+
+  @override
+  Future<void> addDefaultAccount(BankAccountData? account) async{
+    await _dataSource.addDefaultAccount(account);
   }
 }

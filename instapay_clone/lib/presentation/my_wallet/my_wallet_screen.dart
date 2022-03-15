@@ -7,8 +7,23 @@ import 'package:provider/provider.dart';
 
 import '../../ui/color.dart' as color;
 
-class MyWalletScreen extends StatelessWidget {
+class MyWalletScreen extends StatefulWidget {
   const MyWalletScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MyWalletScreen> createState() => _MyWalletScreenState();
+}
+
+class _MyWalletScreenState extends State<MyWalletScreen> {
+  @override
+  void didChangeDependencies() {
+    precacheImage(const AssetImage('imgs/wallet-instacoin@2x.png'), context);
+    precacheImage(const AssetImage('imgs/wallet-starempty@2x.png'), context);
+    precacheImage(const AssetImage('imgs/wallet-bankaccount@2x.png'), context);
+    precacheImage(const AssetImage('imgs/wallet-starfilled@2x.png'), context);
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +51,7 @@ class MyWalletScreen extends StatelessWidget {
                     );
                     if (result != null) {
                       viewModel.addBankAccountData(result);
+                      viewModel.setDefaultAccount(result);
                     }
                   },
                   icon: Image.asset(
@@ -88,7 +104,7 @@ class MyWalletScreen extends StatelessWidget {
                             ? () {
                                 viewModel.setDeleteSelectedBankAccountData(e);
                               }
-                            : null,
+                            : () {},
                         child: PaymentMethodWidget(
                           data: e,
                         ),

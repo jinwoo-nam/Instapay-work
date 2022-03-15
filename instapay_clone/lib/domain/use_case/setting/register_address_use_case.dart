@@ -9,4 +9,10 @@ class RegisterAddressUseCase {
   Future<void> call(AddressData address) async {
     await repository.registerAddress(address);
   }
+
+  Future<void> setDefaultAddress(AddressData? address) async {
+    await repository.setDefaultAddress(address);
+  }
+
+
 }

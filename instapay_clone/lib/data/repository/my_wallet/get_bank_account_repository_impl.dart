@@ -10,4 +10,9 @@ class GetBankAccountRepositoryImpl implements GetBankAccountRepository {
   Future<Result<List<BankAccountData>>> getBankAccount() async {
     return await _dataSource.getBankAccountList();
   }
+
+  @override
+  Future<Result<BankAccountData?>> getDefaultAccount() async{
+    return await _dataSource.getDefaultAccountList();
+  }
 }

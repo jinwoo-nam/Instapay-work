@@ -9,6 +9,14 @@ class GetBankAccountDataSource {
       return Result.error(e.toString());
     }
   }
+
+  Future<Result<BankAccountData?>> getDefaultAccountList() async {
+    try {
+      return Result.success(defaultAccount);
+    } on Exception catch (e) {
+      return Result.error(e.toString());
+    }
+  }
 }
 
 List<BankAccountData> bankAccountList = [
@@ -27,3 +35,5 @@ List<BankAccountData> bankAccountList = [
     unit: 'ETH',
   ),
 ];
+
+BankAccountData? defaultAccount;

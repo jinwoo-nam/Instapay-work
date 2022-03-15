@@ -10,4 +10,8 @@ class GetAddressUseCase {
   Future<Result<List<AddressData>>> call() async {
     return await repository.getAddressData();
   }
+
+  Future<Result<AddressData?>> getDefaultAddress() async {
+    return await repository.getDefaultAddressData();
+  }
 }

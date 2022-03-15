@@ -17,6 +17,7 @@ import 'package:instapay_clone/domain/use_case/setting/register_address_use_case
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
+import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,10 @@ Future<List<SingleChildWidget>> getProviders() async {
   final addBankAccountRepository = AddBankAccountRepositoryImpl();
   final deleteBankAccountRepository = DeleteBankAccountRepositoryImpl();
 
+  final getBankAccountUseCase = GetBankAccountUseCase(getBankAccountRepository);
+  final getAddressUseCase = GetAddressUseCase(getAddressRepository);
+  final addBankAccountUseCase = AddBankAccountUseCase(addBankAccountRepository);
+
   return [
     ChangeNotifierProvider<RootViewModel>(
       create: (context) => RootViewModel(),
@@ -42,8 +47,8 @@ Future<List<SingleChildWidget>> getProviders() async {
     ),
     ChangeNotifierProvider<MyWalletViewModel>(
       create: (context) => MyWalletViewModel(
-        getBankAccountUseCase: GetBankAccountUseCase(getBankAccountRepository),
-        addBankAccountUseCase: AddBankAccountUseCase(addBankAccountRepository),
+        getBankAccountUseCase: getBankAccountUseCase,
+        addBankAccountUseCase: addBankAccountUseCase,
         deleteBankAccountUseCase:
             DeleteBankAccountUseCase(deleteBankAccountRepository),
       ),
@@ -53,10 +58,16 @@ Future<List<SingleChildWidget>> getProviders() async {
         getSettingDataUseCase: GetSettingDataUseCase(settingRepository),
         getNoticeDataUseCase: GetNoticeDataUseCase(settingRepository),
         searchAddressUseCase: SearchAddressUseCase(searchAddressRepository),
-        getAddressUseCase: GetAddressUseCase(getAddressRepository),
-        registerAddressUseCase:
-            RegisterAddressUseCase(registerAddressRepository),
+        getAddressUseCase: getAddressUseCase,
+        registerAddressUseCase: RegisterAddressUseCase(registerAddressRepository),
         deleteAddressUseCase: DeleteAddressUseCase(deleteAddressRepository),
+      ),
+    ),
+    ChangeNotifierProvider<QrPayViewModel>(
+      create: (context) => QrPayViewModel(
+        getBankAccountUseCase: getBankAccountUseCase,
+        getAddressUseCase: getAddressUseCase,
+        addBankAccountUseCase: addBankAccountUseCase,
       ),
     ),
   ];
