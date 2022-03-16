@@ -19,4 +19,4 @@ List<AddressData> addressList = [
       contact: '02-3453-4920',
       name: '인스타페이'),
 ];
-AddressData? defaultAddress;
+AddressData? defaultAddress = addressList[0];

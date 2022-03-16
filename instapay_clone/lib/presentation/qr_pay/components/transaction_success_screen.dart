@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/data/data_source/qr_pay/search_isbn_data_source.dart';
+import 'package:instapay_clone/domain/model/qr_pay/book_order_data.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:intl/intl.dart';
 
 class TransactionSuccessScreen extends StatelessWidget {
-  const TransactionSuccessScreen({Key? key}) : super(key: key);
+  final BookOrderData orderData;
+
+  const TransactionSuccessScreen({Key? key, required this.orderData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var numFormat = NumberFormat('###,###,###,###');
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -14,7 +21,8 @@ class TransactionSuccessScreen extends StatelessWidget {
         body: SafeArea(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -74,8 +82,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                             ),
                             Text(
                               '신한은행 110-****-*****123',
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
                             ),
                           ],
                         ),
@@ -84,8 +92,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               '결제 금액',
                               style: TextStyle(
                                   fontSize: 15,
@@ -93,8 +101,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '9,540 KRW',
-                              style: TextStyle(
+                              '${numFormat.format(bookData.amountOfMoney)} KRW',
+                              style: const TextStyle(
                                   fontSize: 15, color: Colors.white),
                             ),
                           ],
@@ -117,8 +125,7 @@ class TransactionSuccessScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              DateFormat('인스타북스')
-                                  .format(DateTime.now()),
+                              orderData.affiliate,
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.white),
                             ),
@@ -129,8 +136,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               '상품명',
                               style: TextStyle(
                                   fontSize: 15,
@@ -138,8 +145,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '요범사훈 (운명에 속지 말고 주인공이 되자)',
-                              style: TextStyle(
+                              bookData.bookName,
+                              style: const TextStyle(
                                   fontSize: 15, color: Colors.white),
                             ),
                           ],
@@ -159,8 +166,8 @@ class TransactionSuccessScreen extends StatelessWidget {
                             ),
                             Text(
                               'f20co-cc22j-03o10-10w38-j29no',
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
                             ),
                           ],
                         ),

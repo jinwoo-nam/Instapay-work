@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
+import 'package:instapay_clone/domain/model/qr_pay/book_order_data.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/transaction_success_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_state.dart';
@@ -7,10 +8,16 @@ import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_widget.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/address/address_screen.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+  final BookOrderData data;
+
+  const OrderScreen({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
@@ -20,10 +27,10 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async{
       final viewModel = context.read<QrPayViewModel>();
-      viewModel.fetchBankAccountData();
-      viewModel.fetchDefaultAddress();
+      await viewModel.fetchBankAccountData();
+      await viewModel.fetchDefaultAddress();
     });
   }
 
@@ -36,7 +43,9 @@ class _OrderScreenState extends State<OrderScreen> {
           value: item.title,
           child: (item.accountNumber.length > 3)
               ? Text(
-                  item.title + ' ' + '[${item.accountNumber.substring(0, 4)}..]',
+                  item.title +
+                      ' ' +
+                      '[${item.accountNumber.substring(0, 4)}..]',
                 )
               : Text(
                   item.title + ' ' + item.accountNumber,
@@ -65,6 +74,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<QrPayViewModel>();
     final state = viewModel.state;
+    var numFormat = NumberFormat('###,###,###,###');
 
     return Scaffold(
       appBar: AppBar(
@@ -114,14 +124,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             '가맹점',
                             style: TextStyle(fontSize: 15),
                           ),
                           Text(
-                            '인스타북스',
-                            style: TextStyle(fontSize: 15),
+                            widget.data.affiliate,
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ],
                       ),
@@ -130,14 +140,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             '상품명',
                             style: TextStyle(fontSize: 15),
                           ),
                           Text(
-                            '요범사훈(운명에 속지 말고 주인공이 되자)',
-                            style: TextStyle(fontSize: 15),
+                            widget.data.bookName,
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ],
                       ),
@@ -146,14 +156,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             '주문 번호',
                             style: TextStyle(fontSize: 15),
                           ),
                           Text(
-                            'Z29-H48TH',
-                            style: TextStyle(fontSize: 15),
+                            widget.data.orderNumber,
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ],
                       ),
@@ -166,14 +176,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             '결제 금액',
                             style: TextStyle(fontSize: 15),
                           ),
                           Text(
-                            '9540 원',
-                            style: TextStyle(fontSize: 15),
+                            '${numFormat.format(widget.data.amountOfMoney)} KRW',
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ],
                       ),
@@ -244,7 +254,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const TransactionSuccessScreen()),
+                                TransactionSuccessScreen(orderData: widget.data,)),
                       );
 
                       Navigator.pop(context, true);

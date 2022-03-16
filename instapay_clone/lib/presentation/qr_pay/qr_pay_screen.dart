@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_screen.dart';
+import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class QrPayScreen extends StatefulWidget {
   const QrPayScreen({Key? key}) : super(key: key);
@@ -17,9 +17,8 @@ class QrPayScreen extends StatefulWidget {
 
 class _QrPayScreenState extends State<QrPayScreen> {
   Barcode? result;
-  final String _url = 'https://book.instapay.kr';
   QRViewController? controller;
-
+  final String _instaPayHomepageUrl = 'https://book.instapay.kr';
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
@@ -31,14 +30,20 @@ class _QrPayScreenState extends State<QrPayScreen> {
     controller!.resumeCamera();
   }
 
-  void _launchURL() async {
-    if (!await launch(_url)) throw 'Could not launch $_url';
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
-
+    final viewModel = context.watch<QrPayViewModel>();
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
 
     return Scaffold(
       body: Column(
@@ -46,7 +51,38 @@ class _QrPayScreenState extends State<QrPayScreen> {
           Expanded(
             child: Stack(
               children: [
-                _buildQrView(context),
+                QRView(
+                  key: qrKey,
+                  onQRViewCreated: (controller) {
+                    this.controller = controller;
+                    controller.scannedDataStream.listen((scanData) async {
+                      await controller.pauseCamera();
+                      result = scanData;
+                      if (result!.code != null) {
+                        final bookData =
+                            await viewModel.searchISBN(result!.code!);
+                        if (bookData != null) {
+                          final navEnd = Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderScreen(
+                                      data: bookData,
+                                    )),
+                          );
+                          navEnd.then((value) async {
+                            await controller.resumeCamera();
+                          });
+                        }
+                      }
+                    });
+                  },
+                  overlay: QrScannerOverlayShape(
+                      borderColor: Colors.white,
+                      borderLength: scanArea / 2,
+                      cutOutSize: scanArea),
+                  onPermissionSet: (ctrl, p) =>
+                      _onPermissionSet(context, ctrl, p),
+                ),
                 const Padding(
                   padding: EdgeInsets.only(top: 80),
                   child: Align(
@@ -82,7 +118,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        _launchURL();
+                        viewModel.launchURL(_instaPayHomepageUrl);
                       },
                       icon: Image.asset('imgs/booksearch-small@2x.png'),
                     ),
@@ -156,45 +192,6 @@ class _QrPayScreenState extends State<QrPayScreen> {
     );
   }
 
-  Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          borderColor: Colors.white,
-          borderLength: scanArea / 2,
-          cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-    );
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) async {
-      await controller.pauseCamera();
-      setState(() {
-        result = scanData;
-      });
-      final navEnd = Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const OrderScreen()),
-      );
-      navEnd.then((value) async {
-        await controller.resumeCamera();
-      });
-
-    });
-  }
-
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
@@ -202,11 +199,5 @@ class _QrPayScreenState extends State<QrPayScreen> {
         const SnackBar(content: Text('no Permission')),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }
