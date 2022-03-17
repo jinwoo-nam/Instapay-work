@@ -60,7 +60,7 @@ class TransactionSuccessScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              DateFormat('yyyy-MM-dd hh:mm:ss')
+                              DateFormat('yyyy-MM-dd HH:mm:ss')
                                   .format(DateTime.now()),
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.white),
