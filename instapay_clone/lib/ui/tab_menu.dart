@@ -1,0 +1,1 @@
+enum TabMenuType { QrPay, MyWallet, HistorySearch, Setting }

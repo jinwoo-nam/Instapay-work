@@ -55,12 +55,12 @@ class _SignInScreenState extends State<SignInScreen> {
     final rootViewModel = context.watch<RootViewModel>();
 
     return Scaffold(
-        backgroundColor: color.mainNavy,
+        //backgroundColor: color.mainNavy,
         appBar: AppBar(
           toolbarHeight: 130,
           centerTitle: false,
           elevation: 0,
-          backgroundColor: color.mainNavy,
+          backgroundColor: color.bgColor,
           title: const Text(
             '사용자 인증',
             style: TextStyle(

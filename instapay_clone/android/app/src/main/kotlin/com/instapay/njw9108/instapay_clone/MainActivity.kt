@@ -1,4 +1,4 @@
-package com.instapay.njw9108.instapay_clone
+package com.instapay.njw9108.instapayClone
 
 import io.flutter.embedding.android.FlutterActivity
 

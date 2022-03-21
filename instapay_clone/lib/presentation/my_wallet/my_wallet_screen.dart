@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/presentation/components/bottom_menu.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/payment_method_widget.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
+import 'package:instapay_clone/responsive/responsive.dart';
+import 'package:instapay_clone/ui/tab_menu.dart';
 import 'package:provider/provider.dart';
 
 import '../../ui/color.dart' as color;
@@ -27,7 +29,6 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mainViewModel = context.watch<MainScreenViewModel>();
     final viewModel = context.watch<MyWalletViewModel>();
     final state = viewModel.state;
 
@@ -114,50 +115,13 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: BottomNavigationBar(
-              currentIndex: mainViewModel.curIndex,
-              type: BottomNavigationBarType.fixed,
-              onTap: mainViewModel.onBottomNavTap,
-              selectedItemColor: color.mainSelectColor,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    'imgs/tab-qr@2x.png',
-                    width: 20,
-                    height: 20,
-                  ),
-                  label: ('QR 결제'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    'imgs/tab-wallet@2x.png',
-                    color: color.mainSelectColor,
-                    width: 20,
-                    height: 20,
-                  ),
-                  label: ('내 지갑'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    'imgs/tab-search@2x.png',
-                    width: 20,
-                    height: 20,
-                  ),
-                  label: ('내역 조회'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    'imgs/tab-setting@2x.png',
-                    width: 20,
-                    height: 20,
-                  ),
-                  label: ('설정'),
-                ),
-              ],
+          if (Responsive.isMobile(context))
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomMenu(
+                type: TabMenuType.MyWallet,
+              ),
             ),
-          ),
         ],
       ),
     );

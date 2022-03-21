@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/di/provider_setup.dart';
 import 'package:instapay_clone/presentation/root_page/root_screen.dart';
+import 'package:instapay_clone/ui/color.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   runApp(
@@ -26,8 +28,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: bgColor,
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: Colors.white),
+        canvasColor: secondaryColor,
       ),
       home: const RootScreen(),
     );

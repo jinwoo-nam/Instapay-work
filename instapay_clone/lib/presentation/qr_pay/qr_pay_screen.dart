@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/presentation/components/bottom_menu.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
-import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:instapay_clone/responsive/responsive.dart';
+import 'package:instapay_clone/ui/tab_menu.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
@@ -38,7 +39,6 @@ class _QrPayScreenState extends State<QrPayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mainViewModel = context.watch<MainScreenViewModel>();
     final viewModel = context.watch<QrPayViewModel>();
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -136,54 +136,17 @@ class _QrPayScreenState extends State<QrPayScreen> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Theme(
-                    data: Theme.of(context)
-                        .copyWith(canvasColor: Colors.transparent),
-                    child: BottomNavigationBar(
-                      currentIndex: mainViewModel.curIndex,
-                      type: BottomNavigationBarType.fixed,
-                      onTap: mainViewModel.onBottomNavTap,
-                      unselectedItemColor: Colors.white,
-                      selectedItemColor: color.mainSelectColor,
-                      items: [
-                        BottomNavigationBarItem(
-                            icon: Image.asset(
-                              'imgs/tab-qr@2x.png',
-                              color: color.mainSelectColor,
-                              width: 20,
-                              height: 20,
-                            ),
-                            label: ('QR 결제')),
-                        BottomNavigationBarItem(
-                            icon: Image.asset(
-                              'imgs/tab-wallet@2x.png',
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            label: ('내 지갑')),
-                        BottomNavigationBarItem(
-                            icon: Image.asset(
-                              'imgs/tab-search@2x.png',
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            label: ('내역 조회')),
-                        BottomNavigationBarItem(
-                            icon: Image.asset(
-                              'imgs/tab-setting@2x.png',
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            label: ('설정')),
-                      ],
+                if (Responsive.isMobile(context))
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(canvasColor: Colors.transparent),
+                      child: const BottomMenu(
+                        type: TabMenuType.QrPay,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
