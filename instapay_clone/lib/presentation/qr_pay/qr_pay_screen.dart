@@ -95,12 +95,9 @@ class _QrPayScreenState extends State<QrPayScreen> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 63.0,
-                      bottom: 230,
-                    ),
+                    padding: EdgeInsets.only(bottom: scanArea-70,left: scanArea-70,),
                     child: IconButton(
                       onPressed: () async {
                         await controller?.toggleFlash();
@@ -110,12 +107,9 @@ class _QrPayScreenState extends State<QrPayScreen> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 63.0,
-                      top: 230,
-                    ),
+                    padding: EdgeInsets.only(top: scanArea-70,left: scanArea-70,),
                     child: IconButton(
                       onPressed: () {
                         viewModel.launchURL(_instaPayHomepageUrl);
@@ -147,6 +141,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       ),
                     ),
                   ),
+
               ],
             ),
           ),
