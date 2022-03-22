@@ -69,7 +69,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                                 _curType == e.type
                                     ? Icons.circle
                                     : Icons.circle_outlined,
-                                color: Colors.black,
+                                color: Colors.white,
                                 size: 17,
                               ),
                               Padding(
@@ -96,15 +96,15 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                         decoration: const InputDecoration(
                           disabledBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.white),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 1, color: Colors.black),
+                                BorderSide(width: 1, color: Colors.white),
                           ),
                         ),
                       ),
