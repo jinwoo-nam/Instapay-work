@@ -21,7 +21,7 @@ class MonthlyScreen extends StatelessWidget {
                     TextButton(
                       child: const Text(
                         '2022',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                       style: TextButton.styleFrom(
@@ -31,7 +31,7 @@ class MonthlyScreen extends StatelessWidget {
                     TextButton(
                       child: const Text(
                         '2021',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                       style: TextButton.styleFrom(
@@ -41,7 +41,7 @@ class MonthlyScreen extends StatelessWidget {
                     TextButton(
                       child: const Text(
                         '2020',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                       style: TextButton.styleFrom(
@@ -51,7 +51,7 @@ class MonthlyScreen extends StatelessWidget {
                     TextButton(
                       child: const Text(
                         '2019',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                       style: TextButton.styleFrom(
@@ -61,7 +61,7 @@ class MonthlyScreen extends StatelessWidget {
                     TextButton(
                       child: const Text(
                         '2018',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                       style: TextButton.styleFrom(
@@ -77,7 +77,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '1',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -86,7 +86,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '2',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -95,7 +95,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '3',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -104,7 +104,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '4',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -113,7 +113,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '5',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -122,7 +122,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '6',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -131,7 +131,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '7',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -140,7 +140,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '8',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -149,7 +149,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '9',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -158,7 +158,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '10',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -167,7 +167,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '11',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -176,7 +176,7 @@ class MonthlyScreen extends StatelessWidget {
                       TextButton(
                         child: const Text(
                           '12',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {},
                         style: TextButton.styleFrom(
@@ -188,7 +188,7 @@ class MonthlyScreen extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 0),
                   child: Divider(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/components/bottom_menu.dart';
-import 'package:instapay_clone/presentation/history_search/components/bill_box_screen.dart';
-import 'package:instapay_clone/presentation/history_search/components/monthly_screen.dart';
-import 'package:instapay_clone/presentation/history_search/components/recently_screen.dart';
+import 'package:instapay_clone/presentation/history_search/detail_page/bill_box_screen.dart';
+import 'package:instapay_clone/presentation/history_search/detail_page/monthly_screen.dart';
+import 'package:instapay_clone/presentation/history_search/detail_page/recently_screen.dart';
 import 'package:instapay_clone/responsive/responsive.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:instapay_clone/ui/tab_menu.dart';

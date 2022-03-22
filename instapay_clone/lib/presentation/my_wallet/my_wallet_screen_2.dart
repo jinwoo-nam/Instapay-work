@@ -155,20 +155,16 @@ DataRow recentFileDataRow(BankAccountData accountInfo,MyWalletState state) {
       DataCell(Text(accountInfo.accountNumber)),
       DataCell(Text('${accountInfo.balance} ${accountInfo.unit}')),
       DataCell((state.deleteSelectAccount != accountInfo)
-          ? Center(
-            child: Image.asset(
+          ? Image.asset(
         'imgs/wallet-starempty@2x.png',
         width: 15,
         height: 15,
-      ),
-          )
-          : Center(
-            child: Image.asset(
+      )
+          : Image.asset(
         'imgs/wallet-starfilled@2x.png',
         width: 15,
         height: 15,
-      ),
-          )),
+      )),
     ],
   );
 }

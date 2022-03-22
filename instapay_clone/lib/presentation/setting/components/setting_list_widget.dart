@@ -109,7 +109,7 @@ class SettingListWidget extends StatelessWidget {
           ),
           const Divider(
             height: 8,
-            color: Colors.black,
+            color: Colors.white,
           )
         ],
       ),
@@ -121,18 +121,30 @@ class SettingListWidget extends StatelessWidget {
       if (state.addressList.isEmpty) {
         return const Text(
           '등록된 주소지가 없습니다.',
-          style: TextStyle(height: 1.1),
+          style: TextStyle(
+            height: 1.1,
+            color: Colors.white54,
+          ),
         );
       } else {
         return Text(
           '[${state.defaultAddress!.postCode}] ${state.defaultAddress!.address}',
           style: const TextStyle(
             height: 1.2,
+            color: Colors.white54,
           ),
         );
       }
     } else {
-      return data.subTitle != null ? Text(data.subTitle!) : null;
+      return data.subTitle != null
+          ? Text(
+              data.subTitle!,
+              style: const TextStyle(
+                height: 1.2,
+                color: Colors.white54,
+              ),
+            )
+          : null;
     }
   }
 }

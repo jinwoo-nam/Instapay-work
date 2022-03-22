@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/responsive/responsive.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 
 class PaymentCodeChangeScreen extends StatefulWidget {
@@ -108,9 +109,9 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: 12,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    childAspectRatio: 3 / 2,
+                    childAspectRatio: Responsive.isMobile(context) ? 2.5 : 3.5,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     String num = getText();
@@ -144,8 +145,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 30, right: 30, top: 10),
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
