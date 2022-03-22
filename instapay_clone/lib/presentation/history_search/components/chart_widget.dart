@@ -26,14 +26,14 @@ class ChartWidget extends StatelessWidget {
               children: [
                 const SizedBox(height: defaultPadding),
                 Text(
-                  "29.1",
+                  "Data",
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                     height: 0.5,
                   ),
                 ),
-                const Text("of 128GB")
+                const Text("of Total Data")
               ],
             ),
           ),

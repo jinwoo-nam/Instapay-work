@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/history_search/components/payment_detail_widget.dart';
 import 'package:instapay_clone/presentation/history_search/components/payment_list_widget.dart';
+import 'package:instapay_clone/responsive/responsive.dart';
 import 'package:instapay_clone/ui/color.dart';
 
 class RecentlyScreen extends StatefulWidget {
@@ -30,21 +31,29 @@ class _RecentlyScreenState extends State<RecentlyScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
-                  children: const [
-                    PaymentListWidget(),
+                  children: [
+                    const PaymentListWidget(),
+                    const SizedBox(height: defaultPadding),
+                    if (Responsive.isMobile(context))
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: defaultPadding*3),
+                        child: PaymentDetailWidget(),
+                      ),
                   ],
                 ),
               ),
-              const SizedBox(height: defaultPadding),
-              const Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: PaymentDetailWidget(),
+              if (!Responsive.isMobile(context))
+                const SizedBox(height: defaultPadding),
+              if (!Responsive.isMobile(context))
+                const Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: PaymentDetailWidget(),
+                  ),
                 ),
-              ),
             ],
           ),
         ],
