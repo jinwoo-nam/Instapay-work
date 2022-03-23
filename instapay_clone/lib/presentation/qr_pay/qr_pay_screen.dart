@@ -4,10 +4,11 @@ import 'package:instapay_clone/presentation/qr_pay/components/order_screen.dart'
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/responsive/responsive.dart';
 import 'package:instapay_clone/ui/tab_menu.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'dart:developer';
+
+//import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrPayScreen extends StatefulWidget {
   const QrPayScreen({Key? key}) : super(key: key);
@@ -17,8 +18,10 @@ class QrPayScreen extends StatefulWidget {
 }
 
 class _QrPayScreenState extends State<QrPayScreen> {
-  Barcode? result;
-  QRViewController? controller;
+  //Barcode? result;
+
+  //QRViewController? controller;
+  final MobileScannerController cameraController = MobileScannerController();
   final String _instaPayHomepageUrl = 'https://book.instapay.kr';
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -26,14 +29,15 @@ class _QrPayScreenState extends State<QrPayScreen> {
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller!.pauseCamera();
+      //controller!.pauseCamera();
     }
-    controller!.resumeCamera();
+    //controller!.resumeCamera();
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    //controller?.dispose();
+    cameraController.dispose();
     super.dispose();
   }
 
@@ -51,38 +55,64 @@ class _QrPayScreenState extends State<QrPayScreen> {
           Expanded(
             child: Stack(
               children: [
-                QRView(
-                  key: qrKey,
-                  onQRViewCreated: (controller) {
-                    this.controller = controller;
-                    controller.scannedDataStream.listen((scanData) async {
-                      await controller.pauseCamera();
-                      result = scanData;
-                      if (result!.code != null) {
-                        final bookData =
-                            await viewModel.searchISBN(result!.code!);
-                        if (bookData != null) {
-                          final navEnd = Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OrderScreen(
-                                      data: bookData,
-                                    )),
-                          );
-                          navEnd.then((value) async {
-                            await controller.resumeCamera();
-                          });
-                        }
+                MobileScanner(
+                  allowDuplicates: false,
+                  controller: cameraController,
+                  onDetect: (barcode, args) async {
+                    final String? code = barcode.rawValue;
+                    debugPrint('Barcode found! $code');
+
+                    if (code != null) {
+                      final bookData = await viewModel.searchISBN(code);
+                      if (bookData != null) {
+                        final navEnd = Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OrderScreen(
+                                    data: bookData,
+                                  )),
+                        );
+                        navEnd.then((value) async {
+                          //await controller.resumeCamera();
+                        });
                       }
-                    });
+                    }
                   },
-                  overlay: QrScannerOverlayShape(
-                      borderColor: Colors.white,
-                      borderLength: scanArea / 2,
-                      cutOutSize: scanArea),
-                  onPermissionSet: (ctrl, p) =>
-                      _onPermissionSet(context, ctrl, p),
                 ),
+
+                // QRView(
+                //   key: qrKey,
+                //   onQRViewCreated: (controller) {
+                //     this.controller = controller;
+                //     controller.scannedDataStream.listen((scanData) async {
+                //       await controller.pauseCamera();
+                //       result = scanData;
+                //       if (result!.code != null) {
+                //         final bookData =
+                //             await viewModel.searchISBN(result!.code!);
+                //         if (bookData != null) {
+                //           final navEnd = Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (context) => OrderScreen(
+                //                       data: bookData,
+                //                     )),
+                //           );
+                //           navEnd.then((value) async {
+                //             await controller.resumeCamera();
+                //           });
+                //         }
+                //       }
+                //     });
+                //   },
+                //   overlay: QrScannerOverlayShape(
+                //       borderColor: Colors.white,
+                //       borderLength: scanArea / 2,
+                //       cutOutSize: scanArea),
+                //   onPermissionSet: (ctrl, p) =>
+                //       _onPermissionSet(context, ctrl, p),
+                // ),
+
                 const Padding(
                   padding: EdgeInsets.only(top: 80),
                   child: Align(
@@ -97,10 +127,14 @@ class _QrPayScreenState extends State<QrPayScreen> {
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: scanArea-70,left: scanArea-70,),
+                    padding: EdgeInsets.only(
+                      bottom: scanArea - 70,
+                      left: scanArea - 70,
+                    ),
                     child: IconButton(
                       onPressed: () async {
-                        await controller?.toggleFlash();
+                        //await controller?.toggleFlash();
+                        await cameraController.toggleTorch();
                       },
                       icon: Image.asset('imgs/home-flash@2x.png'),
                     ),
@@ -109,7 +143,10 @@ class _QrPayScreenState extends State<QrPayScreen> {
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: EdgeInsets.only(top: scanArea-70,left: scanArea-70,),
+                    padding: EdgeInsets.only(
+                      top: scanArea - 70,
+                      left: scanArea - 70,
+                    ),
                     child: IconButton(
                       onPressed: () {
                         viewModel.launchURL(_instaPayHomepageUrl);
@@ -141,7 +178,6 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       ),
                     ),
                   ),
-
               ],
             ),
           ),
@@ -150,12 +186,12 @@ class _QrPayScreenState extends State<QrPayScreen> {
     );
   }
 
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
-  }
+// void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+//   log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+//   if (!p) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       const SnackBar(content: Text('no Permission')),
+//     );
+//   }
+// }
 }
