@@ -1,3 +1,7 @@
+import 'package:http/http.dart' as http;
+import 'package:instapay_clone/data/data_source/history_search/get_payment_history_data_source.dart';
+import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
+import 'package:instapay_clone/data/repository/history_search/get_payment_history_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
@@ -7,6 +11,7 @@ import 'package:instapay_clone/data/repository/setting/get_address_repository_im
 import 'package:instapay_clone/data/repository/setting/register_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/search_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/setting_repository_impl.dart';
+import 'package:instapay_clone/domain/use_case/history_search/get_payment_history_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
@@ -17,6 +22,7 @@ import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.
 import 'package:instapay_clone/domain/use_case/setting/get_setting_data_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/register_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
+import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
@@ -26,20 +32,27 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 Future<List<SingleChildWidget>> getProviders() async {
-  final settingRepository = SettingRepositoryImpl();
+  final _client = http.Client();
+
+  final settingRepository =
+      SettingRepositoryImpl(GetNoticeDataSource(client: _client));
   final searchAddressRepository = SearchAddressRepositoryImpl();
   final getAddressRepository = GetAddressRepositoryImpl();
   final registerAddressRepository = RegisterAddressRepositoryImpl();
   final deleteAddressRepository = DeleteAddressRepositoryImpl();
-
   final getBankAccountRepository = GetBankAccountRepositoryImpl();
   final addBankAccountRepository = AddBankAccountRepositoryImpl();
   final deleteBankAccountRepository = DeleteBankAccountRepositoryImpl();
+  final getPaymentHistoryRepository = GetPaymentHistoryRepositoryImpl(
+      GetPaymentHistoryDataSource(client: _client));
 
   final getBankAccountUseCase = GetBankAccountUseCase(getBankAccountRepository);
   final getAddressUseCase = GetAddressUseCase(getAddressRepository);
   final addBankAccountUseCase = AddBankAccountUseCase(addBankAccountRepository);
   final searchIsbnRepository = SearchISBNRepositoryImpl();
+
+  final getPaymentHistoryUseCase =
+      GetPaymentHistoryUseCase(getPaymentHistoryRepository);
 
   return [
     ChangeNotifierProvider<RootViewModel>(
@@ -73,6 +86,11 @@ Future<List<SingleChildWidget>> getProviders() async {
         getAddressUseCase: getAddressUseCase,
         addBankAccountUseCase: addBankAccountUseCase,
         searchIsbnUseCase: SearchIsbnUseCase(searchIsbnRepository),
+      ),
+    ),
+    ChangeNotifierProvider<HistorySearchViewModel>(
+      create: (context) => HistorySearchViewModel(
+        getPaymentHistoryUseCase: getPaymentHistoryUseCase,
       ),
     ),
   ];

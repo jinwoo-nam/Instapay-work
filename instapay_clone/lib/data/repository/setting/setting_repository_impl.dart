@@ -7,7 +7,9 @@ import 'package:instapay_clone/domain/model/setting/terms_of_use_list_data.dart'
 import 'package:instapay_clone/domain/repository/setting/setting_repository.dart';
 
 class SettingRepositoryImpl implements SettingRepository {
-  final _dataSource = GetNoticeDataSource();
+  final GetNoticeDataSource _dataSource;
+
+  SettingRepositoryImpl(this._dataSource);
 
   @override
   Future<Result<List<NoticeListData>>> getNoticeListData() async {
