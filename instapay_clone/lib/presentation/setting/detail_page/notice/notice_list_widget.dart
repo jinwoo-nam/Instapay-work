@@ -19,11 +19,11 @@ class NoticeListWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data.date,
+                  data.adate,
                   style: const TextStyle(fontSize: 13),
                 ),
                 Text(
-                  data.title,
+                  data.ftitle,
                   style: const TextStyle(
                     fontSize: 15,
                   ),

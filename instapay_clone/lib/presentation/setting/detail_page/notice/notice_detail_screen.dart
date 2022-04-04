@@ -19,7 +19,7 @@ class NoticeDetailScreen extends StatelessWidget {
         child: ListView(
           children: [
             Text(
-              data.title,
+              data.ftitle,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -29,7 +29,7 @@ class NoticeDetailScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              data.date,
+              data.adate,
               style: const TextStyle(fontSize: 13, color: Colors.black38),
             ),
             const SizedBox(
@@ -38,7 +38,7 @@ class NoticeDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                data.content,
+                data.fmsg,
                 style: const TextStyle(fontSize: 17),
               ),
             ),
