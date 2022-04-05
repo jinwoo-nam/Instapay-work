@@ -44,7 +44,7 @@ class RecentlyScreen extends StatelessWidget {
                               ))
                           .toList(),
                       const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: EdgeInsets.symmetric(vertical: 22),
                       ),
                     ],
                   ),

@@ -121,6 +121,9 @@ class MonthlyScreen extends StatelessWidget {
                                   state.monthlyScreenCurMonthIndex + 1)
                               .map((e) => PaymentHistoryListWidget(data: e))
                               .toList(),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 22),
+                          ),
                         ],
                       ),
                     ),
