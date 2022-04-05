@@ -16,14 +16,22 @@ class HistorySearchViewModel with ChangeNotifier {
   }
 
   void fetchHistory() async {
+    _state = state.copyWith(
+      isLoading: true,
+    );
+    notifyListeners();
+
     final historyList = await getPaymentHistoryUseCase.getPaymentHistoryList();
-    historyList.when(
-        success: (history) {
-          _state = state.copyWith(
-            paymentHistory: history,
-          );
-        },
-        error: (message) {});
+    historyList.when(success: (history) {
+      _state = state.copyWith(
+        paymentHistory: history,
+        isLoading: false,
+      );
+    }, error: (message) {
+      _state = state.copyWith(
+        isLoading: false,
+      );
+    });
 
     notifyListeners();
   }

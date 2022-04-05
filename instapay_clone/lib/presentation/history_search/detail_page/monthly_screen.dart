@@ -90,26 +90,40 @@ class MonthlyScreen extends StatelessWidget {
         ),
         Expanded(
           flex: 10,
-          child: (paymentList.isEmpty)
+          child: (state.isLoading == true)
               ? const Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 100.0),
-                    child: Text('결제 내역이 없습니다.'),
-                  ),
+                  child: CircularProgressIndicator(),
                 )
-              : ListView(
-                  children: [
-                    ...paymentList
-                        .where((element) =>
-                            element.adate.split('-')[0] ==
-                            '${year - state.monthlyScreenCurYearIndex}')
-                        .where((element) =>
-                            int.parse(element.adate.split('-')[1]) ==
-                            state.monthlyScreenCurMonthIndex + 1)
-                        .map((e) => PaymentHistoryListWidget(data: e))
-                        .toList(),
-                  ],
-                ),
+              : (paymentList.isEmpty)
+                  ? RefreshIndicator(
+                      onRefresh: () async {
+                        viewModel.fetchHistory();
+                      },
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 100.0),
+                          child: Text('결제 내역이 없습니다.'),
+                        ),
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        viewModel.fetchHistory();
+                      },
+                      child: ListView(
+                        children: [
+                          ...paymentList
+                              .where((element) =>
+                                  element.adate.split('-')[0] ==
+                                  '${year - state.monthlyScreenCurYearIndex}')
+                              .where((element) =>
+                                  int.parse(element.adate.split('-')[1]) ==
+                                  state.monthlyScreenCurMonthIndex + 1)
+                              .map((e) => PaymentHistoryListWidget(data: e))
+                              .toList(),
+                        ],
+                      ),
+                    ),
         ),
       ],
     );

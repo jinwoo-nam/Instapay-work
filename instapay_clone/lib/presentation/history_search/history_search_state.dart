@@ -8,6 +8,7 @@ part 'history_search_state.g.dart';
 @freezed
 class HistorySearchState with _$HistorySearchState {
   factory HistorySearchState({
+    @Default(false) bool isLoading,
     @Default([]) List<PaymentHistoryData> paymentHistory,
     @Default(0) int monthlyScreenCurYearIndex,
     @Default(0) int monthlyScreenCurMonthIndex,

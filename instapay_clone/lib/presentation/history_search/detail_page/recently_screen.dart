@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/history_search/payment_history_data.dart';
 import 'package:instapay_clone/presentation/history_search/component/payment_history_list_widget.dart';
+import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
+import 'package:provider/provider.dart';
 
 class RecentlyScreen extends StatelessWidget {
   final List<PaymentHistoryData> paymentList;
@@ -12,24 +14,41 @@ class RecentlyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (paymentList.isEmpty)
+    final viewModel = context.watch<HistorySearchViewModel>();
+    final state = viewModel.state;
+
+    return (state.isLoading == true)
         ? const Center(
-            child: Text('결제 내역이 없습니다.'),
+            child: CircularProgressIndicator(),
           )
-        : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                ...paymentList
-                    .map((paymentHistory) => PaymentHistoryListWidget(
-                          data: paymentHistory,
-                        ))
-                    .toList(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
+        : (paymentList.isEmpty)
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  viewModel.fetchHistory();
+                },
+                child: const Center(
+                  child: Text('결제 내역이 없습니다.'),
                 ),
-              ],
-            ),
-          );
+              )
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    viewModel.fetchHistory();
+                  },
+                  child: ListView(
+                    children: [
+                      ...paymentList
+                          .map((paymentHistory) => PaymentHistoryListWidget(
+                                data: paymentHistory,
+                              ))
+                          .toList(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              );
   }
 }
