@@ -10,7 +10,7 @@ class PaymentHistoryData with _$PaymentHistoryData {
     required String gname,
     required String renum,
     required String adate,
-    required String tsum,
+    required dynamic tsum,
     String? means,
     required String mname,
     required String tstatus,

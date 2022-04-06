@@ -15,7 +15,13 @@ class PaymentHistoryListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var numFormat = NumberFormat('###,###,###,###');
 
-    int price = int.parse(data.tsum);
+    num price;
+    if (data.tsum.runtimeType == String) {
+      price = num.parse(data.tsum);
+    } else {
+      price = data.tsum as num;
+    }
+
     final date = data.adate.split('-');
     final year = date[0];
     final month = date[1];

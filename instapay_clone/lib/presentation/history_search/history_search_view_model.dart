@@ -94,7 +94,9 @@ class HistorySearchViewModel with ChangeNotifier {
           curPageMonthPaymentHistory: history,
         );
       },
-      error: (message) {},
+      error: (message) {
+        print(message);
+      },
     );
     notifyListeners();
   }

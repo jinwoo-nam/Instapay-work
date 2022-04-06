@@ -36,7 +36,7 @@ class GetPaymentHistoryDataSource {
       List<PaymentHistoryData> paymentList =
           feed.map((e) => PaymentHistoryData.fromJson(e)).toList();
       return Result.success(paymentList);
-    } on Exception catch (e) {
+    } catch (e) {
       return Result.error(e.toString());
     }
   }
