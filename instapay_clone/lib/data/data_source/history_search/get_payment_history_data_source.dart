@@ -11,27 +11,30 @@ class GetPaymentHistoryDataSource {
   GetPaymentHistoryDataSource({http.Client? client})
       : _client = client ?? http.Client();
 
-  Future<Result<List<PaymentHistoryData>>> getPaymentHistory() async {
+  Future<Result<List<PaymentHistoryData>>> getRecentPaymentHistory(
+      String tid, int limit) async {
     try {
-      final response = await _client.get(Uri.parse(baseUrl));
+      final response =
+          await _client.get(Uri.parse('$baseUrl?offset=$tid&limit=$limit'));
       final jsonResponse = jsonDecode(response.body);
       Iterable feed = jsonResponse['tras'];
       List<PaymentHistoryData> paymentList =
           feed.map((e) => PaymentHistoryData.fromJson(e)).toList();
+      return Result.success(paymentList);
+    } on Exception catch (e) {
+      return Result.error(e.toString());
+    }
+  }
 
-      paymentList.add(
-        PaymentHistoryData(
-          mname: 'INC',
-          gname: 'Test Book',
-          renum: 'TES-T10VS',
-          adate: '2021-04-02 14:00:00',
-          tstatus: 'complete',
-          tsum: '127',
-          sname: '인스타북스',
-          mesg: '인스타북스',
-          hstatus: 'complete',
-        ),
-      );
+  Future<Result<List<PaymentHistoryData>>> getMonthPaymentHistory(
+      String yearMonth, String tid, int limit) async {
+    try {
+      final response = await _client
+          .get(Uri.parse('$baseUrl?q=$yearMonth&limit=$limit&offset=$tid'));
+      final jsonResponse = jsonDecode(response.body);
+      Iterable feed = jsonResponse['tras'];
+      List<PaymentHistoryData> paymentList =
+          feed.map((e) => PaymentHistoryData.fromJson(e)).toList();
       return Result.success(paymentList);
     } on Exception catch (e) {
       return Result.error(e.toString());

@@ -1,16 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:instapay_clone/domain/model/history_search/payment_history_data.dart';
 import 'package:instapay_clone/presentation/history_search/component/payment_history_list_widget.dart';
 import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
 import 'package:provider/provider.dart';
 
-class RecentlyScreen extends StatelessWidget {
-  final List<PaymentHistoryData> paymentList;
-
+class RecentlyScreen extends StatefulWidget {
   const RecentlyScreen({
     Key? key,
-    required this.paymentList,
   }) : super(key: key);
+
+  @override
+  State<RecentlyScreen> createState() => _RecentlyScreenState();
+}
+
+class _RecentlyScreenState extends State<RecentlyScreen> {
+  final _pagingController =
+      PagingController<int, PaymentHistoryData>(firstPageKey: 1);
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      final viewModel = context.read<HistorySearchViewModel>();
+      _pagingController.addPageRequestListener((pageKey) {
+        viewModel.fetchHistoryPage(pageKey);
+      });
+      viewModel.pagingController = _pagingController;
+
+      viewModel.refreshRecentHistory();
+      viewModel.fetchHistoryPage(1);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,34 +48,36 @@ class RecentlyScreen extends StatelessWidget {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : (paymentList.isEmpty)
-            ? RefreshIndicator(
-                onRefresh: () async {
-                  viewModel.fetchHistory();
-                },
-                child: const Center(
-                  child: Text('결제 내역이 없습니다.'),
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    viewModel.fetchHistory();
-                  },
-                  child: ListView(
-                    children: [
-                      ...paymentList
-                          .map((paymentHistory) => PaymentHistoryListWidget(
-                                data: paymentHistory,
-                              ))
-                          .toList(),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 22),
+        : Column(
+            children: [
+              Expanded(
+                flex: 9,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      viewModel.refreshRecentHistory();
+                    },
+                    child: PagedListView<int, PaymentHistoryData>(
+                      pagingController: _pagingController,
+                      builderDelegate:
+                          PagedChildBuilderDelegate<PaymentHistoryData>(
+                        itemBuilder: (context, history, index) =>
+                            PaymentHistoryListWidget(
+                          data: history,
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              );
+              ),
+              const Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 30,
+                ),
+              )
+            ],
+          );
   }
 }

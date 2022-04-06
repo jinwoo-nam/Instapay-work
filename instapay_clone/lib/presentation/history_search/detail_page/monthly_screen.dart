@@ -1,17 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:instapay_clone/domain/model/history_search/payment_history_data.dart';
 import 'package:instapay_clone/presentation/history_search/component/payment_history_list_widget.dart';
 import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class MonthlyScreen extends StatelessWidget {
-  final List<PaymentHistoryData> paymentList;
-
+class MonthlyScreen extends StatefulWidget {
   const MonthlyScreen({
     Key? key,
-    required this.paymentList,
   }) : super(key: key);
+
+  @override
+  State<MonthlyScreen> createState() => _MonthlyScreenState();
+}
+
+class _MonthlyScreenState extends State<MonthlyScreen> {
+  final _monthPagingController =
+      PagingController<int, PaymentHistoryData>(firstPageKey: 1);
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      final viewModel = context.read<HistorySearchViewModel>();
+      DateTime now = DateTime.now();
+      final year = now.year;
+
+      _monthPagingController.addPageRequestListener((pageKey) {
+        String yearMonth =
+            '${year - viewModel.state.monthlyScreenCurYearIndex}-${NumberFormat('00').format(viewModel.state.monthlyScreenCurMonthIndex + 1)}';
+        viewModel.fetchMonthHistoryPage(pageKey, yearMonth);
+      });
+      viewModel.mothPagingController = _monthPagingController;
+
+      String yearMonth =
+          '${year - viewModel.state.monthlyScreenCurYearIndex}-${NumberFormat('00').format(viewModel.state.monthlyScreenCurMonthIndex + 1)}';
+      viewModel.refreshMonthHistory();
+      viewModel.fetchMonthHistoryPage(1, yearMonth);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _monthPagingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +76,7 @@ class MonthlyScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           viewModel.setMonthlyYearIndex(i);
+                          viewModel.refreshMonthHistory();
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
@@ -67,6 +103,7 @@ class MonthlyScreen extends StatelessWidget {
                           ),
                           onPressed: () {
                             viewModel.setMonthlyMonthIndex(i);
+                            viewModel.refreshMonthHistory();
                           },
                           style: TextButton.styleFrom(
                             backgroundColor:
@@ -89,44 +126,22 @@ class MonthlyScreen extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 10,
-          child: (state.isLoading == true)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : (paymentList.isEmpty)
-                  ? RefreshIndicator(
-                      onRefresh: () async {
-                        viewModel.fetchHistory();
-                      },
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 100.0),
-                          child: Text('결제 내역이 없습니다.'),
-                        ),
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        viewModel.fetchHistory();
-                      },
-                      child: ListView(
-                        children: [
-                          ...paymentList
-                              .where((element) =>
-                                  element.adate.split('-')[0] ==
-                                  '${year - state.monthlyScreenCurYearIndex}')
-                              .where((element) =>
-                                  int.parse(element.adate.split('-')[1]) ==
-                                  state.monthlyScreenCurMonthIndex + 1)
-                              .map((e) => PaymentHistoryListWidget(data: e))
-                              .toList(),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 22),
-                          ),
-                        ],
-                      ),
-                    ),
+          flex: 9,
+          child: PagedListView<int, PaymentHistoryData>(
+            pagingController: _monthPagingController,
+            builderDelegate: PagedChildBuilderDelegate<PaymentHistoryData>(
+                itemBuilder: (context, history, index) {
+              return PaymentHistoryListWidget(
+                data: history,
+              );
+            }),
+          ),
+        ),
+        const Expanded(
+          flex: 1,
+          child: SizedBox(
+            height: 20,
+          ),
         ),
       ],
     );

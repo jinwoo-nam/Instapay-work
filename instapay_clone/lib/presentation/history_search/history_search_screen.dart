@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/bill_box_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/monthly_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/recently_screen.dart';
-import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
@@ -13,8 +12,6 @@ class HistorySearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
-    final viewModel = context.watch<HistorySearchViewModel>();
-    final state = viewModel.state;
 
     return DefaultTabController(
       length: 3,
@@ -42,11 +39,11 @@ class HistorySearchScreen extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            TabBarView(
+            const TabBarView(
               children: [
-                RecentlyScreen(paymentList: state.paymentHistory),
-                MonthlyScreen(paymentList: state.paymentHistory),
-                BillBoxScreen(paymentList: state.paymentHistory),
+                RecentlyScreen(),
+                MonthlyScreen(),
+                BillBoxScreen(),
               ],
             ),
             Align(

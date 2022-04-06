@@ -7,8 +7,22 @@ class GetPaymentHistoryUseCase {
 
   GetPaymentHistoryUseCase(this.repository);
 
-  Future<Result<List<PaymentHistoryData>>> getPaymentHistoryList() async {
-    final paymentHistory = await repository.getPaymentHistoryList();
+  Future<Result<List<PaymentHistoryData>>> getPaymentRecentHistoryList(
+      String tid, int limit) async {
+    final paymentHistory =
+        await repository.getPaymentRecentHistoryList(tid, limit);
+
+    return paymentHistory.when(success: (paymentList) {
+      return Result.success(paymentList);
+    }, error: (message) {
+      return Result.error(message);
+    });
+  }
+
+  Future<Result<List<PaymentHistoryData>>> getPaymentMonthlyHistoryList(
+      String yearMonth, String tid, int limit) async {
+    final paymentHistory =
+        await repository.getPaymentMonthlyHistoryList(yearMonth, tid, limit);
 
     return paymentHistory.when(success: (paymentList) {
       return Result.success(paymentList);

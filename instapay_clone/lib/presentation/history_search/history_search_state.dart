@@ -9,7 +9,8 @@ part 'history_search_state.g.dart';
 class HistorySearchState with _$HistorySearchState {
   factory HistorySearchState({
     @Default(false) bool isLoading,
-    @Default([]) List<PaymentHistoryData> paymentHistory,
+    @Default([]) List<PaymentHistoryData> curPageRecentPaymentHistory,
+    @Default([]) List<PaymentHistoryData> curPageMonthPaymentHistory,
     @Default(0) int monthlyScreenCurYearIndex,
     @Default(0) int monthlyScreenCurMonthIndex,
   }) = _HistorySearchState;
