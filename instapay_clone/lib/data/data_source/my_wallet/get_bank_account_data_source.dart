@@ -21,18 +21,9 @@ class GetBankAccountDataSource {
 
 List<BankAccountData> bankAccountList = [
   BankAccountData(
-    title: 'INC',
-    balance: 0,
-  ),
-  BankAccountData(
-    title: 'Deposit',
-    balance: 0,
-    unit: 'KRW',
-  ),
-  BankAccountData(
-    title: 'Ethereum',
-    balance: 0,
-    unit: 'ETH',
+    title: '인스타코인',
+    balance: 5,
+    unit: 'INC'
   ),
 ];
 

@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/payment_method_widget.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
+import 'package:instapay_clone/util/util.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../ui/color.dart' as color;
 
@@ -15,6 +19,128 @@ class MyWalletScreen extends StatefulWidget {
 }
 
 class _MyWalletScreenState extends State<MyWalletScreen> {
+  StreamSubscription? _streamSubscription;
+  late FToast fToast;
+  late Widget toast;
+
+  _removeToast() {
+    fToast.removeCustomToast();
+  }
+
+  _showToast(String message) {
+    _removeToast();
+
+    fToast.showToast(
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 4),
+      child: Column(
+        children: [
+          Container(
+            width: 350,
+            height: 50,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.zero,
+              color: Color(0xff3C4A55),
+            ),
+            child: Center(
+              child: Text(
+                message,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
+  }
+
+  _showChangeDefaultAccountToast(String message) {
+    _removeToast();
+
+    fToast.showToast(
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 4),
+      child: Column(
+        children: [
+          Container(
+            width: 350,
+            height: 50,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.zero,
+              color: Color(0xff3C4A55),
+            ),
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                    text: '기본 결제 수단이 ',
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: message,
+                        style: const TextStyle(
+                          color: Color(0xff4BC1C2),
+                        ),
+                      ),
+                      const TextSpan(
+                        text: '으로 설정되었습니다.',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          fToast = FToast();
+          fToast.init(context);
+        },
+      );
+
+      final viewModel = context.read<MyWalletViewModel>();
+      _streamSubscription = viewModel.eventStream.listen((event) {
+        event.when(
+          showSnackBar: (message) {
+            _showToast(message);
+          },
+          changeDefaultAccount: (message) {
+            _showChangeDefaultAccountToast(message);
+          },
+        );
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   void didChangeDependencies() {
     precacheImage(const AssetImage('imgs/wallet-instacoin@2x.png'), context);
@@ -33,11 +159,11 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 120,
-        backgroundColor: color.mainNavy,
+        toolbarHeight: 100,
+        backgroundColor: Colors.white,
         title: Text(
           state.isSelectedDelete == false ? '내 지갑' : '삭제 선택',
-          style: const TextStyle(fontSize: 25),
+          style: const TextStyle(fontSize: 25, color: Colors.black),
         ),
         actions: [
           state.isSelectedDelete == false
@@ -56,7 +182,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                   },
                   icon: Image.asset(
                     'imgs/wallet-plus@2x.png',
-                    color: Colors.white,
+                    color: Colors.black,
                     width: 20,
                     height: 20,
                   ),
@@ -67,7 +193,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                   },
                   icon: Image.asset(
                     'imgs/exit_x@2x.png',
-                    color: Colors.white,
+                    color: Colors.black,
                     width: 20,
                     height: 20,
                   ),
@@ -84,7 +210,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
             },
             icon: Image.asset(
               'imgs/wallet-trash@2x.png',
-              color: Colors.white,
+              color: Colors.black,
               width: 20,
               height: 20,
             ),
@@ -93,24 +219,47 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 15),
-            child: ListView(
+          SingleChildScrollView(
+            child: Column(
               children: [
-                ...state.accountList
-                    .map(
-                      (e) => GestureDetector(
-                        onTap: state.isSelectedDelete == true
-                            ? () {
-                                viewModel.setDeleteSelectedBankAccountData(e);
-                              }
-                            : () {},
-                        child: PaymentMethodWidget(
-                          data: e,
-                        ),
-                      ),
-                    )
-                    .toList(),
+                const SizedBox(
+                  height: 25,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                  ),
+                  child: InstaCardWidget(
+                    deposit: 110000,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30, vertical: 16.0),
+                  child: Column(
+                    children: [
+                      ...state.accountList
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: state.isSelectedDelete == true
+                                  ? () {
+                                      viewModel
+                                          .setDeleteSelectedBankAccountData(e);
+                                    }
+                                  : () {},
+                              child: PaymentMethodWidget(
+                                data: e,
+                                isAccountNull: (state.accountList.length == 1),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
               ],
             ),
           ),
@@ -156,6 +305,76 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                   label: ('설정'),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InstaCardWidget extends StatelessWidget {
+  final int deposit;
+
+  const InstaCardWidget({
+    required this.deposit,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      width: double.infinity,
+      height: 230,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          colors: [
+            Color(0xff4CC2C2),
+            Color(0xff50B5BE),
+            Color(0xff5D94B3),
+            Color(0xff725FA2),
+            Color(0xff7F3F98),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                'imgs/instacard.png',
+                scale: 0.8,
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+                decoration: BoxDecoration(
+                  color: const Color(0xffE6E7E8),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Image.asset(
+                  'imgs/instacard_logo.png',
+                  scale: 0.7,
+                ),
+              )
+            ],
+          ),
+          Text(
+            currencyFormat(deposit),
+            style: const TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
         ],

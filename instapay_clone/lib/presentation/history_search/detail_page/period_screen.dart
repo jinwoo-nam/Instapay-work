@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class BillBoxScreen extends StatelessWidget {
-  const BillBoxScreen({
+class PeriodScreen extends StatelessWidget {
+  const PeriodScreen({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('청구서가 없습니다.'),
+      child: Text('기간'),
     );
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_state.dart';
+import 'package:instapay_clone/presentation/my_wallet/my_wallet_ui_event.dart';
 
 class MyWalletViewModel with ChangeNotifier {
   final GetBankAccountUseCase getBankAccountUseCase;
@@ -21,6 +24,10 @@ class MyWalletViewModel with ChangeNotifier {
   MyWalletState _state = MyWalletState();
 
   MyWalletState get state => _state;
+
+  final _eventController = StreamController<MyWalletUiEvent>.broadcast();
+
+  Stream<MyWalletUiEvent> get eventStream => _eventController.stream;
 
   void fetchBankAccountData() async {
     final accountList = await getBankAccountUseCase();
@@ -54,6 +61,9 @@ class MyWalletViewModel with ChangeNotifier {
     _state = state.copyWith(
       defaultAccount: account,
     );
+
+    _eventController
+        .add(MyWalletUiEvent.changeDefaultAccount(account.title));
     notifyListeners();
   }
 
@@ -64,6 +74,8 @@ class MyWalletViewModel with ChangeNotifier {
     accountList.when(
         success: (list) {
           _state = state.copyWith(accountList: list);
+          _eventController
+              .add(const MyWalletUiEvent.showSnackBar('결제수단이 삭제 되었습니다.'));
         },
         error: (message) {});
 

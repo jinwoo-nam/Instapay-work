@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/history_search/detail_page/bill_box_screen.dart';
+import 'package:instapay_clone/presentation/history_search/detail_page/period_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/monthly_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/recently_screen.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
@@ -19,11 +19,12 @@ class HistorySearchScreen extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 80,
           centerTitle: false,
-          backgroundColor: color.mainNavy,
-          title: const Text('내역 조회'),
+          backgroundColor: Colors.white,
+          title: const Text('내역 조회',style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.w600,fontSize: 22),),
           bottom: const TabBar(
             labelColor: color.mainSelectColor,
-            unselectedLabelColor: Colors.white,
+            unselectedLabelColor: Colors.black,
             indicator: UnderlineTabIndicator(
               borderSide: BorderSide(width: 5.0, color: color.mainSelectColor),
             ),
@@ -33,7 +34,7 @@ class HistorySearchScreen extends StatelessWidget {
                 text: '최근',
               ),
               Tab(text: '월별'),
-              Tab(text: '청구서함'),
+              Tab(text: '기간'),
             ],
           ),
         ),
@@ -43,7 +44,7 @@ class HistorySearchScreen extends StatelessWidget {
               children: [
                 RecentlyScreen(),
                 MonthlyScreen(),
-                BillBoxScreen(),
+                PeriodScreen(),
               ],
             ),
             Align(

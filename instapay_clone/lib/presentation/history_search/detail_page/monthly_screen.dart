@@ -72,19 +72,15 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                       TextButton(
                         child: Text(
                           '${year - i}',
-                          style: const TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: (i == state.monthlyScreenCurYearIndex)
+                                  ? color.mainSelectColor
+                                  : Colors.black),
                         ),
                         onPressed: () {
                           viewModel.setMonthlyYearIndex(i);
                           viewModel.refreshMonthHistory();
                         },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor:
-                              (i == state.monthlyScreenCurYearIndex)
-                                  ? color.mainSelectColor
-                                  : Colors.transparent,
-                        ),
                       ),
                   ],
                 ),
@@ -96,21 +92,17 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                         TextButton(
                           child: Text(
                             '${i + 1}',
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(
+                                color: (state.monthlyScreenCurMonthIndex == i)
+                                    ? color.mainSelectColor
+                                    : Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700),
                           ),
                           onPressed: () {
                             viewModel.setMonthlyMonthIndex(i);
                             viewModel.refreshMonthHistory();
                           },
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                (state.monthlyScreenCurMonthIndex == i)
-                                    ? color.mainSelectColor
-                                    : Colors.transparent,
-                          ),
                         ),
                     ],
                   ),
