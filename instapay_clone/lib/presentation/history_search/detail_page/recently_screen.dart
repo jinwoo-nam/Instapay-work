@@ -63,9 +63,11 @@ class _RecentlyScreenState extends State<RecentlyScreen> {
                       builderDelegate:
                           PagedChildBuilderDelegate<PaymentHistoryData>(
                         itemBuilder: (context, history, index) =>
-                            PaymentHistoryListWidget(
-                          data: history,
-                        ),
+                            (state.isRecentDataEmpty)
+                                ? const Text('결제 내역이 없습니다.')
+                                : PaymentHistoryListWidget(
+                                    data: history,
+                                  ),
                       ),
                     ),
                   ),

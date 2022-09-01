@@ -30,4 +30,17 @@ class GetPaymentHistoryUseCase {
       return Result.error(message);
     });
   }
+
+  Future<Result<List<PaymentHistoryData>>> getPeriodPaymentHistory(
+      String startDate, String endDate, String tid, int limit) async {
+
+    final paymentHistory = await repository.getPeriodPaymentHistory(
+        startDate, endDate, tid, limit);
+
+    return paymentHistory.when(success: (paymentList) {
+      return Result.success(paymentList);
+    }, error: (message) {
+      return Result.error(message);
+    });
+  }
 }

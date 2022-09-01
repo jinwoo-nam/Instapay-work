@@ -58,7 +58,9 @@ class PaymentMethodWidget extends StatelessWidget {
                             height: 20,
                           ),
                     onPressed: () {
-                      viewModel.setDefaultAccount(data);
+                      if (!state.isSelectedDelete) {
+                        viewModel.setDefaultAccount(data);
+                      }
                     },
                   ),
                 ],

@@ -33,7 +33,10 @@ class MyWalletViewModel with ChangeNotifier {
     final accountList = await getBankAccountUseCase();
     accountList.when(
         success: (list) {
-          _state = state.copyWith(accountList: list);
+          _state = state.copyWith(
+            accountList: list,
+            defaultAccount: list[0],
+          );
         },
         error: (message) {});
 
@@ -62,20 +65,18 @@ class MyWalletViewModel with ChangeNotifier {
       defaultAccount: account,
     );
 
-    _eventController
-        .add(MyWalletUiEvent.changeDefaultAccount(account.title));
+    _eventController.add(MyWalletUiEvent.changeDefaultAccount(account.title));
     notifyListeners();
   }
 
   void deleteBankAccountData(BankAccountData account) async {
     await deleteBankAccountUseCase(account);
+    _eventController.add(const MyWalletUiEvent.showSnackBar('결제수단이 삭제 되었습니다.'));
 
     final accountList = await getBankAccountUseCase();
     accountList.when(
         success: (list) {
           _state = state.copyWith(accountList: list);
-          _eventController
-              .add(const MyWalletUiEvent.showSnackBar('결제수단이 삭제 되었습니다.'));
         },
         error: (message) {});
 
@@ -83,7 +84,12 @@ class MyWalletViewModel with ChangeNotifier {
   }
 
   void setDeleteSelectedBankAccountData(BankAccountData account) {
-    _state = state.copyWith(deleteSelectAccount: account);
+    if (account.title != '인스타코인') {
+      _state = state.copyWith(deleteSelectAccount: account);
+    } else {
+      _state = state.copyWith(deleteSelectAccount: null);
+    }
+
     notifyListeners();
   }
 

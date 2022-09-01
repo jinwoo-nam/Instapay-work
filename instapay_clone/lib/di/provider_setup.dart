@@ -88,10 +88,10 @@ Future<List<SingleChildWidget>> getProviders() async {
         searchIsbnUseCase: SearchIsbnUseCase(searchIsbnRepository),
       ),
     ),
-    ChangeNotifierProvider<HistorySearchViewModel>(
-      create: (context) => HistorySearchViewModel(
-        getPaymentHistoryUseCase: getPaymentHistoryUseCase,
-      ),
-    ),
+    // ChangeNotifierProvider<HistorySearchViewModel>(
+    //   create: (context) => HistorySearchViewModel(
+    //     getPaymentHistoryUseCase: getPaymentHistoryUseCase,
+    //   ),
+    // ),
   ];
 }

@@ -19,4 +19,10 @@ class GetPaymentHistoryRepositoryImpl implements GetPaymentHistoryRepository {
       String yearMonth, String tid, int limit) async {
     return await _dataSource.getMonthPaymentHistory(yearMonth, tid, limit);
   }
+
+  @override
+  Future<Result<List<PaymentHistoryData>>> getPeriodPaymentHistory(
+      String startDate, String endDate, String tid, int limit) {
+    return _dataSource.getPeriodPaymentHistory(startDate, endDate, tid, limit);
+  }
 }

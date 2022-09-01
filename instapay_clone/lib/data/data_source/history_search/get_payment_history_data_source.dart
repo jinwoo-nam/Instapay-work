@@ -40,4 +40,19 @@ class GetPaymentHistoryDataSource {
       return Result.error(e.toString());
     }
   }
+
+  Future<Result<List<PaymentHistoryData>>> getPeriodPaymentHistory(
+      String startDate, String endDate, String tid, int limit) async {
+    try {
+      final response = await _client.get(Uri.parse(
+          '$baseUrl?qe=$startDate&qb=$endDate&limit=$limit&offset=$tid'));
+      final jsonResponse = jsonDecode(response.body);
+      Iterable feed = jsonResponse['tras'];
+      List<PaymentHistoryData> paymentList =
+          feed.map((e) => PaymentHistoryData.fromJson(e)).toList();
+      return Result.success(paymentList);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
 }

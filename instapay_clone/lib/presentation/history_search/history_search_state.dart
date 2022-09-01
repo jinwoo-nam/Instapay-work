@@ -11,8 +11,14 @@ class HistorySearchState with _$HistorySearchState {
     @Default(false) bool isLoading,
     @Default([]) List<PaymentHistoryData> curPageRecentPaymentHistory,
     @Default([]) List<PaymentHistoryData> curPageMonthPaymentHistory,
+    @Default([]) List<PaymentHistoryData> curPagePeriodPaymentHistory,
     @Default(0) int monthlyScreenCurYearIndex,
     @Default(0) int monthlyScreenCurMonthIndex,
+    @Default('') String periodStartDate,
+    @Default('') String periodEndDate,
+    @Default(false) bool isRecentDataEmpty,
+    @Default(false) bool isMonthDataEmpty,
+    @Default(false) bool isPeriodDataEmpty,
   }) = _HistorySearchState;
 
   factory HistorySearchState.fromJson(Map<String, dynamic> json) =>

@@ -28,6 +28,7 @@ class PaymentHistoryListWidget extends StatelessWidget {
     final day = date[2].split(' ')[0];
     return InkWell(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Navigator.push(
           context,
           MaterialPageRoute(

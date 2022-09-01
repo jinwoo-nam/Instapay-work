@@ -23,6 +23,7 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
   @override
   void initState() {
     Future.microtask(() {
+      FocusScope.of(context).unfocus();
       final viewModel = context.read<HistorySearchViewModel>();
       DateTime now = DateTime.now();
       final year = now.year;

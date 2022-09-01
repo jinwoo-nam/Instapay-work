@@ -177,7 +177,6 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                     );
                     if (result != null) {
                       viewModel.addBankAccountData(result);
-                      viewModel.setDefaultAccount(result);
                     }
                   },
                   icon: Image.asset(

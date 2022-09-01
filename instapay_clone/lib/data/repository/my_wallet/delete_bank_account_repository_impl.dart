@@ -6,7 +6,7 @@ class DeleteBankAccountRepositoryImpl implements DeleteBankAccountRepository {
   final _dataSource = DeleteBankAccountDataSource();
 
   @override
-  Future<void> deleteBankAccount(BankAccountData account) async {
+  Future<bool> deleteBankAccount(BankAccountData? account) async {
     return await _dataSource.deleteBankAccount(account);
   }
 }
