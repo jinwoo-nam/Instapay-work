@@ -12,10 +12,11 @@ class NoticeDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('공지 사항'),
-        backgroundColor: color.mainNavy,
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32.0),
         child: ListView(
           children: [
             Text(

@@ -266,7 +266,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(350, 50),
-                    primary: color.mainSelectColor,
+                    primary: color.key,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),

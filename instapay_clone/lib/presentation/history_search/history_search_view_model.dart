@@ -51,7 +51,6 @@ class HistorySearchViewModel with ChangeNotifier {
       tid = state.curPageRecentPaymentHistory.last.tid!;
     }
 
-    print(page);
     final historyList = await getPaymentHistoryUseCase
         .getPaymentRecentHistoryList(tid, _pageSize);
 

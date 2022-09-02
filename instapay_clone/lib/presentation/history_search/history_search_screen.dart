@@ -39,11 +39,11 @@ class HistorySearchScreen extends StatelessWidget {
                   fontSize: 22),
             ),
             bottom: TabBar(
-              labelColor: color.mainSelectColor,
+              labelColor: color.key,
               unselectedLabelColor: Colors.black,
               indicator: const UnderlineTabIndicator(
                 borderSide:
-                    BorderSide(width: 5.0, color: color.mainSelectColor),
+                    BorderSide(width: 5.0, color: color.key),
               ),
               labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               onTap: (value) {
@@ -77,7 +77,7 @@ class HistorySearchScreen extends StatelessWidget {
                     currentIndex: mainViewModel.curIndex,
                     type: BottomNavigationBarType.fixed,
                     onTap: mainViewModel.onBottomNavTap,
-                    selectedItemColor: color.mainSelectColor,
+                    selectedItemColor: color.key,
                     items: [
                       BottomNavigationBarItem(
                           icon: Image.asset(
@@ -96,7 +96,7 @@ class HistorySearchScreen extends StatelessWidget {
                       BottomNavigationBarItem(
                           icon: Image.asset(
                             'imgs/tab-search@2x.png',
-                            color: color.mainSelectColor,
+                            color: color.key,
                             width: 20,
                             height: 20,
                           ),

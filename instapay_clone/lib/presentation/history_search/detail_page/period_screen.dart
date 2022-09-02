@@ -202,17 +202,27 @@ class _PeriodScreenState extends State<PeriodScreen> {
                 thickness: 1.5,
               ),
             ),
-            PagedListView<int, PaymentHistoryData>(
+            Visibility(
+              visible: state.isRecentDataEmpty,
+              child: const Padding(
+                padding: EdgeInsets.only(top: 60.0),
+                child: Center(
+                  child: Text(
+                    '결제 내역이 없습니다.',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+                  PagedListView<int, PaymentHistoryData>(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               pagingController: _periodPagingController,
               builderDelegate: PagedChildBuilderDelegate<PaymentHistoryData>(
                   itemBuilder: (itemBuilderContext, history, index) {
-                return (state.isRecentDataEmpty)
-                    ? const Text('결제 내역이 없습니다.')
-                    : PaymentHistoryListWidget(
-                        data: history,
-                      );
+                return PaymentHistoryListWidget(
+                  data: history,
+                );
               }),
             ),
             const SizedBox(

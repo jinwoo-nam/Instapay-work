@@ -11,8 +11,9 @@ class TermsOfUseDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: color.mainNavy,
         title: Text(data.title),
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0,left: 15,right: 15,bottom: 20),

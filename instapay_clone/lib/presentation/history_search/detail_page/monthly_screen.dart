@@ -75,7 +75,7 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                           '${year - i}',
                           style: TextStyle(
                               color: (i == state.monthlyScreenCurYearIndex)
-                                  ? color.mainSelectColor
+                                  ? color.key
                                   : Colors.black),
                         ),
                         onPressed: () {
@@ -95,7 +95,7 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                             '${i + 1}',
                             style: TextStyle(
                                 color: (state.monthlyScreenCurMonthIndex == i)
-                                    ? color.mainSelectColor
+                                    ? color.key
                                     : Colors.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700),
@@ -115,6 +115,18 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+        Visibility(
+          visible: state.isRecentDataEmpty,
+          child: const Padding(
+            padding: EdgeInsets.only(top: 60.0),
+            child: Center(
+              child: Text(
+                '결제 내역이 없습니다.',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
           ),
         ),

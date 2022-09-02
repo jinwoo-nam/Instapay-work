@@ -30,8 +30,9 @@ class _AddressScreenState extends State<AddressScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('주소'),
-          backgroundColor: color.mainNavy,
+          title: const Text('주소지'),
+          backgroundColor: color.lightGrey,
+          foregroundColor: Colors.black,
           actions: [
             IconButton(
               onPressed: () async {
@@ -53,11 +54,13 @@ class _AddressScreenState extends State<AddressScreen> {
                       'imgs/wallet-plus@2x.png',
                       width: 20,
                       height: 20,
+                      color: Colors.black,
                     )
                   : Image.asset(
                       'imgs/exit_x@2x.png',
                       width: 20,
                       height: 20,
+                      color: Colors.black,
                     ),
             ),
             IconButton(
@@ -74,6 +77,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 'imgs/wallet-trash@2x.png',
                 width: 20,
                 height: 20,
+                color: Colors.black,
               ),
             ),
           ],

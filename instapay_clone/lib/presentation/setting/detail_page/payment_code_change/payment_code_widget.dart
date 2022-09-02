@@ -58,7 +58,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                 const Divider(
                   height: 25,
                   thickness: 1.3,
-                  color: color.mainSelectColor,
+                  color: color.key,
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
@@ -69,7 +69,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                   child: const Text(
                     '결제 코드를 잊으셨습니까?',
                     style: TextStyle(
-                      color: color.mainSelectColor,
+                      color: color.key,
                     ),
                   ),
                   onPressed: () {},
@@ -141,7 +141,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                     icon: const Icon(
                       Icons.backspace,
                       size: 45,
-                      color: color.mainSelectColor,
+                      color: color.key,
                     ),
                   ),
                 ),
@@ -160,13 +160,13 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                 pinCodeList[index],
                 style: const TextStyle(
                     fontSize: 20,
-                    color: color.mainSelectColor,
+                    color: color.key,
                     fontWeight: FontWeight.bold),
               )
             : const Icon(
                 Icons.circle,
                 size: 16,
-                color: color.mainSelectColor,
+                color: color.key,
               )
         : const Icon(
             Icons.circle,

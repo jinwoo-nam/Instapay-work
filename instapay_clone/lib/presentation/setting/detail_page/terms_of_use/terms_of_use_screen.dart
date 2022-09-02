@@ -15,7 +15,8 @@ class TermsOfUseScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('이용약관'),
-        backgroundColor: color.mainNavy,
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),

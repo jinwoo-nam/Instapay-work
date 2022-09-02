@@ -39,7 +39,8 @@ class _InquiryScreenState extends State<InquiryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('문의하기'),
-        backgroundColor: color.mainNavy,
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding:
@@ -104,7 +105,7 @@ class _InquiryScreenState extends State<InquiryScreen> {
                     onPressed: () {},
                     child: const Text('보내기'),
                     style: ElevatedButton.styleFrom(
-                      primary: color.mainSelectColor,
+                      primary: color.key,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),

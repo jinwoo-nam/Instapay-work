@@ -14,20 +14,30 @@ class AddressListWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${data.name!} - (추가 배송료: 0원)',
+            data.name!,
             style: const TextStyle(
               height: 1.7,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text('[${data.postCode}] ${data.address}',
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            '[${data.postCode}] ${data.address}',
             style: const TextStyle(
               height: 1.7,
-            ),),
-          Text('${data.contact}',
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            '${data.contact}',
             style: const TextStyle(
               height: 1.7,
-            ),),
+            ),
+          ),
           const Divider(
             color: Colors.black,
             height: 30,

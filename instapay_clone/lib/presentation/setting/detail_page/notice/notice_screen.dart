@@ -14,8 +14,14 @@ class NoticeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('공지사항'),
-        backgroundColor: color.mainNavy,
+        title: const Text(
+          '공지사항',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),

@@ -159,7 +159,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 120,
         backgroundColor: Colors.white,
         title: Text(
           state.isSelectedDelete == false ? '내 지갑' : '삭제 선택',
@@ -268,7 +268,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
               currentIndex: mainViewModel.curIndex,
               type: BottomNavigationBarType.fixed,
               onTap: mainViewModel.onBottomNavTap,
-              selectedItemColor: color.mainSelectColor,
+              selectedItemColor: color.key,
               items: [
                 BottomNavigationBarItem(
                   icon: Image.asset(
@@ -281,7 +281,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                 BottomNavigationBarItem(
                   icon: Image.asset(
                     'imgs/tab-wallet@2x.png',
-                    color: color.mainSelectColor,
+                    color: color.key,
                     width: 20,
                     height: 20,
                   ),

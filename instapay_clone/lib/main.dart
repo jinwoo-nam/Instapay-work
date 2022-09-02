@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiProvider(
       providers: await getProviders(),
@@ -30,12 +32,13 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Noto_Sans_KR',
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Color(0xff4BC1C2),
+            backgroundColor: const Color(0xff4BC1C2),
           ),
         ),
         primarySwatch: Colors.blue,
       ),
       home: const RootScreen(),
+      //home: const CautionScreen(),
     );
   }
 }

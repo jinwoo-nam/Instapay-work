@@ -142,12 +142,12 @@ class _QrPayScreenState extends State<QrPayScreen> {
                       type: BottomNavigationBarType.fixed,
                       onTap: mainViewModel.onBottomNavTap,
                       unselectedItemColor: Colors.white,
-                      selectedItemColor: color.mainSelectColor,
+                      selectedItemColor: color.key,
                       items: [
                         BottomNavigationBarItem(
                             icon: Image.asset(
                               'imgs/tab-qr@2x.png',
-                              color: color.mainSelectColor,
+                              color: color.key,
                               width: 20,
                               height: 20,
                             ),

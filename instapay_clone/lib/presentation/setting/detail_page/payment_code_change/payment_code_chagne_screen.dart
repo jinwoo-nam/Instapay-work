@@ -66,7 +66,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   height: 25,
                   thickness: 1.3,
                   color: pinCodeList.length < 6
-                      ? color.mainSelectColor
+                      ? color.key
                       : Colors.white,
                 ),
                 const SizedBox(
@@ -87,7 +87,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   height: 25,
                   thickness: 1.3,
                   color: pinCodeList.length == 6
-                      ? color.mainSelectColor
+                      ? color.key
                       : Colors.white,
                 ),
               ],
@@ -157,7 +157,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                         child: const Text('다음'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(280, 45),
-                          primary: color.mainSelectColor,
+                          primary: color.key,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),
                           ),
@@ -178,7 +178,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                           icon: const Icon(
                             Icons.backspace,
                             size: 45,
-                            color: color.mainSelectColor,
+                            color: color.key,
                           ),
                         ),
                       ),
@@ -200,14 +200,14 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                 pinCodeList[index],
                 style: const TextStyle(
                   fontSize: 20,
-                  color: color.mainSelectColor,
+                  color: color.key,
                   fontWeight: FontWeight.bold,
                 ),
               )
             : const Icon(
                 Icons.circle,
                 size: 16,
-                color: color.mainSelectColor,
+                color: color.key,
               )
         : const Icon(
             Icons.circle,
@@ -223,14 +223,14 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                 pinCodeListAgain[index],
                 style: const TextStyle(
                   fontSize: 20,
-                  color: color.mainSelectColor,
+                  color: color.key,
                   fontWeight: FontWeight.bold,
                 ),
               )
             : const Icon(
                 Icons.circle,
                 size: 16,
-                color: color.mainSelectColor,
+                color: color.key,
               )
         : const Icon(
             Icons.circle,

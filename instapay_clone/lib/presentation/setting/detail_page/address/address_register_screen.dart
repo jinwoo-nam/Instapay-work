@@ -36,10 +36,11 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('주소지 등록'),
-        backgroundColor: color.mainNavy,
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 35),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -95,7 +96,26 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text('${widget.data.postCode}'),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('${widget.data.postCode}'),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 4,
+                                  ),
+                                  decoration:
+                                      const BoxDecoration(color: color.key),
+                                  child: const Text(
+                                    '우편번호',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -171,13 +191,15 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                         contact: contactController.text.trim(),
                         name: nameController.text.trim(),
                       ));
-                      Navigator.pop(context, AddressData(
-                        address: widget.data.address,
-                        postCode: widget.data.postCode,
-                        detailAddress: detailController.text.trim(),
-                        contact: contactController.text.trim(),
-                        name: nameController.text.trim(),
-                      ));
+                      Navigator.pop(
+                          context,
+                          AddressData(
+                            address: widget.data.address,
+                            postCode: widget.data.postCode,
+                            detailAddress: detailController.text.trim(),
+                            contact: contactController.text.trim(),
+                            name: nameController.text.trim(),
+                          ));
                     },
               child: const Text(
                 '확인',
@@ -185,7 +207,7 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
               ),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: color.mainSelectColor,
+                primary: color.key,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),

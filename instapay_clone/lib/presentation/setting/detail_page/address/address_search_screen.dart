@@ -40,7 +40,8 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('주소 검색'),
-        backgroundColor: color.mainNavy,
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -57,10 +58,10 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
                   decoration: const InputDecoration(
                     hintText: '도로명주소: 도로명과 건물번호',
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: color.mainSelectColor),
+                      borderSide: BorderSide(color: color.key),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: color.mainSelectColor),
+                      borderSide: BorderSide(color: color.key),
                     ),
                   ),
                 ),

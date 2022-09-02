@@ -32,8 +32,9 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: color.mainNavy,
         title: const Text('서비스 해지'),
+        backgroundColor: color.lightGrey,
+        foregroundColor: Colors.black,
       ),
       body: Column(
         children: [
@@ -136,7 +137,7 @@ class _ServiceTerminationScreenState extends State<ServiceTerminationScreen> {
                         child: const Text('다음'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(350, 50),
-                          primary: color.mainSelectColor,
+                          primary: color.key,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),
                           ),

@@ -26,33 +26,42 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 120,
         centerTitle: false,
-        backgroundColor: color.mainNavy,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'njw9108@instapay.kr',
-                  style: TextStyle(fontSize: 15),
-                ),
-                Text(
-                  '남진우',
-                  style: TextStyle(fontSize: 15),
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                _launchURL();
-              },
-              child: Image.asset(
-                'imgs/event_alert@2x.png',
-                width: 75,
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'njw9108@instapay.kr',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '남진우',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () {
+                  _launchURL();
+                },
+                child: Image.asset(
+                  'imgs/event_alert@2x.png',
+                  width: 75,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Stack(
@@ -68,7 +77,7 @@ class SettingScreen extends StatelessWidget {
               currentIndex: mainViewModel.curIndex,
               type: BottomNavigationBarType.fixed,
               onTap: mainViewModel.onBottomNavTap,
-              selectedItemColor: color.mainSelectColor,
+              selectedItemColor: color.key,
               items: [
                 BottomNavigationBarItem(
                     icon: Image.asset(
@@ -94,7 +103,7 @@ class SettingScreen extends StatelessWidget {
                 BottomNavigationBarItem(
                     icon: Image.asset(
                       'imgs/tab-setting@2x.png',
-                      color: color.mainSelectColor,
+                      color: color.key,
                       width: 20,
                       height: 20,
                     ),
