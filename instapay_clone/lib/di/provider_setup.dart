@@ -43,7 +43,7 @@ Future<List<SingleChildWidget>> getProviders() async {
     'app_setting.db',
     version: 1,
     onCreate: (db, version) async {
-      await db.execute('CREATE TABLE app_setting (isStartApp INTEGER)');
+      await db.execute('CREATE TABLE app_setting (isStartApp INTEGER, isAgreeTerms INTEGER)');
     },
   );
 

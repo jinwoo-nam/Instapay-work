@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/intro/terms_of_use_agree_screen.dart';
 import 'package:instapay_clone/presentation/intro/work_through_screen.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
@@ -30,8 +31,10 @@ class _RootScreenState extends State<RootScreen> {
 
     return !state.appSettingData.isStartApp
         ? const WorkThroughScreen()
-        : viewModel.isSignIn == false
-            ? const SignInScreen()
-            : const MainScreen();
+        : !state.appSettingData.isAgreeTerms
+            ? const TermsOfUseAgreeScreen()
+            : viewModel.isSignIn == false
+                ? const SignInScreen()
+                : const MainScreen();
   }
 }

@@ -7,6 +7,7 @@ part 'app_setting_data.g.dart';
 class AppSettingData with _$AppSettingData {
   factory AppSettingData({
     @Default(false) bool isStartApp,
+    @Default(false) bool isAgreeTerms,
   }) = _AppSettingData;
   factory AppSettingData.fromJson(Map<String, dynamic> json) => _$AppSettingDataFromJson(json);
 }

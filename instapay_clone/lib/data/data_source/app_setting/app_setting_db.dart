@@ -7,13 +7,16 @@ class AppSettingDb {
   AppSettingDb(this.db);
 
   Future<void> insertAppSetting(AppSettingData setting) async {
-    print('insert app setting');
     await db.insert(
       'app_setting',
       {
         'isStartApp': setting.isStartApp ? 1 : 0,
+        'isAgreeTerms': setting.isAgreeTerms ? 1 : 0,
       },
     );
+
+    final result = await getAppSetting();
+    print('test get value : ${result.isStartApp}');
   }
 
   Future<void> updateAppSetting(AppSettingData setting) async {
@@ -21,6 +24,7 @@ class AppSettingDb {
       'app_setting',
       {
         'isStartApp': setting.isStartApp ? 1 : 0,
+        'isAgreeTerms': setting.isAgreeTerms ? 1 : 0,
       },
     );
   }
@@ -30,16 +34,19 @@ class AppSettingDb {
     List<Map<String, dynamic>> maps = await db.query('app_setting');
 
     if (maps.isEmpty) {
-      return AppSettingData();
-    } else {
-      print(maps.first['isStartApp']);
-
-      await updateAppSetting(AppSettingData(
+      print('get value: empty');
+      final temp = AppSettingData(
+        isAgreeTerms: false,
         isStartApp: false,
-      ));
-
+      );
+      await insertAppSetting(temp);
+      return temp;
+    } else {
+      print('value1: ${maps.first['isStartApp']}, value2: ${maps.first['isAgreeTerms']}');
       return AppSettingData(
-          isStartApp: maps.first['isStartApp'] == 1 ? true : false);
+        isStartApp: maps.first['isStartApp'] == 1 ? true : false,
+        isAgreeTerms: maps.first['isAgreeTerms'] == 1 ? true : false,
+      );
     }
   }
 }

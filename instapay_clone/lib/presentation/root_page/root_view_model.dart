@@ -31,13 +31,13 @@ class RootViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeSettingData() async {
+  Future<void> changeSettingData(AppSettingData appSettingData) async {
     print('change setting');
     _state = state.copyWith(
-      appSettingData: AppSettingData(isStartApp: true),
+      appSettingData: appSettingData,
     );
 
-    await appSetting.insertAppSetting(state.appSettingData);
+    await appSetting.updateAppSetting(state.appSettingData);
     notifyListeners();
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/domain/model/app_setting_data/app_setting_data.dart';
+import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use/terms_of_use_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
@@ -17,6 +19,7 @@ class _TermsOfUseAgreeScreenState extends State<TermsOfUseAgreeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SettingViewModel>();
+    final rootViewModel = context.watch<RootViewModel>();
     final state = viewModel.state;
 
     return Scaffold(
@@ -77,15 +80,24 @@ class _TermsOfUseAgreeScreenState extends State<TermsOfUseAgreeScreen> {
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: isAgree ? () {} : null,
-                  child: const Text('다음'),
+                  onPressed: isAgree
+                      ? () async {
+                          await rootViewModel.changeSettingData(
+                            AppSettingData(
+                              isStartApp: true,
+                              isAgreeTerms: true,
+                            ),
+                          );
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(350, 50),
-                    primary: color.key,
+                    backgroundColor: color.key,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
                   ),
+                  child: const Text('다음'),
                 ),
               ),
             ),
