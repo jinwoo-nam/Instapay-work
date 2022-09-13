@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
+import 'package:instapay_clone/presentation/qr_pay/components/order_loader.dart';
+import 'package:instapay_clone/presentation/qr_pay/components/order_overlay_widget.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
@@ -62,11 +64,16 @@ class _QrPayScreenState extends State<QrPayScreen> {
                         final bookData =
                             await viewModel.searchISBN(result!.code!);
                         if (bookData != null) {
-                          final navEnd = Navigator.push(
+                          final navEnd = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OrderScreen(
-                                      data: bookData,
+                                builder: (context) => Stack(
+                                      children: [
+                                        OrderScreen(
+                                          data: bookData,
+                                        ),
+                                        const OrderOverlayWidget(),
+                                      ],
                                     )),
                           );
                           navEnd.then((value) async {

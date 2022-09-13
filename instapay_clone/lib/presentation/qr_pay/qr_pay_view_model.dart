@@ -36,7 +36,11 @@ class QrPayViewModel with ChangeNotifier {
 
     defaultAccount.when(
         success: (account) {
-          _state = state.copyWith(defaultAccount: account);
+          if (account == null) {
+            _state = state.copyWith(defaultAccount: state.accountList[0]);
+          } else {
+            _state = state.copyWith(defaultAccount: account);
+          }
         },
         error: (message) {});
 
@@ -52,6 +56,13 @@ class QrPayViewModel with ChangeNotifier {
           );
         },
         error: (message) {});
+    notifyListeners();
+  }
+
+  void setDefaultBankAccount(BankAccountData account) async {
+    _state = state.copyWith(
+      defaultAccount: account,
+    );
     notifyListeners();
   }
 

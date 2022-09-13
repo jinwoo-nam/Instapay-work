@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
 import 'package:instapay_clone/domain/model/qr_pay/book_order_data.dart';
-import 'package:instapay_clone/presentation/my_wallet/components/bank_account_register_screen.dart';
+import 'package:instapay_clone/presentation/qr_pay/components/order_loader.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/transaction_success_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_state.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
@@ -27,7 +27,7 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async{
+    Future.microtask(() async {
       final viewModel = context.read<QrPayViewModel>();
       await viewModel.fetchBankAccountData();
       await viewModel.fetchDefaultAddress();
@@ -92,28 +92,46 @@ class _OrderScreenState extends State<OrderScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: 150,
-                      child: DropdownButtonFormField(
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        value: getDefaultValue(state),
-                        items: getDropDownMenuItems(state.accountList),
-                        onChanged: (selected) async {
-                          if (selected != null && selected == '결제수단 추가') {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const BankAccountRegisterScreen(),
+                    InkWell(
+                      onTap: () {
+                        OrderLoader.appLoader.showLoader();
+                      },
+                      child: SizedBox(
+                        width: 150,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              state.defaultAccount?.title ?? '',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
                               ),
-                            );
-                            if (result != null) {
-                              viewModel.addBankAccountData(result);
-                            }
-                          }
-                        },
+                            ),
+                            const Icon(Icons.arrow_drop_down_sharp),
+                          ],
+                        ),
+                        // child: DropdownButtonFormField(
+                        //   decoration: const InputDecoration(
+                        //     border: InputBorder.none,
+                        //   ),
+                        //   value: getDefaultValue(state),
+                        //   items: getDropDownMenuItems(state.accountList),
+                        //   onChanged: (selected) async {
+                        //     if (selected != null && selected == '결제수단 추가') {
+                        //       final result = await Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) =>
+                        //               const BankAccountRegisterScreen(),
+                        //         ),
+                        //       );
+                        //       if (result != null) {
+                        //         viewModel.addBankAccountData(result);
+                        //       }
+                        //     }
+                        //   },
+                        // ),
                       ),
                     ),
                     const Divider(
@@ -253,8 +271,9 @@ class _OrderScreenState extends State<OrderScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TransactionSuccessScreen(orderData: widget.data,)),
+                            builder: (context) => TransactionSuccessScreen(
+                                  orderData: widget.data,
+                                )),
                       );
 
                       Navigator.pop(context, true);
