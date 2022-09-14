@@ -17,9 +17,7 @@ class MyWalletViewModel with ChangeNotifier {
     required this.getBankAccountUseCase,
     required this.addBankAccountUseCase,
     required this.deleteBankAccountUseCase,
-  }) {
-    fetchBankAccountData();
-  }
+  });
 
   MyWalletState _state = MyWalletState();
 
@@ -31,11 +29,21 @@ class MyWalletViewModel with ChangeNotifier {
 
   void fetchBankAccountData() async {
     final accountList = await getBankAccountUseCase();
+    final defaultRes = await getBankAccountUseCase.getDefaultAccount();
+
+    BankAccountData? defaultAccount;
+    defaultRes.when(
+      success: (account) {
+        defaultAccount = account;
+      },
+      error: (message) {},
+    );
+
     accountList.when(
         success: (list) {
           _state = state.copyWith(
             accountList: list,
-            defaultAccount: list[0],
+            defaultAccount: defaultAccount,
           );
         },
         error: (message) {});

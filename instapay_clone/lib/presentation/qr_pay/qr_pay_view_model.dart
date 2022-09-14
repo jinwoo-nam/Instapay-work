@@ -6,7 +6,6 @@ import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_ca
 import 'package:instapay_clone/domain/use_case/qr_pay/search_isbn_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_state.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class QrPayViewModel with ChangeNotifier {
   final GetBankAccountUseCase getBankAccountUseCase;
@@ -60,6 +59,7 @@ class QrPayViewModel with ChangeNotifier {
   }
 
   void setDefaultBankAccount(BankAccountData account) async {
+    await addBankAccountUseCase.addDefaultAccount(account);
     _state = state.copyWith(
       defaultAccount: account,
     );
@@ -68,6 +68,7 @@ class QrPayViewModel with ChangeNotifier {
 
   void addBankAccountData(BankAccountData account) async {
     await addBankAccountUseCase(account);
+    await addBankAccountUseCase.addDefaultAccount(account);
     final accountList = await getBankAccountUseCase();
     accountList.when(
         success: (list) {
@@ -79,10 +80,6 @@ class QrPayViewModel with ChangeNotifier {
         error: (message) {});
 
     notifyListeners();
-  }
-
-  void launchURL(String query) async {
-    if (!await launch(query)) throw 'Could not launch $query';
   }
 
   Future<BookOrderData?> searchISBN(String isbn) async {

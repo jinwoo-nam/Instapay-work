@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
-import 'package:instapay_clone/presentation/qr_pay/components/order_loader.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_overlay_widget.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_screen.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:instapay_clone/util/util.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
@@ -64,7 +64,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                         final bookData =
                             await viewModel.searchISBN(result!.code!);
                         if (bookData != null) {
-                          final navEnd = await Navigator.push(
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Stack(
@@ -76,9 +76,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                                       ],
                                     )),
                           );
-                          navEnd.then((value) async {
-                            await controller.resumeCamera();
-                          });
+                          await controller.resumeCamera();
                         }
                       }
                     });
@@ -121,7 +119,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
                         top: scanArea - 70, left: scanArea - 70),
                     child: IconButton(
                       onPressed: () {
-                        viewModel.launchURL(_instaPayHomepageUrl);
+                        launchURL(_instaPayHomepageUrl);
                       },
                       icon: Image.asset('imgs/booksearch-small@2x.png'),
                     ),

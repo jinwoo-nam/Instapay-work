@@ -27,4 +27,4 @@ List<BankAccountData> bankAccountList = [
   ),
 ];
 
-BankAccountData? defaultAccount;
+BankAccountData? defaultAccount = bankAccountList[0];
