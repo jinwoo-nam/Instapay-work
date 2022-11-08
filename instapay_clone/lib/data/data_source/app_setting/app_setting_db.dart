@@ -30,11 +30,9 @@ class AppSettingDb {
   }
 
   Future<AppSettingData> getAppSetting() async {
-    print('get app setting');
     List<Map<String, dynamic>> maps = await db.query('app_setting');
 
     if (maps.isEmpty) {
-      print('get value: empty');
       final temp = AppSettingData(
         isAgreeTerms: false,
         isStartApp: false,
@@ -42,7 +40,6 @@ class AppSettingDb {
       await insertAppSetting(temp);
       return temp;
     } else {
-      print('value1: ${maps.first['isStartApp']}, value2: ${maps.first['isAgreeTerms']}');
       return AppSettingData(
         isStartApp: maps.first['isStartApp'] == 1 ? true : false,
         isAgreeTerms: maps.first['isAgreeTerms'] == 1 ? true : false,

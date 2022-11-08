@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:instapay_clone/data/data_source/app_setting/app_setting_db.dart';
 import 'package:instapay_clone/data/data_source/history_search/get_payment_history_data_source.dart';
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
+import 'package:instapay_clone/data/data_source/signup/signup_api.dart';
 import 'package:instapay_clone/data/repository/app_setting/app_setting_repository_impl.dart';
 import 'package:instapay_clone/data/repository/history_search/get_payment_history_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
@@ -13,6 +14,7 @@ import 'package:instapay_clone/data/repository/setting/get_address_repository_im
 import 'package:instapay_clone/data/repository/setting/register_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/search_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/setting_repository_impl.dart';
+import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dart';
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
 import 'package:instapay_clone/domain/use_case/history_search/get_payment_history_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
@@ -25,12 +27,13 @@ import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.
 import 'package:instapay_clone/domain/use_case/setting/get_setting_data_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/register_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
-import 'package:instapay_clone/presentation/history_search/history_search_view_model.dart';
+import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
+import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:sqflite/sqflite.dart';
@@ -38,12 +41,12 @@ import 'package:sqflite/sqflite.dart';
 Future<List<SingleChildWidget>> getProviders() async {
   final _client = http.Client();
 
-  print('get Providers');
   final db = await openDatabase(
     'app_setting.db',
     version: 1,
     onCreate: (db, version) async {
-      await db.execute('CREATE TABLE app_setting (isStartApp INTEGER, isAgreeTerms INTEGER)');
+      await db.execute(
+          'CREATE TABLE app_setting (isStartApp INTEGER, isAgreeTerms INTEGER)');
     },
   );
 
@@ -106,10 +109,10 @@ Future<List<SingleChildWidget>> getProviders() async {
         searchIsbnUseCase: SearchIsbnUseCase(searchIsbnRepository),
       ),
     ),
-    // ChangeNotifierProvider<HistorySearchViewModel>(
-    //   create: (context) => HistorySearchViewModel(
-    //     getPaymentHistoryUseCase: getPaymentHistoryUseCase,
-    //   ),
-    // ),
+    ChangeNotifierProvider<SignInViewModel>(
+      create: (context) => SignInViewModel(
+        loginUsecase: LoginUseCase(SignupRepositoryImpl(SignupApi())),
+      ),
+    ),
   ];
 }
