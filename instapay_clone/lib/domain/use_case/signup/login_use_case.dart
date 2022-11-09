@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:instapay_clone/core/result.dart';
+import 'package:instapay_clone/domain/model/sign_up/login_result_data.dart';
 import 'package:instapay_clone/domain/repository/signup/signup_repository.dart';
 import 'package:instapay_clone/util/util_encode.dart';
 
@@ -9,7 +10,7 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<Result<Map>> call(String email, String uuid, String bpxlUuid,
+  Future<Result<LoginResultData>> call(String email, String uuid, String bpxlUuid,
       double latitude, double longitude) async {
     final obj = {
       'email': email,
