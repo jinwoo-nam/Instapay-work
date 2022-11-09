@@ -45,18 +45,17 @@ class SignInViewModel with ChangeNotifier {
     final result = await loginUsecase(
         email, uuid, bpxlUuid, latitude, longitude,
         salt: salt);
-    isSuccess = result.when(success: (loginResult) {
+
+    result.when(success: (loginResult) {
+      _state = state.copyWith(
+        loginResult: loginResult,
+      );
+
       if (loginResult.result == 'pin') {
-        _state = state.copyWith(
-          loginResult: loginResult,
-        );
-        return true;
-      } else {
-        return false;
+        isSuccess = true;
       }
     }, error: (message) {
       print(message);
-      return false;
     });
 
     return isSuccess;

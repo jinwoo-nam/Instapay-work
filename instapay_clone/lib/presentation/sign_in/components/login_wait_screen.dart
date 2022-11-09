@@ -111,7 +111,9 @@ class LoginWaitScreen extends StatelessWidget {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const PaymentCodeChangeScreen()),
+                                      const PaymentCodeChangeScreen(
+                                        isFirstPage: true,
+                                      )),
                               (Route<dynamic> route) => false);
                         }
                       },

@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:provider/provider.dart';
 
 class PaymentCodeWidget extends StatefulWidget {
   const PaymentCodeWidget({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class PaymentCodeWidget extends StatefulWidget {
 
 class _PaymentCodeWidget extends State<PaymentCodeWidget> {
   int numIndex = 0;
-  String code = '';
+  //String code = '';
   List<String> pinCodeList = [];
 
   @override
@@ -23,6 +25,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final rootViewModel = context.watch<RootViewModel>();
     numIndex = 0;
     return Scaffold(
       appBar: AppBar(
@@ -99,12 +102,12 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                   itemBuilder: (BuildContext context, int index) {
                     String num = getText();
                     return ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        String orgPin = await rootViewModel.getPinCode();
                         setState(() {
-                          onButtonClick(num);
+                          onButtonClick(num, orgPin);
                         });
                       },
-                      child: Text(num),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white),
@@ -124,6 +127,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                           ),
                         ),
                       ),
+                      child: Text(num),
                     );
                   },
                 ),
@@ -211,7 +215,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
     return randomNumList[numIndex++];
   }
 
-  void onButtonClick(String num) {
+  void onButtonClick(String num, String orgPinCode) {
     switch (num) {
       case ' ':
         break;
@@ -248,9 +252,21 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
     }
     if (pinCodeList.length >= 6) {
       String str = pinCodeList.join('');
-      code = str;
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(str)));
       pinCodeList.clear();
+      if (str != orgPinCode) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('알림'),
+                  content: const Text('결제코드가 일치하지 않습니다.\n처음부터 정확히 입력해주세요.'),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('확인'))
+                  ],
+                ));
+        return;
+      }
       Navigator.pop(context, true);
     }
   }

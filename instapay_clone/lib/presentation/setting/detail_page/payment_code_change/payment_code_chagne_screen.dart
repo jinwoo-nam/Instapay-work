@@ -1,10 +1,16 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:provider/provider.dart';
 
 class PaymentCodeChangeScreen extends StatefulWidget {
-  const PaymentCodeChangeScreen({Key? key}) : super(key: key);
+  final bool isFirstPage;
+
+  const PaymentCodeChangeScreen({Key? key, this.isFirstPage = false})
+      : super(key: key);
 
   @override
   State<PaymentCodeChangeScreen> createState() =>
@@ -25,6 +31,8 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SettingViewModel>();
+
     numIndex = 0;
     return Scaffold(
       backgroundColor: color.mainNavy,
@@ -116,7 +124,6 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                           onButtonClick(num);
                         });
                       },
-                      child: Text(num),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white),
@@ -136,6 +143,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                           ),
                         ),
                       ),
+                      child: Text(num),
                     );
                   },
                 ),
@@ -147,13 +155,42 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                       ElevatedButton(
                         onPressed: pinCodeList.length == 6 &&
                                 pinCodeListAgain.length == 6
-                            ? () {
-                          //pinCodeList와 pinCodeListAgain 값 비교
+                            ? () async {
+                                //pinCodeList와 pinCodeListAgain 값 비교
+                                if (listEquals(pinCodeList, pinCodeListAgain)) {
+                                  String code = pinCodeList.join();
+                                  print(code);
+                                  //pin code 저장
+                                  await viewModel.savePinCode(code);
+                                  if (widget.isFirstPage) {
+                                    //key api 호출
 
-                          //같으면 코드 저장
+                                    //시작 화면 이동
 
-                          //key api 호출
-                        }
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: const Text('알림'),
+                                            content: const Text(
+                                                '결제코드가 일치하지 않습니다.\n처음부터 정확히 입력해주세요.'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(),
+                                                  child: const Text('확인'))
+                                            ],
+                                          ));
+                                  setState(() {
+                                    pinCodeList.clear();
+                                    pinCodeListAgain.clear();
+                                  });
+                                }
+                              }
                             : null,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(280, 45),

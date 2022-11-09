@@ -1,10 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:instapay_clone/data/data_source/app_setting/app_setting_db.dart';
-import 'package:instapay_clone/data/data_source/history_search/get_payment_history_data_source.dart';
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
 import 'package:instapay_clone/data/data_source/signup/signup_api.dart';
 import 'package:instapay_clone/data/repository/app_setting/app_setting_repository_impl.dart';
-import 'package:instapay_clone/data/repository/history_search/get_payment_history_repository_impl.dart';
+import 'package:instapay_clone/data/repository/local/pin_code_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
@@ -16,7 +15,7 @@ import 'package:instapay_clone/data/repository/setting/search_address_repository
 import 'package:instapay_clone/data/repository/setting/setting_repository_impl.dart';
 import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dart';
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
-import 'package:instapay_clone/domain/use_case/history_search/get_payment_history_use_case.dart';
+import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
@@ -39,7 +38,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<List<SingleChildWidget>> getProviders() async {
-  final _client = http.Client();
+  final client = http.Client();
 
   final db = await openDatabase(
     'app_setting.db',
@@ -54,7 +53,7 @@ Future<List<SingleChildWidget>> getProviders() async {
   final appSettingRepository = AppSettingRepositoryImpl(localDb);
 
   final settingRepository =
-      SettingRepositoryImpl(GetNoticeDataSource(client: _client));
+      SettingRepositoryImpl(GetNoticeDataSource(client: client));
   final searchAddressRepository = SearchAddressRepositoryImpl();
   final getAddressRepository = GetAddressRepositoryImpl();
   final registerAddressRepository = RegisterAddressRepositoryImpl();
@@ -62,21 +61,19 @@ Future<List<SingleChildWidget>> getProviders() async {
   final getBankAccountRepository = GetBankAccountRepositoryImpl();
   final addBankAccountRepository = AddBankAccountRepositoryImpl();
   final deleteBankAccountRepository = DeleteBankAccountRepositoryImpl();
-  final getPaymentHistoryRepository = GetPaymentHistoryRepositoryImpl(
-      GetPaymentHistoryDataSource(client: _client));
 
   final getBankAccountUseCase = GetBankAccountUseCase(getBankAccountRepository);
   final getAddressUseCase = GetAddressUseCase(getAddressRepository);
   final addBankAccountUseCase = AddBankAccountUseCase(addBankAccountRepository);
   final searchIsbnRepository = SearchISBNRepositoryImpl();
 
-  final getPaymentHistoryUseCase =
-      GetPaymentHistoryUseCase(getPaymentHistoryRepository);
+  final pinCodeUseCase = PinCodeUseCase(PinCodeRepositoryImpl());
 
   return [
     ChangeNotifierProvider<RootViewModel>(
       create: (context) => RootViewModel(
         appSetting: AppSettingUseCase(appSettingRepository),
+        pinCodeUseCase: pinCodeUseCase,
       ),
     ),
     ChangeNotifierProvider<MainScreenViewModel>(
@@ -99,6 +96,7 @@ Future<List<SingleChildWidget>> getProviders() async {
         registerAddressUseCase:
             RegisterAddressUseCase(registerAddressRepository),
         deleteAddressUseCase: DeleteAddressUseCase(deleteAddressRepository),
+        pinCodeUseCase: pinCodeUseCase,
       ),
     ),
     ChangeNotifierProvider<QrPayViewModel>(

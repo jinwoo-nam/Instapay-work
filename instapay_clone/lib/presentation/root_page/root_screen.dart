@@ -16,9 +16,11 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
-    Future.microtask(() {
+    Future.microtask(() async{
       final viewModel = context.read<RootViewModel>();
       viewModel.loadSettingData();
+      String pinCode = await viewModel.getPinCode();
+      print('pin code : $pinCode');
     });
 
     super.initState();

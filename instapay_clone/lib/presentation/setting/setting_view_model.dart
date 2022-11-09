@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/delete_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.dart';
@@ -15,6 +16,7 @@ class SettingViewModel with ChangeNotifier {
   final GetAddressUseCase getAddressUseCase;
   final RegisterAddressUseCase registerAddressUseCase;
   final DeleteAddressUseCase deleteAddressUseCase;
+  final PinCodeUseCase pinCodeUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -23,6 +25,7 @@ class SettingViewModel with ChangeNotifier {
     required this.getAddressUseCase,
     required this.registerAddressUseCase,
     required this.deleteAddressUseCase,
+    required this.pinCodeUseCase,
   }) {
     fetchSettingData();
   }
@@ -143,5 +146,9 @@ class SettingViewModel with ChangeNotifier {
     _state = state.copyWith(deleteSelectedAddress: null);
     _state = state.copyWith(addressDeleteEnable: false);
     notifyListeners();
+  }
+
+  Future<void> savePinCode(String pinCode) async {
+    await pinCodeUseCase.savePinCode(pinCode);
   }
 }
