@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
+import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
 import 'package:instapay_clone/ui/color.dart';
+import 'package:provider/provider.dart';
 
 class LoginWaitScreen extends StatelessWidget {
   final String email;
@@ -11,6 +14,8 @@ class LoginWaitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SignInViewModel>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -100,7 +105,16 @@ class LoginWaitScreen extends StatelessWidget {
                         backgroundColor: lightGrey,
                         elevation: 0,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final res = await viewModel.instapayEmailCheck();
+                        if (res) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PaymentCodeChangeScreen()),
+                              (Route<dynamic> route) => false);
+                        }
+                      },
                       child: const Text(
                         '인증을 완료했습니다',
                         style: TextStyle(color: Colors.black),

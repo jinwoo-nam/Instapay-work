@@ -9,12 +9,12 @@ class LoginResultData with _$LoginResultData {
     required String result,
     required String salt,
     required String token,
-    required int refresh,
     required String email,
-    required String toast,
-    required String flag,
-    required String uid,
-    required String eurl,
+    int? refresh,
+    String? toast,
+    String? flag,
+    String? uid,
+    String? eurl,
   }) = _LoginResultData;
   factory LoginResultData.fromJson(Map<String, dynamic> json) => _$LoginResultDataFromJson(json);
 }

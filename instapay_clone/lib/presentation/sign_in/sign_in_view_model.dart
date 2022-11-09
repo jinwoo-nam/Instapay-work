@@ -28,20 +28,37 @@ class SignInViewModel with ChangeNotifier {
     });
   }
 
-  Future<void> instapayEmailCheck(String email) async {
+  Future<bool> instapayEmailCheck() async {
     String uuid = "53d90ca4-58e9-11ed-9b6a-0242ac120002";
     String bpxlUuid = "53d90ca4-58e9-11ed-9b6a-0242ac120002";
     double latitude = 100;
     double longitude = 100;
+    String email = '';
+    String salt = '';
+    if (state.loginResult == null) {
+      return false;
+    }
+    email = state.loginResult!.email;
+    salt = state.loginResult!.salt;
+    bool isSuccess = false;
 
-    final result =
-    await loginUsecase(email, uuid, bpxlUuid, latitude, longitude);
-    result.when(success: (loginResult) {
-      _state = state.copyWith(
-        loginResult: loginResult,
-      );
+    final result = await loginUsecase(
+        email, uuid, bpxlUuid, latitude, longitude,
+        salt: salt);
+    isSuccess = result.when(success: (loginResult) {
+      if (loginResult.result == 'pin') {
+        _state = state.copyWith(
+          loginResult: loginResult,
+        );
+        return true;
+      } else {
+        return false;
+      }
     }, error: (message) {
       print(message);
+      return false;
     });
+
+    return isSuccess;
   }
 }

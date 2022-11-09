@@ -10,8 +10,9 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<Result<LoginResultData>> call(String email, String uuid, String bpxlUuid,
-      double latitude, double longitude) async {
+  Future<Result<LoginResultData>> call(String email, String uuid,
+      String bpxlUuid, double latitude, double longitude,
+      {String salt = ''}) async {
     final obj = {
       'email': email,
       'uuida': uuid,
@@ -21,7 +22,12 @@ class LoginUseCase {
     };
     final json = jsonEncode(obj);
     final String pack = _makePack(json);
-    final String pack_h = _makePackH(pack);
+    String pack_h;
+    if (salt.isEmpty) {
+      pack_h = _makePackH(pack);
+    } else {
+      pack_h = _makePackH(pack, key: salt);
+    }
     const String aid = 'n20mn-lz22g-10t31-15t36-y24oa';
 
     print('aid: $aid, pack: $pack, pack_h: $pack_h');

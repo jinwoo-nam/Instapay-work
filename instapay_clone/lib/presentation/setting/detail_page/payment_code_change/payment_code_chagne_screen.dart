@@ -65,9 +65,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                 Divider(
                   height: 25,
                   thickness: 1.3,
-                  color: pinCodeList.length < 6
-                      ? color.key
-                      : Colors.white,
+                  color: pinCodeList.length < 6 ? color.key : Colors.white,
                 ),
                 const SizedBox(
                   height: 20,
@@ -86,9 +84,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                 Divider(
                   height: 25,
                   thickness: 1.3,
-                  color: pinCodeList.length == 6
-                      ? color.key
-                      : Colors.white,
+                  color: pinCodeList.length == 6 ? color.key : Colors.white,
                 ),
               ],
             ),
@@ -144,17 +140,21 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 30, right: 30, top: 10),
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
                         onPressed: pinCodeList.length == 6 &&
                                 pinCodeListAgain.length == 6
-                            ? () {}
+                            ? () {
+                          //pinCodeList와 pinCodeListAgain 값 비교
+
+                          //같으면 코드 저장
+
+                          //key api 호출
+                        }
                             : null,
-                        child: const Text('다음'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(280, 45),
                           primary: color.key,
@@ -162,6 +162,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                             borderRadius: BorderRadius.circular(40),
                           ),
                         ),
+                        child: const Text('다음'),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 15),
