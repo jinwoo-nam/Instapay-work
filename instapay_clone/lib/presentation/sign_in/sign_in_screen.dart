@@ -283,7 +283,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   await viewModel.instapayLogin(email);
                               FocusScope.of(context).unfocus();
 
-                              if (result) {
+                              if (result == LoginResult.email) {
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -292,9 +292,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                     ),
                                   ),
                                 );
+                              } else if (result == LoginResult.ok) {
+                                rootViewModel.setSignInResult(true);
                               }
-
-                              //rootViewModel.setSignInResult(true);
                             },
                             child: const Text(
                               '메일로 인증',

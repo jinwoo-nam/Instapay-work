@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
 import 'package:instapay_clone/ui/color.dart';
@@ -15,6 +16,7 @@ class LoginWaitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SignInViewModel>();
+    final rootViewModel = context.watch<RootViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +109,7 @@ class LoginWaitScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         final res = await viewModel.instapayEmailCheck(email);
-                        if (res) {
+                        if (res == LoginResult.pin) {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) =>
@@ -115,6 +117,8 @@ class LoginWaitScreen extends StatelessWidget {
                                         isFirstPage: true,
                                       )),
                               (Route<dynamic> route) => false);
+                        } else if (res == LoginResult.ok) {
+                          rootViewModel.setSignInResult(true);
                         }
                       },
                       child: const Text(

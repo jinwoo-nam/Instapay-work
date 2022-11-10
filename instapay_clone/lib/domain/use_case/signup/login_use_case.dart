@@ -13,7 +13,7 @@ class LoginUseCase {
     required this.loginInfoRepository,
   });
 
-  Future<bool> call(String email, String uuid, String bpxlUuid, double latitude,
+  Future<String> call(String email, String uuid, String bpxlUuid, double latitude,
       double longitude,
       {bool isEmailCheck = false}) async {
     final obj = {
@@ -25,7 +25,7 @@ class LoginUseCase {
     };
     final json = jsonEncode(obj);
     final String pack = _makePack(json);
-    bool isSuccess = false;
+    String apiResult = '';
     String pack_h;
     String salt = await loginInfoRepository.loadSalt();
 
@@ -43,16 +43,12 @@ class LoginUseCase {
       loginInfoRepository.saveAccessToken(loginResult.token);
       loginInfoRepository.saveSalt(loginResult.salt);
       loginInfoRepository.saveEmail(loginResult.email);
-      if (isEmailCheck) {
-        if (loginResult.result == 'pin') isSuccess = true;
-      } else {
-        isSuccess = true;
-      }
+      apiResult = loginResult.result;
     }, error: (message) {
       print(message);
     });
 
-    return isSuccess;
+    return apiResult;
   }
 
   String _makePack(String json) {
