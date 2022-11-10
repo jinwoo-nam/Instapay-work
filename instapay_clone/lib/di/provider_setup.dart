@@ -7,6 +7,7 @@ import 'package:instapay_clone/data/data_source/local/pin_code_data_source.dart'
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
 import 'package:instapay_clone/data/data_source/signup/signup_api.dart';
 import 'package:instapay_clone/data/repository/app_setting/app_setting_repository_impl.dart';
+import 'package:instapay_clone/data/repository/kfc/kfc_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/key_result_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/login_info_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/pin_code_repository_impl.dart';
@@ -22,6 +23,7 @@ import 'package:instapay_clone/data/repository/setting/setting_repository_impl.d
 import 'package:instapay_clone/data/repository/signup/key_repository_impl.dart';
 import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dart';
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
+import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
@@ -36,6 +38,7 @@ import 'package:instapay_clone/domain/use_case/setting/register_address_use_case
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/key_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
+import 'package:instapay_clone/presentation/kfc/kfc_view_model.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:instapay_clone/presentation/qr_pay/qr_pay_view_model.dart';
@@ -89,6 +92,8 @@ Future<List<SingleChildWidget>> getProviders() async {
     keyResultRepository: KeyResultRepositoryImpl(KeyResultDataSource(localDB)),
   );
 
+  final kfcRepository = KfcRepositoryImpl();
+
   return [
     ChangeNotifierProvider<RootViewModel>(
       create: (context) => RootViewModel(
@@ -134,6 +139,14 @@ Future<List<SingleChildWidget>> getProviders() async {
         loginUsecase: LoginUseCase(
           repository: SignupRepositoryImpl(SignupApi()),
           loginInfoRepository: loginInfoRepository,
+        ),
+      ),
+    ),
+    ChangeNotifierProvider<KfcViewModel>(
+      create: (context) => KfcViewModel(
+        kfcUseCase: KfcUseCase(
+          kfcRepository: kfcRepository,
+          loginInfo: loginInfoRepository,
         ),
       ),
     ),

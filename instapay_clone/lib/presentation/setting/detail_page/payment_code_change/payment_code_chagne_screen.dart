@@ -170,8 +170,8 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                                     final res =
                                         await viewModel.keyRegister(code);
 
-                                    //시작 화면 이동
                                     if (res == LoginResult.ok) {
+                                      //시작 화면 이동
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>

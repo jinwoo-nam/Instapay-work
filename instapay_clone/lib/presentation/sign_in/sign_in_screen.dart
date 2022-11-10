@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:instapay_clone/presentation/intro/caution_screen.dart';
+import 'package:instapay_clone/presentation/kfc/kfc_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/sign_in/components/login_wait_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
@@ -294,7 +295,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 );
                               } else if (result == LoginResult.ok) {
-                                rootViewModel.setSignInResult(true);
+                                //rootViewModel.setSignInResult(true);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const KfcScreen()),
+                                    (Route<dynamic> route) => false);
                               }
                             },
                             child: const Text(
