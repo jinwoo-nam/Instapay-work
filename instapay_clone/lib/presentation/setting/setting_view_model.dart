@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/delete_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
@@ -7,6 +8,7 @@ import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.
 import 'package:instapay_clone/domain/use_case/setting/get_setting_data_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/register_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
+import 'package:instapay_clone/domain/use_case/signup/key_use_case.dart';
 import 'package:instapay_clone/presentation/setting/setting_state.dart';
 
 class SettingViewModel with ChangeNotifier {
@@ -17,6 +19,8 @@ class SettingViewModel with ChangeNotifier {
   final RegisterAddressUseCase registerAddressUseCase;
   final DeleteAddressUseCase deleteAddressUseCase;
   final PinCodeUseCase pinCodeUseCase;
+  final LoginInfoUseCase loginInfoUseCase;
+  final KeyUseCase keyUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -26,6 +30,8 @@ class SettingViewModel with ChangeNotifier {
     required this.registerAddressUseCase,
     required this.deleteAddressUseCase,
     required this.pinCodeUseCase,
+    required this.loginInfoUseCase,
+    required this.keyUseCase,
   }) {
     fetchSettingData();
   }
@@ -150,5 +156,24 @@ class SettingViewModel with ChangeNotifier {
 
   Future<void> savePinCode(String pinCode) async {
     await pinCodeUseCase.savePinCode(pinCode);
+  }
+
+  Future<String> getPinCode() async {
+    return await pinCodeUseCase.loadPinCode();
+  }
+
+  Future<String> getToken() async {
+    return await loginInfoUseCase.loadAccessToken();
+  }
+
+  Future<String> getSalt() async {
+    return await loginInfoUseCase.loadSalt();
+  }
+
+  Future<void> keyRegister(String pinCode) async {
+    String token = await getToken();
+    String salt = await getSalt();
+
+    final result = await keyUseCase.call(token, salt, pinCode);
   }
 }

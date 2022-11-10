@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
+import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class PaymentCodeWidget extends StatefulWidget {
 
 class _PaymentCodeWidget extends State<PaymentCodeWidget> {
   int numIndex = 0;
-  //String code = '';
+
   List<String> pinCodeList = [];
 
   @override
@@ -25,7 +25,8 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final rootViewModel = context.watch<RootViewModel>();
+    final viewModel = context.watch<SettingViewModel>();
+
     numIndex = 0;
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +104,7 @@ class _PaymentCodeWidget extends State<PaymentCodeWidget> {
                     String num = getText();
                     return ElevatedButton(
                       onPressed: () async {
-                        String orgPin = await rootViewModel.getPinCode();
+                        String orgPin = await viewModel.getPinCode();
                         setState(() {
                           onButtonClick(num, orgPin);
                         });

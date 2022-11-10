@@ -1,7 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class PinCodeDataSource {
-  final secureStorage = const FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage;
+
+  PinCodeDataSource(this.secureStorage);
 
   Future<String> loadPinCode() async {
     return await secureStorage.read(key: 'pin_code') ?? '';

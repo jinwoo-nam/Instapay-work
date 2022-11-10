@@ -106,7 +106,7 @@ class LoginWaitScreen extends StatelessWidget {
                         elevation: 0,
                       ),
                       onPressed: () async {
-                        final res = await viewModel.instapayEmailCheck();
+                        final res = await viewModel.instapayEmailCheck(email);
                         if (res) {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(

@@ -120,7 +120,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
                                   Image(
-                                    image: AssetImage('imgs/login-google@2x.png'),
+                                    image:
+                                        AssetImage('imgs/login-google@2x.png'),
                                     height: 20,
                                     width: 20,
                                   ),
@@ -167,7 +168,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
                                   Image(
-                                    image: AssetImage('imgs/login-naver@2x.png'),
+                                    image:
+                                        AssetImage('imgs/login-naver@2x.png'),
                                     height: 20,
                                     width: 20,
                                   ),
@@ -234,8 +236,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: EdgeInsets.only(bottom: 20),
                         child: Text(
                           '또는',
-                          style:
-                              TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
                         ),
                       ),
                       Padding(
@@ -277,17 +279,21 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             onPressed: () async {
                               final email = emailController.text;
-                              viewModel.instapayLogin(email);
+                              final result =
+                                  await viewModel.instapayLogin(email);
                               FocusScope.of(context).unfocus();
 
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginWaitScreen(
-                                    email: email,
+                              if (result) {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginWaitScreen(
+                                      email: email,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              }
+
                               //rootViewModel.setSignInResult(true);
                             },
                             child: const Text(

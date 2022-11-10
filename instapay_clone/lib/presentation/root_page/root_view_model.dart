@@ -45,6 +45,6 @@ class RootViewModel with ChangeNotifier {
   }
 
   Future<String> getPinCode() async {
-    return pinCodeUseCase.loadPinCode();
+    return await pinCodeUseCase.loadPinCode();
   }
 }

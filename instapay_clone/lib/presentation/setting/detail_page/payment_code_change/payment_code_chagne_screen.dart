@@ -164,6 +164,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                                   await viewModel.savePinCode(code);
                                   if (widget.isFirstPage) {
                                     //key api 호출
+                                    await viewModel.keyRegister(code);
 
                                     //시작 화면 이동
 

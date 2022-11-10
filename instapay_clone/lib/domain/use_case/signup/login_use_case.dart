@@ -1,18 +1,21 @@
 import 'dart:convert';
 
-import 'package:instapay_clone/core/result.dart';
-import 'package:instapay_clone/domain/model/sign_up/login_result_data.dart';
+import 'package:instapay_clone/domain/repository/local/login_info_repository.dart';
 import 'package:instapay_clone/domain/repository/signup/signup_repository.dart';
 import 'package:instapay_clone/util/util_encode.dart';
 
 class LoginUseCase {
   SignupRepository repository;
+  LoginInfoRepository loginInfoRepository;
 
-  LoginUseCase(this.repository);
+  LoginUseCase({
+    required this.repository,
+    required this.loginInfoRepository,
+  });
 
-  Future<Result<LoginResultData>> call(String email, String uuid,
-      String bpxlUuid, double latitude, double longitude,
-      {String salt = ''}) async {
+  Future<bool> call(String email, String uuid, String bpxlUuid, double latitude,
+      double longitude,
+      {bool isEmailCheck = false}) async {
     final obj = {
       'email': email,
       'uuida': uuid,
@@ -22,7 +25,10 @@ class LoginUseCase {
     };
     final json = jsonEncode(obj);
     final String pack = _makePack(json);
+    bool isSuccess = false;
     String pack_h;
+    String salt = await loginInfoRepository.loadSalt();
+
     if (salt.isEmpty) {
       pack_h = _makePackH(pack);
     } else {
@@ -31,8 +37,22 @@ class LoginUseCase {
     const String aid = 'n20mn-lz22g-10t31-15t36-y24oa';
 
     print('aid: $aid, pack: $pack, pack_h: $pack_h');
+
     final res = await repository.login(aid, pack, pack_h);
-    return res;
+    res.when(success: (loginResult) {
+      loginInfoRepository.saveAccessToken(loginResult.token);
+      loginInfoRepository.saveSalt(loginResult.salt);
+      loginInfoRepository.saveEmail(loginResult.email);
+      if (isEmailCheck) {
+        if (loginResult.result == 'pin') isSuccess = true;
+      } else {
+        isSuccess = true;
+      }
+    }, error: (message) {
+      print(message);
+    });
+
+    return isSuccess;
   }
 
   String _makePack(String json) {

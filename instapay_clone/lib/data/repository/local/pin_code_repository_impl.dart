@@ -2,7 +2,9 @@ import 'package:instapay_clone/data/data_source/local/pin_code_data_source.dart'
 import 'package:instapay_clone/domain/repository/local/pin_code_repository.dart';
 
 class PinCodeRepositoryImpl implements PinCodeRepository {
-  final PinCodeDataSource _dataSource = PinCodeDataSource();
+  final PinCodeDataSource _dataSource;
+
+  PinCodeRepositoryImpl(this._dataSource);
 
   @override
   Future<String> loadPinCode() async {
