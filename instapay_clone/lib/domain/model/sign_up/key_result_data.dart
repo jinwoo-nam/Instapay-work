@@ -6,8 +6,9 @@ part 'key_result_data.g.dart';
 @freezed
 class KeyResultData with _$KeyResultData {
   factory KeyResultData({
-    required String uek,
-    required String sck,
+    required String result,
+    @JsonKey(name:"UEK") required String uek,
+    @JsonKey(name:"SCK") required String sck,
   }) = _KeyResultData;
   factory KeyResultData.fromJson(Map<String, dynamic> json) => _$KeyResultDataFromJson(json);
 }

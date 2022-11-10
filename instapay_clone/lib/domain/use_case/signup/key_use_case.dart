@@ -11,21 +11,24 @@ class KeyUseCase {
     required this.keyResultRepository,
   });
 
-  Future<bool> call(String token, String salt, String pinCode) async {
+  Future<String> call(String token, String salt, String pinCode) async {
     salt = salt.isEmpty ? 'o20holr15p04o0611z54g10wp' : salt;
     String key = sha1HmacEncode(pinCode, salt);
+    String apiResult = '';
+
     print('key : $key');
     print('token : $token');
     final result = await keyRepository.keyApi(token, key);
-    result.when(
-        success: (keyResult) async {
-          String uek = keyResult.uek;
-          String sck = keyResult.sck;
-          await keyResultRepository.saveUek(uek);
-          await keyResultRepository.saveSck(sck);
-        },
-        error: (message) {});
+    await result.when(success: (keyResult) async {
+      String uek = keyResult.uek;
+      String sck = keyResult.sck;
+      apiResult = keyResult.result;
+      await keyResultRepository.saveUek(uek);
+      await keyResultRepository.saveSck(sck);
+    }, error: (message) {
+      print(message);
+    });
 
-    return true;
+    return apiResult;
   }
 }

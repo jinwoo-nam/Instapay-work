@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/presentation/main_page/main_screen.dart';
+import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:instapay_clone/util/util.dart';
 import 'package:provider/provider.dart';
 
 class PaymentCodeChangeScreen extends StatefulWidget {
@@ -164,10 +167,17 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                                   await viewModel.savePinCode(code);
                                   if (widget.isFirstPage) {
                                     //key api 호출
-                                    await viewModel.keyRegister(code);
+                                    final res =
+                                        await viewModel.keyRegister(code);
 
                                     //시작 화면 이동
-
+                                    if (res == LoginResult.ok) {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MainScreen()),
+                                          (Route<dynamic> route) => false);
+                                    }
                                   } else {
                                     Navigator.pop(context);
                                   }

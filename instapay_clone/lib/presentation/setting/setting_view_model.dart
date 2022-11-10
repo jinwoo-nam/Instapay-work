@@ -10,6 +10,7 @@ import 'package:instapay_clone/domain/use_case/setting/register_address_use_case
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/key_use_case.dart';
 import 'package:instapay_clone/presentation/setting/setting_state.dart';
+import 'package:instapay_clone/util/util.dart';
 
 class SettingViewModel with ChangeNotifier {
   final GetSettingDataUseCase getSettingDataUseCase;
@@ -170,10 +171,24 @@ class SettingViewModel with ChangeNotifier {
     return await loginInfoUseCase.loadSalt();
   }
 
-  Future<void> keyRegister(String pinCode) async {
+  Future<LoginResult> keyRegister(String pinCode) async {
     String token = await getToken();
     String salt = await getSalt();
 
     final result = await keyUseCase.call(token, salt, pinCode);
+
+    switch (result) {
+      case 'email':
+        //이메일 인증 미완료
+        return LoginResult.email;
+      case 'pin':
+        //이메일 인증 완료, pin code 등록 필요
+        return LoginResult.pin;
+      case 'ok':
+        //이메일 인증 완료, pin code 등록 완료
+        return LoginResult.ok;
+      default:
+        return LoginResult.none;
+    }
   }
 }

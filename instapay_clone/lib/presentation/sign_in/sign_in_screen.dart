@@ -5,6 +5,7 @@ import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/sign_in/components/login_wait_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
+import 'package:instapay_clone/util/util.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {

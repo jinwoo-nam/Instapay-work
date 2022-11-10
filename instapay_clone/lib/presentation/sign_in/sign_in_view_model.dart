@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
-
-enum LoginResult { email, pin, ok, none }
+import 'package:instapay_clone/util/util.dart';
 
 class SignInViewModel with ChangeNotifier {
   final LoginUseCase loginUsecase;

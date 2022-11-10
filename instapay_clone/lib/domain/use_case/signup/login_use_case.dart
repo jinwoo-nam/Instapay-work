@@ -28,7 +28,9 @@ class LoginUseCase {
     String apiResult = '';
     String pack_h;
     String salt = await loginInfoRepository.loadSalt();
-
+    //test
+    //salt = 'o20holr15p04o0611z54g10wp';
+    //
     if (salt.isEmpty) {
       pack_h = _makePackH(pack);
     } else {
