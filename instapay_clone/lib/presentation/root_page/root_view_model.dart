@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/app_setting_data/app_setting_data.dart';
 import 'package:instapay_clone/domain/use_case/local/login_pack_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
+import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
 import 'package:instapay_clone/presentation/root_page/root_state.dart';
+import 'package:instapay_clone/util/util.dart';
 
 import '../../domain/use_case/app_setting/app_setting_use_case.dart';
 
@@ -10,11 +12,13 @@ class RootViewModel with ChangeNotifier {
   final AppSettingUseCase appSetting;
   final PinCodeUseCase pinCodeUseCase;
   final LoginPackUseCase loginPackUseCacse;
+  final LoginUseCase loginUsecase;
 
   RootViewModel({
     required this.appSetting,
     required this.pinCodeUseCase,
     required this.loginPackUseCacse,
+    required this.loginUsecase,
   });
 
   RootState _state = RootState(appSettingData: AppSettingData());
@@ -28,16 +32,16 @@ class RootViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadSettingData() async {
+  Future<bool> loadSettingData() async {
     AppSettingData appSettingData = await appSetting.getAppSetting();
     if (!appSettingData.isStartApp) {
-      loginPackUseCacse.deletePack();
+      await loginPackUseCacse.deletePack();
     }
 
     _state = state.copyWith(
       appSettingData: appSettingData,
     );
-    notifyListeners();
+    return appSettingData.isStartApp;
   }
 
   Future<void> changeSettingData(AppSettingData appSettingData) async {
@@ -48,6 +52,30 @@ class RootViewModel with ChangeNotifier {
 
     await appSetting.updateAppSetting(state.appSettingData);
     notifyListeners();
+  }
+
+  bool checkAgreeTerms() {
+    return state.appSettingData.isAgreeTerms;
+  }
+
+
+  Future<LoginResult> instapayAutoLogin() async {
+    final result = await loginUsecase.autoLogin();
+
+    print(result);
+    switch (result) {
+      case 'email':
+        //이메일 인증 미완료
+        return LoginResult.email;
+      case 'pin':
+        //이메일 인증 완료, pin code 등록 필요
+        return LoginResult.pin;
+      case 'ok':
+        //이메일 인증 완료, pin code 등록 완료
+        return LoginResult.ok;
+      default:
+        return LoginResult.none;
+    }
   }
 
   Future<String> getPinCode() async {

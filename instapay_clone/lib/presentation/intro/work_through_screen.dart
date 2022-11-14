@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/app_setting_data/app_setting_data.dart';
+import 'package:instapay_clone/presentation/intro/terms_of_use_agree_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
@@ -88,6 +89,12 @@ class _WorkThroughScreenState extends State<WorkThroughScreen> {
                     onPressed: () async {
                       await viewModel
                           .changeSettingData(AppSettingData(isStartApp: true));
+
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const TermsOfUseAgreeScreen()),
+                          (Route<dynamic> route) => false);
                     },
                     child: const Text(
                       '시작하기',

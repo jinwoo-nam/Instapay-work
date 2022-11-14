@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:instapay_clone/presentation/intro/caution_screen.dart';
 import 'package:instapay_clone/presentation/kfc/kfc_screen.dart';
+import 'package:instapay_clone/presentation/main_page/main_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/components/login_wait_screen.dart';
@@ -307,6 +308,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                     (Route<dynamic> route) => false);
                               } else if (result == LoginResult.ok) {
                                 rootViewModel.setSignInResult(true);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainScreen()),
+                                    (Route<dynamic> route) => false);
                                 // Navigator.of(context).pushAndRemoveUntil(
                                 //     MaterialPageRoute(
                                 //         builder: (context) =>

@@ -5,8 +5,6 @@ import 'package:instapay_clone/util/util.dart';
 class SignInViewModel with ChangeNotifier {
   final LoginUseCase loginUsecase;
 
-  bool isLoading = true;
-
   SignInViewModel({
     required this.loginUsecase,
   });
@@ -20,25 +18,6 @@ class SignInViewModel with ChangeNotifier {
     final result =
         await loginUsecase(email, uuid, bpxlUuid, latitude, longitude);
 
-    switch (result) {
-      case 'email':
-        //이메일 인증 미완료
-        return LoginResult.email;
-      case 'pin':
-        //이메일 인증 완료, pin code 등록 필요
-        return LoginResult.pin;
-      case 'ok':
-        //이메일 인증 완료, pin code 등록 완료
-        return LoginResult.ok;
-      default:
-        return LoginResult.none;
-    }
-  }
-
-  Future<LoginResult> instapayAutoLogin() async {
-    final result = await loginUsecase.autoLogin();
-
-    print(result);
     switch (result) {
       case 'email':
         //이메일 인증 미완료
@@ -82,11 +61,5 @@ class SignInViewModel with ChangeNotifier {
       default:
         return LoginResult.none;
     }
-  }
-
-  void setLoadingState(bool isLoading) {
-    isLoading = true;
-
-    notifyListeners();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/app_setting_data/app_setting_data.dart';
+import 'package:instapay_clone/presentation/root_page/root_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/terms_of_use/terms_of_use_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
@@ -88,6 +89,11 @@ class _TermsOfUseAgreeScreenState extends State<TermsOfUseAgreeScreen> {
                               isAgreeTerms: true,
                             ),
                           );
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const RootScreen()),
+                              (Route<dynamic> route) => false);
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
