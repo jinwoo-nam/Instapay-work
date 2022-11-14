@@ -16,7 +16,7 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
-    Future.microtask(() async{
+    Future.microtask(() async {
       final viewModel = context.read<RootViewModel>();
       viewModel.loadSettingData();
       String pinCode = await viewModel.getPinCode();
@@ -36,7 +36,9 @@ class _RootScreenState extends State<RootScreen> {
         : !state.appSettingData.isAgreeTerms
             ? const TermsOfUseAgreeScreen()
             : viewModel.isSignIn == false
-                ? const SignInScreen()
+                ? SignInScreen(
+                    isAppFirstStart: !state.appSettingData.isStartApp,
+                  )
                 : const MainScreen();
   }
 }

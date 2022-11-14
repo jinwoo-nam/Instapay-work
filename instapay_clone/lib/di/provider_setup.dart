@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:instapay_clone/data/data_source/app_setting/app_setting_db.dart';
 import 'package:instapay_clone/data/data_source/local/key_result_data_source.dart';
+import 'package:instapay_clone/data/data_source/local/local_db_data_source.dart';
 import 'package:instapay_clone/data/data_source/local/login_info_data_source.dart';
 import 'package:instapay_clone/data/data_source/local/pin_code_data_source.dart';
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
@@ -10,6 +11,7 @@ import 'package:instapay_clone/data/repository/app_setting/app_setting_repositor
 import 'package:instapay_clone/data/repository/kfc/kfc_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/key_result_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/login_info_repository_impl.dart';
+import 'package:instapay_clone/data/repository/local/login_pack_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/pin_code_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
@@ -80,6 +82,7 @@ Future<List<SingleChildWidget>> getProviders() async {
   final searchIsbnRepository = SearchISBNRepositoryImpl();
 
   const localDB = FlutterSecureStorage();
+  final localDbDataSource = LocalDbDataSource(localDB);
   final loginInfoDataSource = LoginInfoDataSource(localDB);
   final loginInfoRepository = LoginInfoRepositoryImpl(loginInfoDataSource);
 
@@ -139,6 +142,7 @@ Future<List<SingleChildWidget>> getProviders() async {
         loginUsecase: LoginUseCase(
           repository: SignupRepositoryImpl(SignupApi()),
           loginInfoRepository: loginInfoRepository,
+          loginPackRepository: LoginPackRepositoryImpl(localDbDataSource),
         ),
       ),
     ),
