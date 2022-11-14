@@ -165,21 +165,19 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                                   print(code);
                                   //pin code 저장
                                   await viewModel.savePinCode(code);
-                                  if (widget.isFirstPage) {
-                                    //key api 호출
-                                    final res =
-                                        await viewModel.keyRegister(code);
-
-                                    if (res == LoginResult.ok) {
+                                  //key api 호출
+                                  final res = await viewModel.keyRegister(code);
+                                  if (res == LoginResult.ok) {
+                                    if (widget.isFirstPage) {
                                       //시작 화면 이동
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const MainScreen()),
                                           (Route<dynamic> route) => false);
+                                    } else {
+                                      Navigator.pop(context);
                                     }
-                                  } else {
-                                    Navigator.pop(context);
                                   }
                                 } else {
                                   showDialog(

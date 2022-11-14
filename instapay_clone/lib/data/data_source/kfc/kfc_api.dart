@@ -26,7 +26,7 @@ class KfcApi {
       final json = jsonDecode(response.body);
       if (json['status'] != "1") {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'kfc first api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
       final kfcResult = KfcFirstResult.fromJson(json);
       return Result.success(kfcResult);

@@ -3,6 +3,7 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:instapay_clone/presentation/intro/caution_screen.dart';
 import 'package:instapay_clone/presentation/kfc/kfc_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
+import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/components/login_wait_screen.dart';
 import 'package:instapay_clone/presentation/sign_in/sign_in_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
@@ -30,10 +31,10 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      Navigator.of(context).push(_createRoute());
-      _focusNode.addListener(() {
-        _focusNodeListener();
-      });
+      // Navigator.of(context).push(_createRoute());
+      // _focusNode.addListener(() {
+      //   _focusNodeListener();
+      // });
     });
     super.initState();
   }
@@ -294,13 +295,21 @@ class _SignInScreenState extends State<SignInScreen> {
                                     ),
                                   ),
                                 );
-                              } else if (result == LoginResult.ok) {
-                                //rootViewModel.setSignInResult(true);
+                              } else if (result == LoginResult.pin) {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const KfcScreen()),
+                                            const PaymentCodeChangeScreen(
+                                              isFirstPage: true,
+                                            )),
                                     (Route<dynamic> route) => false);
+                              } else if (result == LoginResult.ok) {
+                                rootViewModel.setSignInResult(true);
+                                // Navigator.of(context).pushAndRemoveUntil(
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const KfcScreen()),
+                                //     (Route<dynamic> route) => false);
                               }
                             },
                             child: const Text(
