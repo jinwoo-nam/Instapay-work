@@ -14,6 +14,6 @@ class LocalDbDataSource {
   }
 
   Future<void> deleteData(String key) async {
-    await secureStorage.delete(key: 'uek');
+    await secureStorage.delete(key: key);
   }
 }

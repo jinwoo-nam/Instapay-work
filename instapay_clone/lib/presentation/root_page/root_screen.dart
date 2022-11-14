@@ -36,9 +36,7 @@ class _RootScreenState extends State<RootScreen> {
         : !state.appSettingData.isAgreeTerms
             ? const TermsOfUseAgreeScreen()
             : viewModel.isSignIn == false
-                ? SignInScreen(
-                    isAppFirstStart: !state.appSettingData.isStartApp,
-                  )
+                ? const SignInScreen()
                 : const MainScreen();
   }
 }

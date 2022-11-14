@@ -83,4 +83,10 @@ class SignInViewModel with ChangeNotifier {
         return LoginResult.none;
     }
   }
+
+  void setLoadingState(bool isLoading) {
+    isLoading = true;
+
+    notifyListeners();
+  }
 }

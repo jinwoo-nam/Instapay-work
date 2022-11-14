@@ -15,4 +15,9 @@ class LoginPackRepositoryImpl implements LoginPackRepository {
   Future<void> savePack(String pack) async {
     await _dataSource.saveData('pack', pack);
   }
+
+  @override
+  Future<void> deletePack() async {
+    await _dataSource.deleteData('pack');
+  }
 }

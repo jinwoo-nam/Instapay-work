@@ -27,6 +27,7 @@ import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dar
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
 import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
+import 'package:instapay_clone/domain/use_case/local/login_pack_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
@@ -81,27 +82,30 @@ Future<List<SingleChildWidget>> getProviders() async {
   final addBankAccountUseCase = AddBankAccountUseCase(addBankAccountRepository);
   final searchIsbnRepository = SearchISBNRepositoryImpl();
 
-  const localDB = FlutterSecureStorage();
-  final localDbDataSource = LocalDbDataSource(localDB);
-  final loginInfoDataSource = LoginInfoDataSource(localDB);
+  const secyreLocalDB = FlutterSecureStorage();
+  final localDbDataSource = LocalDbDataSource(secyreLocalDB);
+  final loginInfoDataSource = LoginInfoDataSource(secyreLocalDB);
   final loginInfoRepository = LoginInfoRepositoryImpl(loginInfoDataSource);
 
-  final pinCodeDataSource = PinCodeDataSource(localDB);
+  final pinCodeDataSource = PinCodeDataSource(secyreLocalDB);
   final pinCodeUseCase =
       PinCodeUseCase(PinCodeRepositoryImpl(pinCodeDataSource));
   final loginInfoUseCase = LoginInfoUseCase(loginInfoRepository);
   final keyUseCase = KeyUseCase(
     keyRepository: KeyRepositoryImpl(),
-    keyResultRepository: KeyResultRepositoryImpl(KeyResultDataSource(localDB)),
+    keyResultRepository:
+        KeyResultRepositoryImpl(KeyResultDataSource(secyreLocalDB)),
   );
 
   final kfcRepository = KfcRepositoryImpl();
+  final loginPackRepository = LoginPackRepositoryImpl(localDbDataSource);
 
   return [
     ChangeNotifierProvider<RootViewModel>(
       create: (context) => RootViewModel(
         appSetting: AppSettingUseCase(appSettingRepository),
         pinCodeUseCase: pinCodeUseCase,
+        loginPackUseCacse: LoginPackUseCase(loginPackRepository),
       ),
     ),
     ChangeNotifierProvider<MainScreenViewModel>(
@@ -142,7 +146,7 @@ Future<List<SingleChildWidget>> getProviders() async {
         loginUsecase: LoginUseCase(
           repository: SignupRepositoryImpl(SignupApi()),
           loginInfoRepository: loginInfoRepository,
-          loginPackRepository: LoginPackRepositoryImpl(localDbDataSource),
+          loginPackRepository: loginPackRepository,
         ),
       ),
     ),
