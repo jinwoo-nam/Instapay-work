@@ -6,7 +6,6 @@ import 'package:instapay_clone/presentation/my_wallet/components/bank_account_re
 import 'package:instapay_clone/presentation/my_wallet/components/insta_card_widget.dart';
 import 'package:instapay_clone/presentation/my_wallet/components/payment_method_widget.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
-import 'package:instapay_clone/util/util.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -177,9 +176,6 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                         builder: (context) => const BankAccountRegisterScreen(),
                       ),
                     );
-                    if (result != null) {
-                      viewModel.addBankAccountData(result);
-                    }
                   },
                   icon: Image.asset(
                     'imgs/wallet-plus@2x.png',
@@ -239,7 +235,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                       horizontal: 30, vertical: 16.0),
                   child: Column(
                     children: [
-                      ...state.accountList
+                      ...state.meansDataList
                           .map(
                             (e) => GestureDetector(
                               onTap: state.isSelectedDelete == true
@@ -250,7 +246,8 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                                   : () {},
                               child: PaymentMethodWidget(
                                 data: e,
-                                isAccountNull: (state.accountList.length == 1),
+                                isAccountNull:
+                                    (state.meansDataList.length <= 1),
                               ),
                             ),
                           )

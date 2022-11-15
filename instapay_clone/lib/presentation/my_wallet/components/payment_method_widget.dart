@@ -1,13 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
+import 'package:instapay_clone/domain/model/my_wallet/means_data.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_state.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class PaymentMethodWidget extends StatelessWidget {
-  final BankAccountData data;
+  final MeansData data;
   final bool isAccountNull;
 
   const PaymentMethodWidget({
@@ -46,7 +47,7 @@ class PaymentMethodWidget extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    icon: state.defaultAccount == data
+                    icon: state.defaultMid == data.mid
                         ? Image.asset(
                             'imgs/wallet-starfilled@2x.png',
                             width: 20,
@@ -102,53 +103,59 @@ class PaymentMethodWidget extends StatelessWidget {
   }
 
   Widget buildMainTitle() {
-    if (data.title == '인스타코인') {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          children: [
-            Text(
-              data.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: color.mainNavy,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        children: [
+          Text(
+            data.mname,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: color.mainNavy,
             ),
-            const SizedBox(
-              width: 13,
-            ),
-            (data.accountNumber.trim().isEmpty)
-                ? Text('${data.balance} ${data.unit}')
-                : Text(data.accountNumber),
-          ],
-        ),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              data.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: color.mainNavy,
-              ),
-            ),
-            (data.accountNumber.trim().isEmpty)
-                ? Text('${data.balance} ${data.unit}')
-                : Text(data.accountNumber),
-          ],
-        ),
-      );
-    }
+          ),
+          const SizedBox(
+            width: 13,
+          ),
+          Text(
+            '${data.balance.isEmpty ? data.mnum : data.balance}',
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildIcon(MyWalletState state) {
-    if (state.isSelectedDelete == true && data.title != '인스타코인') {
+    // if (state.isSelectedDelete == true && data.mname != 'INC') {
+    //   if (state.deleteSelectAccount != data) {
+    //     return Image.asset(
+    //       'imgs/select-empty@2x.png',
+    //       width: 15,
+    //       height: 15,
+    //     );
+    //   } else {
+    //     return Image.asset(
+    //       'imgs/select-filled@2x.png',
+    //       width: 15,
+    //       height: 15,
+    //     );
+    //   }
+    // } else if (data.mname == '인스타코인') {
+    //   return Image.asset(
+    //     'imgs/wallet-instacoin@2x.png',
+    //     width: 20,
+    //     height: 20,
+    //   );
+    // } else {
+    //   return Image.asset(
+    //     'imgs/wallet-bankaccount@2x.png',
+    //     width: 20,
+    //     height: 20,
+    //   );
+    // }
+
+    if (state.isSelectedDelete == true && data.mname != 'INC') {
       if (state.deleteSelectAccount != data) {
         return Image.asset(
           'imgs/select-empty@2x.png',
@@ -162,7 +169,7 @@ class PaymentMethodWidget extends StatelessWidget {
           height: 15,
         );
       }
-    } else if (data.title == '인스타코인') {
+    } else if (data.mname == 'INC') {
       return Image.asset(
         'imgs/wallet-instacoin@2x.png',
         width: 20,

@@ -13,6 +13,7 @@ import 'package:instapay_clone/data/repository/local/key_result_repository_impl.
 import 'package:instapay_clone/data/repository/local/login_info_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/login_pack_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/pin_code_repository_impl.dart';
+import 'package:instapay_clone/data/repository/means/means_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
@@ -29,6 +30,10 @@ import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_pack_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
+import 'package:instapay_clone/domain/use_case/means/delete_means_use_cacse.dart';
+import 'package:instapay_clone/domain/use_case/means/get_default_means_use_case.dart';
+import 'package:instapay_clone/domain/use_case/means/get_means_use_case.dart';
+import 'package:instapay_clone/domain/use_case/means/update_means_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
@@ -68,7 +73,7 @@ Future<List<SingleChildWidget>> getProviders() async {
   final appSettingRepository = AppSettingRepositoryImpl(localDb);
 
   final settingRepository =
-  SettingRepositoryImpl(GetNoticeDataSource(client: client));
+      SettingRepositoryImpl(GetNoticeDataSource(client: client));
   final searchAddressRepository = SearchAddressRepositoryImpl();
   final getAddressRepository = GetAddressRepositoryImpl();
   final registerAddressRepository = RegisterAddressRepositoryImpl();
@@ -89,13 +94,15 @@ Future<List<SingleChildWidget>> getProviders() async {
 
   final pinCodeDataSource = PinCodeDataSource(secyreLocalDB);
   final pinCodeUseCase =
-  PinCodeUseCase(PinCodeRepositoryImpl(pinCodeDataSource));
+      PinCodeUseCase(PinCodeRepositoryImpl(pinCodeDataSource));
   final loginInfoUseCase = LoginInfoUseCase(loginInfoRepository);
   final keyUseCase = KeyUseCase(
     keyRepository: KeyRepositoryImpl(),
     keyResultRepository:
-    KeyResultRepositoryImpl(KeyResultDataSource(secyreLocalDB)),
+        KeyResultRepositoryImpl(KeyResultDataSource(secyreLocalDB)),
   );
+
+  final meansRepository = MeansRepositoryImpl();
 
   final kfcRepository = KfcRepositoryImpl();
   final loginPackRepository = LoginPackRepositoryImpl(localDbDataSource);
@@ -107,64 +114,74 @@ Future<List<SingleChildWidget>> getProviders() async {
 
   return [
     ChangeNotifierProvider<RootViewModel>(
-      create: (context) =>
-          RootViewModel(
-            appSetting: AppSettingUseCase(appSettingRepository),
-            pinCodeUseCase: pinCodeUseCase,
-            loginPackUseCacse: LoginPackUseCase(loginPackRepository),
-            loginUsecase: loginUseCase,
-          ),
+      create: (context) => RootViewModel(
+        appSetting: AppSettingUseCase(appSettingRepository),
+        pinCodeUseCase: pinCodeUseCase,
+        loginPackUseCacse: LoginPackUseCase(loginPackRepository),
+        loginUsecase: loginUseCase,
+      ),
     ),
     ChangeNotifierProvider<MainScreenViewModel>(
       create: (context) => MainScreenViewModel(),
     ),
     ChangeNotifierProvider<MyWalletViewModel>(
-      create: (context) =>
-          MyWalletViewModel(
-            getBankAccountUseCase: getBankAccountUseCase,
-            addBankAccountUseCase: addBankAccountUseCase,
-            deleteBankAccountUseCase:
+      create: (context) => MyWalletViewModel(
+        getBankAccountUseCase: getBankAccountUseCase,
+        addBankAccountUseCase: addBankAccountUseCase,
+        deleteBankAccountUseCase:
             DeleteBankAccountUseCase(deleteBankAccountRepository),
-          ),
+        getMeansUseCase: GetMeansUseCase(
+          meansRepository: meansRepository,
+          loginInfoRepository: loginInfoRepository,
+        ),
+        updateMeansUseCase: UpdateMeansUseCase(
+          meansRepository: meansRepository,
+          loginInfoRepository: loginInfoRepository,
+        ),
+        getDefaultMeansUseCase: GetDefaultMeansUseCase(
+          meansRepository: meansRepository,
+          loginInfoRepository: loginInfoRepository,
+        ),
+        deleteMeansUseCase: DeleteMeansUseCase(
+          meansRepository: meansRepository,
+          loginInfoRepository: loginInfoRepository,
+        ),
+      ),
     ),
     ChangeNotifierProvider<SettingViewModel>(
-      create: (context) =>
-          SettingViewModel(
-            getSettingDataUseCase: GetSettingDataUseCase(settingRepository),
-            getNoticeDataUseCase: GetNoticeDataUseCase(settingRepository),
-            searchAddressUseCase: SearchAddressUseCase(searchAddressRepository),
-            getAddressUseCase: getAddressUseCase,
-            registerAddressUseCase:
+      create: (context) => SettingViewModel(
+        getSettingDataUseCase: GetSettingDataUseCase(settingRepository),
+        getNoticeDataUseCase: GetNoticeDataUseCase(settingRepository),
+        searchAddressUseCase: SearchAddressUseCase(searchAddressRepository),
+        getAddressUseCase: getAddressUseCase,
+        registerAddressUseCase:
             RegisterAddressUseCase(registerAddressRepository),
-            deleteAddressUseCase: DeleteAddressUseCase(deleteAddressRepository),
-            pinCodeUseCase: pinCodeUseCase,
-            loginInfoUseCase: loginInfoUseCase,
-            keyUseCase: keyUseCase,
-          ),
+        deleteAddressUseCase: DeleteAddressUseCase(deleteAddressRepository),
+        pinCodeUseCase: pinCodeUseCase,
+        loginInfoUseCase: loginInfoUseCase,
+        keyUseCase: keyUseCase,
+      ),
     ),
     ChangeNotifierProvider<QrPayViewModel>(
-      create: (context) =>
-          QrPayViewModel(
-            getBankAccountUseCase: getBankAccountUseCase,
-            getAddressUseCase: getAddressUseCase,
-            addBankAccountUseCase: addBankAccountUseCase,
-            searchIsbnUseCase: SearchIsbnUseCase(searchIsbnRepository),
-          ),
+      create: (context) => QrPayViewModel(
+        getBankAccountUseCase: getBankAccountUseCase,
+        getAddressUseCase: getAddressUseCase,
+        addBankAccountUseCase: addBankAccountUseCase,
+        searchIsbnUseCase: SearchIsbnUseCase(searchIsbnRepository),
+      ),
     ),
     ChangeNotifierProvider<SignInViewModel>(
-      create: (context) =>
-          SignInViewModel(
-            loginUsecase:loginUseCase,
-          ),
+      create: (context) => SignInViewModel(
+        loginUsecase: loginUseCase,
+      ),
     ),
     ChangeNotifierProvider<KfcViewModel>(
-      create: (context) =>
-          KfcViewModel(
-            kfcUseCase: KfcUseCase(
-              kfcRepository: kfcRepository,
-              loginInfo: loginInfoRepository,
-            ),
-          ),
+      create: (context) => KfcViewModel(
+        kfcUseCase: KfcUseCase(
+          kfcRepository: kfcRepository,
+          loginInfo: loginInfoRepository,
+        ),
+      ),
     ),
   ];
 }
