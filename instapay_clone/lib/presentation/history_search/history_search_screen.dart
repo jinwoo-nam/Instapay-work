@@ -1,8 +1,14 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/data/data_source/history_search/get_payment_history_data_source.dart';
+import 'package:instapay_clone/data/data_source/local/local_db_data_source.dart';
+import 'package:instapay_clone/data/data_source/local/login_info_data_source.dart';
 import 'package:instapay_clone/data/repository/history_search/get_payment_history_repository_impl.dart';
+import 'package:instapay_clone/data/repository/local/login_info_repository_impl.dart';
+import 'package:instapay_clone/data/repository/tras/tras_repository_impl.dart';
 import 'package:instapay_clone/domain/use_case/history_search/get_payment_history_use_case.dart';
+import 'package:instapay_clone/domain/use_case/tras/get_tras_use_case.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/period_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/monthly_screen.dart';
 import 'package:instapay_clone/presentation/history_search/detail_page/recently_screen.dart';
@@ -23,6 +29,11 @@ class HistorySearchScreen extends StatelessWidget {
         getPaymentHistoryUseCase: GetPaymentHistoryUseCase(
             GetPaymentHistoryRepositoryImpl(
                 GetPaymentHistoryDataSource(client: http.Client()))),
+        getTrasUseCase: GetTrasUseCase(
+          trasRepository: TrasRepositoryImpl(),
+          loginInfoRepository: LoginInfoRepositoryImpl(
+              LoginInfoDataSource(const FlutterSecureStorage())),
+        ),
       ),
       child: DefaultTabController(
         length: 3,
@@ -42,10 +53,10 @@ class HistorySearchScreen extends StatelessWidget {
               labelColor: color.key,
               unselectedLabelColor: Colors.black,
               indicator: const UnderlineTabIndicator(
-                borderSide:
-                    BorderSide(width: 5.0, color: color.key),
+                borderSide: BorderSide(width: 5.0, color: color.key),
               ),
-              labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              labelStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               onTap: (value) {
                 FocusScope.of(context).unfocus();
               },

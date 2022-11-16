@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:instapay_clone/domain/model/history_search/payment_history_data.dart';
 import 'package:instapay_clone/domain/use_case/history_search/get_payment_history_use_case.dart';
+import 'package:instapay_clone/domain/use_case/tras/get_tras_use_case.dart';
 import 'package:instapay_clone/presentation/history_search/history_search_state.dart';
 
 class HistorySearchViewModel with ChangeNotifier {
   static const _pageSize = 10;
 
   final GetPaymentHistoryUseCase getPaymentHistoryUseCase;
+  final GetTrasUseCase getTrasUseCase;
+
+  HistorySearchViewModel({
+    required this.getPaymentHistoryUseCase,
+    required this.getTrasUseCase,
+  });
 
   HistorySearchState _state = HistorySearchState();
 
@@ -33,10 +40,6 @@ class HistorySearchViewModel with ChangeNotifier {
     _periodPagingController = controller;
   }
 
-  HistorySearchViewModel({
-    required this.getPaymentHistoryUseCase,
-  });
-
   void refreshRecentHistory() {
     _state = state.copyWith(
       curPageRecentPaymentHistory: [],
@@ -51,25 +54,24 @@ class HistorySearchViewModel with ChangeNotifier {
       tid = state.curPageRecentPaymentHistory.last.tid!;
     }
 
-    final historyList = await getPaymentHistoryUseCase
-        .getPaymentRecentHistoryList(tid, _pageSize);
-
-    historyList.when(
-      success: (history) async {
-        final isLastPage = history.length < _pageSize;
+    final trasResult = await getTrasUseCase(tid, _pageSize);
+    trasResult.when(
+      success: (tras) {
+        final isLastPage = tras.length < _pageSize;
         if (isLastPage) {
-          _pagingController.appendLastPage(history);
+          _pagingController.appendLastPage(tras);
         } else {
           final nextPageKey = page + 1;
-          _pagingController.appendPage(history, nextPageKey);
+          _pagingController.appendPage(tras, nextPageKey);
         }
         _state = state.copyWith(
-          curPageRecentPaymentHistory: history,
-          isRecentDataEmpty: (page == 1) && history.isEmpty,
+          curPageRecentPaymentHistory: tras,
+          isRecentDataEmpty: (page == 1) && tras.isEmpty,
         );
       },
       error: (message) {},
     );
+
     notifyListeners();
   }
 
@@ -95,8 +97,8 @@ class HistorySearchViewModel with ChangeNotifier {
       tid = state.curPageMonthPaymentHistory.last.tid!;
     }
 
-    final historyList = await getPaymentHistoryUseCase
-        .getPaymentMonthlyHistoryList(yearMonth, tid, _pageSize);
+    final historyList =
+        await getTrasUseCase(tid, _pageSize, yearMonth: yearMonth);
     historyList.when(
       success: (history) async {
         final isLastPage = history.length < _pageSize;
@@ -135,8 +137,12 @@ class HistorySearchViewModel with ChangeNotifier {
         '${startDate.substring(0, 4)}-${startDate.substring(4, 6)}-${startDate.substring(6, 8)}';
     final eDate =
         '${endDate.substring(0, 4)}-${endDate.substring(4, 6)}-${endDate.substring(6, 8)}';
-    final historyList = await getPaymentHistoryUseCase.getPeriodPaymentHistory(
-        sDate, eDate, tid, _pageSize);
+    final historyList = await getTrasUseCase(
+      tid,
+      _pageSize,
+      startDate: sDate,
+      endDate: eDate,
+    );
 
     historyList.when(
       success: (history) async {

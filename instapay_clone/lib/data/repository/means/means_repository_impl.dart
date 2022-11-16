@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:instapay_clone/core/result.dart';
 import 'package:instapay_clone/data/data_source/means/means_api.dart';
 import 'package:instapay_clone/domain/model/my_wallet/means_data.dart';
@@ -12,7 +10,7 @@ class MeansRepositoryImpl extends MeansRepository {
 
   @override
   Future<Result<List<MeansData>>> getMeans(String token) async {
-    return await _dataSource.getMeans(token);
+      return await _dataSource.getMeans(token);
   }
 
   @override

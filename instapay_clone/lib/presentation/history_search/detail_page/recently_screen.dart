@@ -50,18 +50,18 @@ class _RecentlyScreenState extends State<RecentlyScreen> {
           )
         : Column(
             children: [
-              Visibility(
-                visible: state.isRecentDataEmpty,
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 60.0),
-                  child: Center(
-                    child: Text(
-                      '결제 내역이 없습니다.',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: state.isRecentDataEmpty,
+              //   child: const Padding(
+              //     padding: EdgeInsets.only(top: 60.0),
+              //     child: Center(
+              //       child: Text(
+              //         '결제 내역이 없습니다.',
+              //         style: TextStyle(fontSize: 18),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 9,
                 child: Padding(
@@ -74,6 +74,14 @@ class _RecentlyScreenState extends State<RecentlyScreen> {
                       pagingController: _pagingController,
                       builderDelegate:
                           PagedChildBuilderDelegate<PaymentHistoryData>(
+                        noItemsFoundIndicatorBuilder: (_) {
+                          return const Center(
+                            child: Text(
+                              '결제 내역이 없습니다.',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        },
                         itemBuilder: (context, history, index) =>
                             PaymentHistoryListWidget(
                           data: history,
