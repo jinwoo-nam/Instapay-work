@@ -18,6 +18,7 @@ import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_reposi
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/qr_pay/search_isbn_repository_impl.dart';
+import 'package:instapay_clone/data/repository/quest/question_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/delete_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/get_address_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/register_address_repository_impl.dart';
@@ -38,6 +39,7 @@ import 'package:instapay_clone/domain/use_case/my_wallet/add_bank_account_use_ca
 import 'package:instapay_clone/domain/use_case/my_wallet/delete_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/my_wallet/get_bank_account_use_case.dart';
 import 'package:instapay_clone/domain/use_case/qr_pay/search_isbn_use_case.dart';
+import 'package:instapay_clone/domain/use_case/quest/question_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/delete_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.dart';
@@ -160,6 +162,10 @@ Future<List<SingleChildWidget>> getProviders() async {
         pinCodeUseCase: pinCodeUseCase,
         loginInfoUseCase: loginInfoUseCase,
         keyUseCase: keyUseCase,
+        questionUseCase: QuestionUseCase(
+          loginInfoRepository: loginInfoRepository,
+          questionRepository: QuestionRepositoryImpl(),
+        ),
       ),
     ),
     ChangeNotifierProvider<QrPayViewModel>(

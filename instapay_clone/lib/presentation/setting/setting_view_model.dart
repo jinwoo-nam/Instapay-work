@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
-import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
+import 'package:instapay_clone/domain/use_case/quest/question_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/delete_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/setting/get_notice_data_use_case.dart';
@@ -23,6 +23,7 @@ class SettingViewModel with ChangeNotifier {
   final PinCodeUseCase pinCodeUseCase;
   final LoginInfoUseCase loginInfoUseCase;
   final KeyUseCase keyUseCase;
+  final QuestionUseCase questionUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -34,6 +35,7 @@ class SettingViewModel with ChangeNotifier {
     required this.pinCodeUseCase,
     required this.loginInfoUseCase,
     required this.keyUseCase,
+    required this.questionUseCase,
   }) {
     fetchSettingData();
   }
@@ -191,5 +193,19 @@ class SettingViewModel with ChangeNotifier {
       default:
         return LoginResult.none;
     }
+  }
+
+  Future<bool> sendQuestion(String sub, String msg) async {
+    bool result = false;
+    final res = await questionUseCase(sub, msg);
+    res.when(success: (data) {
+      if (data == 'ok') {
+        result = true;
+      }
+    }, error: (message) {
+      print(message);
+    });
+
+    return result;
   }
 }
