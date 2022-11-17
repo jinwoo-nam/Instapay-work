@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/model/setting/juso_info.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
@@ -184,12 +185,12 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                       detailController.text.trim().isEmpty)
                   ? null
                   : () {
-                      viewModel.registerAddress(AddressData(
-                        address: widget.data.address,
-                        postCode: widget.data.postCode,
-                        detailAddress: detailController.text.trim(),
-                        contact: contactController.text.trim(),
-                        name: nameController.text.trim(),
+                      viewModel.createJuso(JusoInfo(
+                        jtitle: nameController.text.trim(),
+                        fixed: widget.data.address,
+                        user: detailController.text.trim(),
+                        zip: widget.data.postCode.toString(),
+                        tel: contactController.text.trim(),
                       ));
                       Navigator.pop(
                           context,
@@ -201,16 +202,16 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                             name: nameController.text.trim(),
                           ));
                     },
-              child: const Text(
-                '확인',
-                style: TextStyle(fontSize: 18),
-              ),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
                 primary: color.key,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
+              ),
+              child: const Text(
+                '확인',
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ],

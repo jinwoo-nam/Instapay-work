@@ -6,14 +6,26 @@ import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
+  const SettingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   final String _url =
       'https://www.instapay.kr/10x10.php?t=d20cx-mc22m-03u10-09z58-a22av&q=f9ac81ca0da1c62e1308d8520ae21b5b42cf1ccb';
 
-  const SettingScreen({Key? key}) : super(key: key);
-
   void _launchURL() async {
     if (!await launch(_url)) throw 'Could not launch $_url';
+  }
+
+  @override
+  void initState() {
+    final viewModel = context.read<SettingViewModel>();
+    viewModel.getJuso();
+    super.initState();
   }
 
   @override

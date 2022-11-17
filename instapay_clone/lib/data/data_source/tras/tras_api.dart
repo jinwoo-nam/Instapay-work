@@ -27,13 +27,13 @@ class TrasApi {
         },
       );
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('tras api의 응답 코드가 200이 아닙니다.');
       }
       print(response.body);
       final json = jsonDecode(response.body);
       if (json['status'] != "1" && json['status'] != 1) {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'tras api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
 
       Iterable feed = json['tras'];

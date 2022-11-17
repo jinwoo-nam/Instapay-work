@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/model/setting/juso_info.dart';
+import 'package:instapay_clone/domain/use_case/juso/create_juso_use_case.dart';
+import 'package:instapay_clone/domain/use_case/juso/delete_juso_use_case.dart';
+import 'package:instapay_clone/domain/use_case/juso/get_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/quest/question_use_case.dart';
@@ -13,6 +17,8 @@ import 'package:instapay_clone/domain/use_case/signup/key_use_case.dart';
 import 'package:instapay_clone/presentation/setting/setting_state.dart';
 import 'package:instapay_clone/util/util.dart';
 
+import '../../domain/use_case/juso/update_juso_use_case.dart';
+
 class SettingViewModel with ChangeNotifier {
   final GetSettingDataUseCase getSettingDataUseCase;
   final GetNoticeDataUseCase getNoticeDataUseCase;
@@ -24,6 +30,10 @@ class SettingViewModel with ChangeNotifier {
   final LoginInfoUseCase loginInfoUseCase;
   final KeyUseCase keyUseCase;
   final QuestionUseCase questionUseCase;
+  final GetJusoUseCase getJusoUseCase;
+  final CreateJusoUseCase createJusoUseCase;
+  final DeleteJusoUseCase deleteJusoUseCase;
+  final UpdateJusoUseCase updateJusoUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -36,6 +46,10 @@ class SettingViewModel with ChangeNotifier {
     required this.loginInfoUseCase,
     required this.keyUseCase,
     required this.questionUseCase,
+    required this.getJusoUseCase,
+    required this.createJusoUseCase,
+    required this.deleteJusoUseCase,
+    required this.updateJusoUseCase,
   }) {
     fetchSettingData();
   }
@@ -52,16 +66,18 @@ class SettingViewModel with ChangeNotifier {
         },
         error: (message) {});
 
+    final juso = await getJuso();
+
     final addressList = await getAddressUseCase();
     addressList.when(
         success: (address) {
-          _state = state.copyWith(addressList: address);
+          // _state = state.copyWith(addressList: address);
         },
         error: (message) {});
 
-    if (state.defaultAddress == null && state.addressList.isNotEmpty) {
-      setDefaultAddress(state.addressList[0]);
-    }
+    // if (state.defaultAddress == null && state.addressList.isNotEmpty) {
+    //   setDefaultAddress(state.Juso[0]);
+    // }
 
     final settingList = await getSettingDataUseCase.getSettingListData();
     final termsOfUse = await getSettingDataUseCase.getTermsOfUseListData();
@@ -80,7 +96,7 @@ class SettingViewModel with ChangeNotifier {
     result.when(
         success: (address) {
           _state = state.copyWith(
-            searchAddressList: address,
+            // searchAddressList: address,
             isAddressSearchClicked: true,
           );
         },
@@ -91,69 +107,27 @@ class SettingViewModel with ChangeNotifier {
 
   void clearSearchAddressList() {
     _state = state.copyWith(
-      searchAddressList: [],
+      // searchAddressList: [],
       isAddressSearchClicked: false,
     );
 
     notifyListeners();
   }
 
-  void registerAddress(AddressData address) async {
-    await registerAddressUseCase(address);
-
-    final addressList = await getAddressUseCase();
-    addressList.when(
-        success: (address) {
-          _state = state.copyWith(addressList: address);
-        },
-        error: (message) {});
-
-    notifyListeners();
-  }
-
-  void deleteAddress(AddressData address) async {
-    await deleteAddressUseCase(address);
-
-    final addressList = await getAddressUseCase();
-    addressList.when(
-        success: (address) {
-          _state = state.copyWith(addressList: address);
-        },
-        error: (message) {});
-
-    if (address == state.defaultAddress) {
-      if (state.addressList.isNotEmpty) {
-        setDefaultAddress(state.addressList[0]);
-      } else {
-        setDefaultAddress(null);
-      }
-    }
-
-    notifyListeners();
-  }
-
-  void setDefaultAddress(AddressData? address) async {
-    _state = state.copyWith(
-      defaultAddress: address,
-    );
-    await registerAddressUseCase.setDefaultAddress(address);
-    notifyListeners();
-  }
-
   void clickAddressDelete() {
     _state = state.copyWith(
         addressDeleteEnable: !_state.addressDeleteEnable,
-        deleteSelectedAddress: null);
+        deleteSelectedJuso: null);
     notifyListeners();
   }
 
-  void setDeleteSelectedAddress(AddressData address) {
-    _state = state.copyWith(deleteSelectedAddress: address);
+  void setDeleteSelectedAddress(JusoInfo juso) {
+    _state = state.copyWith(deleteSelectedJuso: juso);
     notifyListeners();
   }
 
   void clearAddressState() {
-    _state = state.copyWith(deleteSelectedAddress: null);
+    _state = state.copyWith(deleteSelectedJuso: null);
     _state = state.copyWith(addressDeleteEnable: false);
     notifyListeners();
   }
@@ -207,5 +181,32 @@ class SettingViewModel with ChangeNotifier {
     });
 
     return result;
+  }
+
+  Future<void> getJuso() async {
+    final result = await getJusoUseCase();
+    result.when(success: (jusoList) {
+      _state = state.copyWith(
+        jusoList: jusoList,
+      );
+    }, error: (message) {
+      print(message);
+    });
+
+
+
+    notifyListeners();
+  }
+
+  Future<void> createJuso(JusoInfo info) async {
+    await createJusoUseCase(info);
+  }
+
+  Future<void> deleteJuso(String jid) async {
+    await deleteJusoUseCase(jid);
+  }
+
+  Future<void> updateJuso(String jid) async {
+    await updateJusoUseCase(jid);
   }
 }

@@ -118,14 +118,14 @@ class SettingListWidget extends StatelessWidget {
 
   Text? getSubtitle(SettingState state) {
     if (data.title == '주소지') {
-      if (state.addressList.isEmpty) {
+      if (state.defaultJuso == null) {
         return const Text(
           '등록된 주소지가 없습니다.',
           style: TextStyle(height: 1.1),
         );
       } else {
         return Text(
-          '[${state.defaultAddress!.postCode}] ${state.defaultAddress!.address}',
+          '[${state.defaultJuso!.zip}] ${state.defaultJuso!.fixed}',
           style: const TextStyle(
             height: 1.2,
           ),

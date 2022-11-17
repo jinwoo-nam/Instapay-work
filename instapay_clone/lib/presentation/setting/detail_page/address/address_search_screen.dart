@@ -124,32 +124,33 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
   }
 
   List<Widget> buildSearchResult(SettingState state) {
-    if (state.searchAddressList.isEmpty) {
-      return [
-        const Center(
-          child: Text('검색 결과가 없습니다.'),
-        )
-      ];
-    } else {
-      return state.searchAddressList.map((e) {
-        return GestureDetector(
-          onTap: () async{
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddressRegisterScreen(
-                  data: e,
-                ),
-              ),
-            );
-
-            if(result != null) {
-              Navigator.pop(context,result);
-            }
-          },
-          child: AddressSearchResultWidget(data: e),
-        );
-      }).toList();
-    }
+    return [];
+    // if (state.searchAddressList.isEmpty) {
+    //   return [
+    //     const Center(
+    //       child: Text('검색 결과가 없습니다.'),
+    //     )
+    //   ];
+    // } else {
+    //   return state.searchAddressList.map((e) {
+    //     return GestureDetector(
+    //       onTap: () async{
+    //         final result = await Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //             builder: (context) => AddressRegisterScreen(
+    //               data: e,
+    //             ),
+    //           ),
+    //         );
+    //
+    //         if(result != null) {
+    //           Navigator.pop(context,result);
+    //         }
+    //       },
+    //       child: AddressSearchResultWidget(data: e),
+    //     );
+    //   }).toList();
+    // }
   }
 }

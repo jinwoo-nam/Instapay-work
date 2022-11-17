@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instapay_clone/domain/model/setting/juso_info.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/address/address_list_widget.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/address/address_search_screen.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
@@ -43,7 +44,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         builder: (context) => const AddressSearchScreen()),
                   );
                   if (newAddress != null) {
-                    viewModel.setDefaultAddress(newAddress);
+                    //viewModel.setDefaultAddress(newAddress);
                   }
                 } else {
                   viewModel.clickAddressDelete();
@@ -68,8 +69,8 @@ class _AddressScreenState extends State<AddressScreen> {
                 if (state.addressDeleteEnable == false) {
                   viewModel.clickAddressDelete();
                 } else {
-                  if (state.deleteSelectedAddress != null) {
-                    viewModel.deleteAddress(state.deleteSelectedAddress!);
+                  if (state.deleteSelectedJuso != null) {
+                    viewModel.deleteJuso(state.deleteSelectedJuso!.jid);
                   }
                 }
               },
@@ -89,13 +90,13 @@ class _AddressScreenState extends State<AddressScreen> {
               const SizedBox(
                 height: 20,
               ),
-              ...state.addressList.map((e) {
+              ...state.jusoList.map((e) {
                 return GestureDetector(
                   onTap: () {
                     if (state.addressDeleteEnable) {
-                      viewModel.setDeleteSelectedAddress(e);
+                      viewModel.deleteJuso(e.jid);
                     } else {
-                      viewModel.setDefaultAddress(e);
+                      viewModel.updateJuso(e.jid);
                       Navigator.pop(context);
                     }
                   },
@@ -103,7 +104,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     children: [
                       Visibility(
                         visible: state.addressDeleteEnable,
-                        child: (state.deleteSelectedAddress == e)
+                        child: (state.deleteSelectedJuso == e)
                             ? const Icon(Icons.circle)
                             : const Icon(Icons.circle_outlined),
                       ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/model/setting/juso_info.dart';
 
 class AddressListWidget extends StatelessWidget {
-  final AddressData data;
+  final JusoInfo data;
 
   const AddressListWidget({Key? key, required this.data}) : super(key: key);
 
@@ -14,7 +15,7 @@ class AddressListWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            data.name!,
+            data.jtitle,
             style: const TextStyle(
               height: 1.7,
               fontWeight: FontWeight.bold,
@@ -24,7 +25,7 @@ class AddressListWidget extends StatelessWidget {
             height: 15,
           ),
           Text(
-            '[${data.postCode}] ${data.address}',
+            '[${data.zip}] ${data.fixed} ${data.user}',
             style: const TextStyle(
               height: 1.7,
             ),
@@ -33,7 +34,7 @@ class AddressListWidget extends StatelessWidget {
             height: 15,
           ),
           Text(
-            '${data.contact}',
+            data.tel,
             style: const TextStyle(
               height: 1.7,
             ),

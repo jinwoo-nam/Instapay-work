@@ -21,13 +21,13 @@ class MeansApi {
         },
       );
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('get means api의 응답 코드가 200이 아닙니다.');
       }
       print(response.body);
       final json = jsonDecode(response.body);
       if (json['status'] != "1" && json['status'] != 1) {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'get means api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
       Iterable jsonIterable = json['means'];
       final List<MeansData> meansData =
@@ -52,13 +52,13 @@ class MeansApi {
         },
       );
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('update means api의 응답 코드가 200이 아닙니다.');
       }
       print(response.body);
       final json = jsonDecode(response.body);
       if (json['status'] != "1" && json['status'] != 1) {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'update means api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
     } catch (e) {
       //return Result.error(e.toString());
@@ -77,13 +77,13 @@ class MeansApi {
         },
       );
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('get default means api의 응답 코드가 200이 아닙니다.');
       }
       print(response.body);
       final json = jsonDecode(response.body);
       if (json['status'] != "1" && json['status'] != 1) {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'get default means api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
 
       return Result.success(json['mid']);
@@ -105,13 +105,13 @@ class MeansApi {
         },
       );
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('delete means api의 응답 코드가 200이 아닙니다.');
       }
       print(response.body);
       final json = jsonDecode(response.body);
       if (json['status'] != "1" && json['status'] != 1) {
         throw Exception(
-            'key api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
+            'delete means api의 결과 status가 1이 아닙니다. (status : ${json['status']})');
       }
 
       return Result.success(json['result']);

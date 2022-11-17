@@ -21,7 +21,7 @@ class KfcApi {
       );
       print(response.body);
       if (response.statusCode != 200) {
-        throw Exception('key api의 응답 코드가 200이 아닙니다.');
+        throw Exception('kfc first api의 응답 코드가 200이 아닙니다.');
       }
       final json = jsonDecode(response.body);
       if (json['status'] != "1") {
