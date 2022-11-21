@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
 import 'package:instapay_clone/domain/model/setting/juso_info.dart';
+import 'package:instapay_clone/domain/model/setting/juso_search_result_data.dart';
 import 'package:instapay_clone/presentation/setting/setting_view_model.dart';
 import 'package:instapay_clone/ui/color.dart' as color;
 import 'package:provider/provider.dart';
 
 class AddressRegisterScreen extends StatefulWidget {
-  final AddressData data;
+  final JusoSearchResultData data;
 
   const AddressRegisterScreen({
     Key? key,
@@ -100,7 +101,7 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('${widget.data.postCode}'),
+                                Text(widget.data.zip),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -120,7 +121,7 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(widget.data.address),
+                            child: Text(widget.data.juso),
                           ),
                           TextField(
                             style: const TextStyle(
@@ -187,20 +188,21 @@ class _AddressRegisterScreenState extends State<AddressRegisterScreen> {
                   : () {
                       viewModel.createJuso(JusoInfo(
                         jtitle: nameController.text.trim(),
-                        fixed: widget.data.address,
+                        fixed: widget.data.juso,
                         user: detailController.text.trim(),
-                        zip: widget.data.postCode.toString(),
+                        zip: widget.data.zip.toString(),
                         tel: contactController.text.trim(),
                       ));
                       Navigator.pop(
-                          context,
-                          AddressData(
-                            address: widget.data.address,
-                            postCode: widget.data.postCode,
-                            detailAddress: detailController.text.trim(),
-                            contact: contactController.text.trim(),
-                            name: nameController.text.trim(),
-                          ));
+                        context,
+                        JusoInfo(
+                          jtitle: nameController.text.trim(),
+                          zip: widget.data.zip,
+                          fixed: widget.data.juso,
+                          user: detailController.text.trim(),
+                          tel: contactController.text.trim(),
+                        ),
+                      );
                     },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:instapay_clone/domain/model/setting/address_data.dart';
 import 'package:instapay_clone/domain/model/setting/juso_info.dart';
+import 'package:instapay_clone/domain/model/setting/juso_search_result_data.dart';
 import 'package:instapay_clone/domain/model/setting/notice_list_data.dart';
 import 'package:instapay_clone/domain/model/setting/service_termination_reason_data.dart';
 import 'package:instapay_clone/domain/model/setting/setting_list_data.dart';
@@ -18,10 +19,12 @@ class SettingState with _$SettingState {
     @Default([]) List<TermsOfUseListData> termsOfUseList,
     @Default([]) List<ServiceTerminationReasonData> reasonList,
     @Default([]) List<JusoInfo> jusoList,
+    @Default([]) List<JusoSearchResultData> searchJusoResultList,
     @Default(false) bool isAddressSearchClicked,
     JusoInfo? defaultJuso,
     @Default(false) bool addressDeleteEnable,
     JusoInfo? deleteSelectedJuso,
+    @Default(false) isSearchLoading,
   }) = _SettingState;
 
   factory SettingState.fromJson(Map<String, dynamic> json) =>

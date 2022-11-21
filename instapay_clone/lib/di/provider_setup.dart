@@ -8,6 +8,7 @@ import 'package:instapay_clone/data/data_source/local/pin_code_data_source.dart'
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
 import 'package:instapay_clone/data/data_source/signup/signup_api.dart';
 import 'package:instapay_clone/data/repository/app_setting/app_setting_repository_impl.dart';
+import 'package:instapay_clone/data/repository/juso/jip_zip_repository_impl.dart';
 import 'package:instapay_clone/data/repository/juso/juso_repository_impl.dart';
 import 'package:instapay_clone/data/repository/kfc/kfc_repository_impl.dart';
 import 'package:instapay_clone/data/repository/local/key_result_repository_impl.dart';
@@ -30,6 +31,7 @@ import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dar
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/create_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/delete_juso_use_case.dart';
+import 'package:instapay_clone/domain/use_case/juso/get_jip_zip_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/get_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/update_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
@@ -188,6 +190,10 @@ Future<List<SingleChildWidget>> getProviders() async {
         updateJusoUseCase: UpdateJusoUseCase(
           loginInfoRepository: loginInfoRepository,
           jusoRepository: jusoRepository,
+        ),
+        getJipZipUseCase: GetJipZipUseCase(
+          loginInfoRepository: loginInfoRepository,
+          jipZipRepository: JipZipRepositoryImpl(),
         ),
       ),
     ),

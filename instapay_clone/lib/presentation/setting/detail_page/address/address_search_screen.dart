@@ -85,37 +85,41 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
               height: 40,
             ),
             Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  ...(state.isAddressSearchClicked == false)
-                      ? [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                '도로명 주소: 도로명과 건물 번호',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text('       예) 테헤란로 520, 거북골로 23길'),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text(
-                                '지번 주소: 지번과 번지수',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text('       예) 대치동 945, 북가좌동 348'),
-                            ],
-                          )
-                        ]
-                      : buildSearchResult(state),
-                ],
-              ),
+              child: state.isSearchLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView(
+                      shrinkWrap: true,
+                      children: [
+                        ...(state.isAddressSearchClicked == false)
+                            ? [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      '도로명 주소: 도로명과 건물 번호',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('       예) 테헤란로 520, 거북골로 23길'),
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Text(
+                                      '지번 주소: 지번과 번지수',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text('       예) 대치동 945, 북가좌동 348'),
+                                  ],
+                                )
+                              ]
+                            : buildSearchResult(state),
+                      ],
+                    ),
             ),
           ],
         ),
@@ -124,33 +128,32 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> {
   }
 
   List<Widget> buildSearchResult(SettingState state) {
-    return [];
-    // if (state.searchAddressList.isEmpty) {
-    //   return [
-    //     const Center(
-    //       child: Text('검색 결과가 없습니다.'),
-    //     )
-    //   ];
-    // } else {
-    //   return state.searchAddressList.map((e) {
-    //     return GestureDetector(
-    //       onTap: () async{
-    //         final result = await Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) => AddressRegisterScreen(
-    //               data: e,
-    //             ),
-    //           ),
-    //         );
-    //
-    //         if(result != null) {
-    //           Navigator.pop(context,result);
-    //         }
-    //       },
-    //       child: AddressSearchResultWidget(data: e),
-    //     );
-    //   }).toList();
-    // }
+    if (state.searchJusoResultList.isEmpty) {
+      return [
+        const Center(
+          child: Text('검색 결과가 없습니다.'),
+        )
+      ];
+    } else {
+      return state.searchJusoResultList.map((e) {
+        return GestureDetector(
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddressRegisterScreen(
+                  data: e,
+                ),
+              ),
+            );
+
+            if (result != null) {
+              Navigator.pop(context, result);
+            }
+          },
+          child: AddressSearchResultWidget(data: e),
+        );
+      }).toList();
+    }
   }
 }

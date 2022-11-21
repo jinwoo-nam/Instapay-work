@@ -44,7 +44,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         builder: (context) => const AddressSearchScreen()),
                   );
                   if (newAddress != null) {
-                    //viewModel.setDefaultAddress(newAddress);
+                    viewModel.updateJuso(newAddress);
                   }
                 } else {
                   viewModel.clickAddressDelete();
@@ -94,9 +94,9 @@ class _AddressScreenState extends State<AddressScreen> {
                 return GestureDetector(
                   onTap: () {
                     if (state.addressDeleteEnable) {
-                      viewModel.deleteJuso(e.jid);
+                      viewModel.setDeleteSelectedAddress(e);
                     } else {
-                      viewModel.updateJuso(e.jid);
+                      viewModel.updateJuso(e);
                       Navigator.pop(context);
                     }
                   },

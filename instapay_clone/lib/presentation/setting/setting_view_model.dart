@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/setting/address_data.dart';
 import 'package:instapay_clone/domain/model/setting/juso_info.dart';
 import 'package:instapay_clone/domain/use_case/juso/create_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/delete_juso_use_case.dart';
+import 'package:instapay_clone/domain/use_case/juso/get_jip_zip_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/get_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
@@ -34,6 +34,7 @@ class SettingViewModel with ChangeNotifier {
   final CreateJusoUseCase createJusoUseCase;
   final DeleteJusoUseCase deleteJusoUseCase;
   final UpdateJusoUseCase updateJusoUseCase;
+  final GetJipZipUseCase getJipZipUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -50,6 +51,7 @@ class SettingViewModel with ChangeNotifier {
     required this.createJusoUseCase,
     required this.deleteJusoUseCase,
     required this.updateJusoUseCase,
+    required this.getJipZipUseCase,
   }) {
     fetchSettingData();
   }
@@ -88,20 +90,6 @@ class SettingViewModel with ChangeNotifier {
       termsOfUseList: termsOfUse,
       reasonList: reason,
     );
-    notifyListeners();
-  }
-
-  Future<void> searchAddress(String query) async {
-    final result = await searchAddressUseCase(query);
-    result.when(
-        success: (address) {
-          _state = state.copyWith(
-            // searchAddressList: address,
-            isAddressSearchClicked: true,
-          );
-        },
-        error: (message) {});
-
     notifyListeners();
   }
 
@@ -188,25 +176,54 @@ class SettingViewModel with ChangeNotifier {
     result.when(success: (jusoList) {
       _state = state.copyWith(
         jusoList: jusoList,
+        defaultJuso: jusoList.first,
       );
     }, error: (message) {
       print(message);
     });
-
-
 
     notifyListeners();
   }
 
   Future<void> createJuso(JusoInfo info) async {
     await createJusoUseCase(info);
+    await getJuso();
   }
 
   Future<void> deleteJuso(String jid) async {
     await deleteJusoUseCase(jid);
+    _state = state.copyWith(
+        addressDeleteEnable: !_state.addressDeleteEnable,
+        deleteSelectedJuso: null);
+    await getJuso();
   }
 
-  Future<void> updateJuso(String jid) async {
-    await updateJusoUseCase(jid);
+  Future<void> updateJuso(JusoInfo info) async {
+    await updateJusoUseCase(info.jid);
+
+    await getJuso();
+  }
+
+  Future<void> searchAddress(String query) async {
+    _state = state.copyWith(
+      isSearchLoading: true,
+    );
+    notifyListeners();
+
+    final zipResult = await getJipZipUseCase.getZip(query);
+    zipResult.when(
+      success: (jusoList) {
+        _state = state.copyWith(
+          searchJusoResultList: jusoList,
+          isAddressSearchClicked: true,
+          isSearchLoading: false,
+        );
+      },
+      error: (message) {
+        print(message);
+      },
+    );
+
+    notifyListeners();
   }
 }

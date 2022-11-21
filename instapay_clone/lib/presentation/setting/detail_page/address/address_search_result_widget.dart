@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/setting/address_data.dart';
+import 'package:instapay_clone/domain/model/setting/juso_search_result_data.dart';
 
 class AddressSearchResultWidget extends StatelessWidget {
-  final AddressData data;
+  final JusoSearchResultData data;
 
   const AddressSearchResultWidget({Key? key, required this.data})
       : super(key: key);
@@ -15,13 +15,13 @@ class AddressSearchResultWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 13.0),
           child: Row(
             children: [
-              Text('${data.postCode}'),
+              Text(data.zip),
               const SizedBox(
                 width: 40,
               ),
               Expanded(
                   child: Text(
-                data.address,
+                data.juso,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               )),
