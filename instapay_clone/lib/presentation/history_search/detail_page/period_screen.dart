@@ -80,16 +80,19 @@ class _PeriodScreenState extends State<PeriodScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text(
-                                  '시작일',
-                                  style: TextStyle(
-                                    fontSize: 19,
+                                const Expanded(
+                                  child: Text(
+                                    '시작일',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 50,
-                                ),
+                                // const SizedBox(
+                                //   width: 50,
+                                // ),
                                 Expanded(
+                                  flex: 2,
                                   child: TextFormField(
                                     controller: startDate,
                                     decoration: const InputDecoration(
@@ -124,16 +127,19 @@ class _PeriodScreenState extends State<PeriodScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text(
-                                  '종료일',
-                                  style: TextStyle(
-                                    fontSize: 19,
+                                const Expanded(
+                                  child: Text(
+                                    '종료일',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 50,
-                                ),
+                                // const SizedBox(
+                                //   width: 50,
+                                // ),
                                 Expanded(
+                                  flex: 2,
                                   child: TextFormField(
                                     controller: endDate,
                                     keyboardType: TextInputType.number,
