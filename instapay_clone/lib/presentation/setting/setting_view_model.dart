@@ -18,6 +18,7 @@ import 'package:instapay_clone/presentation/setting/setting_state.dart';
 import 'package:instapay_clone/util/util.dart';
 
 import '../../domain/use_case/juso/update_juso_use_case.dart';
+import '../../domain/use_case/user_info/user_info_use_case.dart';
 
 class SettingViewModel with ChangeNotifier {
   final GetSettingDataUseCase getSettingDataUseCase;
@@ -35,6 +36,7 @@ class SettingViewModel with ChangeNotifier {
   final DeleteJusoUseCase deleteJusoUseCase;
   final UpdateJusoUseCase updateJusoUseCase;
   final GetJipZipUseCase getJipZipUseCase;
+  final UserInfoUseCase userInfoUseCase;
 
   SettingViewModel({
     required this.getSettingDataUseCase,
@@ -52,6 +54,7 @@ class SettingViewModel with ChangeNotifier {
     required this.deleteJusoUseCase,
     required this.updateJusoUseCase,
     required this.getJipZipUseCase,
+    required this.userInfoUseCase,
   }) {
     fetchSettingData();
   }
@@ -68,7 +71,7 @@ class SettingViewModel with ChangeNotifier {
         },
         error: (message) {});
 
-    final juso = await getJuso();
+    await getJuso();
 
     final addressList = await getAddressUseCase();
     addressList.when(
@@ -90,6 +93,13 @@ class SettingViewModel with ChangeNotifier {
       termsOfUseList: termsOfUse,
       reasonList: reason,
     );
+
+    final userInfo = userInfoUseCase.getUserInfo();
+    _state = state.copyWith(
+      userEmail: userInfo.email,
+      userName: userInfo.name.isEmpty ? '실명 인증 전입니다.' : userInfo.name,
+    );
+
     notifyListeners();
   }
 

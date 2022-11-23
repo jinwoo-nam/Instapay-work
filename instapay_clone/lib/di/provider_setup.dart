@@ -28,6 +28,7 @@ import 'package:instapay_clone/data/repository/setting/search_address_repository
 import 'package:instapay_clone/data/repository/setting/setting_repository_impl.dart';
 import 'package:instapay_clone/data/repository/signup/key_repository_impl.dart';
 import 'package:instapay_clone/data/repository/signup/signup_repository_impl.dart';
+import 'package:instapay_clone/data/repository/user_info/user_info_repository_impl.dart';
 import 'package:instapay_clone/domain/use_case/app_setting/app_setting_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/create_juso_use_case.dart';
 import 'package:instapay_clone/domain/use_case/juso/delete_juso_use_case.dart';
@@ -55,6 +56,7 @@ import 'package:instapay_clone/domain/use_case/setting/register_address_use_case
 import 'package:instapay_clone/domain/use_case/setting/search_address_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/key_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
+import 'package:instapay_clone/domain/use_case/user_info/user_info_use_case.dart';
 import 'package:instapay_clone/presentation/kfc/kfc_view_model.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
@@ -120,6 +122,9 @@ Future<List<SingleChildWidget>> getProviders() async {
     loginInfoRepository: loginInfoRepository,
     loginPackRepository: loginPackRepository,
   );
+
+  final userInfoUseCase =
+      UserInfoUseCase(userInfoRepository: UserInfoRepositoryImpl());
 
   final jusoRepository = JusoRepositoryImpl();
 
@@ -195,6 +200,7 @@ Future<List<SingleChildWidget>> getProviders() async {
           loginInfoRepository: loginInfoRepository,
           jipZipRepository: JipZipRepositoryImpl(),
         ),
+        userInfoUseCase: userInfoUseCase,
       ),
     ),
     ChangeNotifierProvider<QrPayViewModel>(
@@ -208,6 +214,7 @@ Future<List<SingleChildWidget>> getProviders() async {
     ChangeNotifierProvider<SignInViewModel>(
       create: (context) => SignInViewModel(
         loginUsecase: loginUseCase,
+        userInfoUseCase: userInfoUseCase,
       ),
     ),
     ChangeNotifierProvider<KfcViewModel>(

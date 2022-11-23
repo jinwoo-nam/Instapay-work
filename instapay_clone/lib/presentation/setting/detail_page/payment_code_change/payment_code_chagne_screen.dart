@@ -48,7 +48,10 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: 60.0),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
             child: Text(
               '결제 시 사용할 개인코드를 6자리 숫자로 입력해주세요.',
               style: TextStyle(
@@ -57,8 +60,8 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 100, left: 80, right: 80),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -151,7 +154,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -159,17 +162,13 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                         onPressed: pinCodeList.length == 6 &&
                                 pinCodeListAgain.length == 6
                             ? () async {
-                                //pinCodeList와 pinCodeListAgain 값 비교
                                 if (listEquals(pinCodeList, pinCodeListAgain)) {
                                   String code = pinCodeList.join();
                                   print(code);
-                                  //pin code 저장
                                   await viewModel.savePinCode(code);
-                                  //key api 호출
                                   final res = await viewModel.keyRegister(code);
                                   if (res == LoginResult.ok) {
                                     if (widget.isFirstPage) {
-                                      //시작 화면 이동
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -202,7 +201,7 @@ class _PaymentCodeChangeScreenState extends State<PaymentCodeChangeScreen> {
                               }
                             : null,
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(280, 45),
+                          minimumSize: const Size(220, 45),
                           primary: color.key,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),

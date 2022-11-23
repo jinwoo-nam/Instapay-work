@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:instapay_clone/domain/model/my_wallet/bank_account_data.dart';
 import 'package:instapay_clone/domain/model/my_wallet/means_data.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_state.dart';
 import 'package:instapay_clone/presentation/my_wallet/my_wallet_view_model.dart';
@@ -25,7 +24,6 @@ class PaymentMethodWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 5,
-        horizontal: 5,
       ),
       child: Column(
         children: [
@@ -36,7 +34,7 @@ class PaymentMethodWidget extends StatelessWidget {
             ),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
+                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,7 +102,7 @@ class PaymentMethodWidget extends StatelessWidget {
 
   Widget buildMainTitle() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.only(left: 15.0),
       child: Row(
         children: [
           Text(
@@ -127,34 +125,6 @@ class PaymentMethodWidget extends StatelessWidget {
   }
 
   Widget buildIcon(MyWalletState state) {
-    // if (state.isSelectedDelete == true && data.mname != 'INC') {
-    //   if (state.deleteSelectAccount != data) {
-    //     return Image.asset(
-    //       'imgs/select-empty@2x.png',
-    //       width: 15,
-    //       height: 15,
-    //     );
-    //   } else {
-    //     return Image.asset(
-    //       'imgs/select-filled@2x.png',
-    //       width: 15,
-    //       height: 15,
-    //     );
-    //   }
-    // } else if (data.mname == '인스타코인') {
-    //   return Image.asset(
-    //     'imgs/wallet-instacoin@2x.png',
-    //     width: 20,
-    //     height: 20,
-    //   );
-    // } else {
-    //   return Image.asset(
-    //     'imgs/wallet-bankaccount@2x.png',
-    //     width: 20,
-    //     height: 20,
-    //   );
-    // }
-
     if (state.isSelectedDelete == true && data.mname != 'INC') {
       if (state.deleteSelectAccount != data) {
         return Image.asset(

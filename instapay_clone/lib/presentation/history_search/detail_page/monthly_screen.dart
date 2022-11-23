@@ -109,9 +109,12 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                  ),
                   child: Divider(
                     color: Colors.black,
+                    height: 1,
                   ),
                 ),
               ],
@@ -135,15 +138,14 @@ class _MonthlyScreenState extends State<MonthlyScreen> {
           child: PagedListView<int, PaymentHistoryData>(
             pagingController: _monthPagingController,
             builderDelegate: PagedChildBuilderDelegate<PaymentHistoryData>(
-              noItemsFoundIndicatorBuilder: (_){
-                return const Center(
-                  child: Text(
-                    '결제 내역이 없습니다.',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                );
-              },
-                itemBuilder: (context, history, index) {
+                noItemsFoundIndicatorBuilder: (_) {
+              return const Center(
+                child: Text(
+                  '결제 내역이 없습니다.',
+                  style: TextStyle(fontSize: 18),
+                ),
+              );
+            }, itemBuilder: (context, history, index) {
               return PaymentHistoryListWidget(
                 data: history,
               );

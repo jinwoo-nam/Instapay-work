@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
+import 'package:instapay_clone/domain/use_case/user_info/user_info_use_case.dart';
 import 'package:instapay_clone/util/util.dart';
 
 class SignInViewModel with ChangeNotifier {
   final LoginUseCase loginUsecase;
+  final UserInfoUseCase userInfoUseCase;
 
   SignInViewModel({
     required this.loginUsecase,
+    required this.userInfoUseCase,
   });
 
   Future<LoginResult> instapayLogin(String email) async {
@@ -24,9 +27,11 @@ class SignInViewModel with ChangeNotifier {
         return LoginResult.email;
       case 'pin':
         //이메일 인증 완료, pin code 등록 필요
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.pin;
       case 'ok':
         //이메일 인증 완료, pin code 등록 완료
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.ok;
       default:
         return LoginResult.none;
@@ -54,9 +59,11 @@ class SignInViewModel with ChangeNotifier {
         return LoginResult.email;
       case 'pin':
         //이메일 인증 완료, pin code 등록 필요
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.pin;
       case 'ok':
         //이메일 인증 완료, pin code 등록 완료
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.ok;
       default:
         return LoginResult.none;

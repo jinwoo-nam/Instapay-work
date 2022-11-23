@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen_view_model.dart';
 import 'package:instapay_clone/presentation/qr_pay/components/order_overlay_widget.dart';
@@ -42,10 +44,14 @@ class _QrPayScreenState extends State<QrPayScreen> {
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainScreenViewModel>();
     final viewModel = context.watch<QrPayViewModel>();
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    // var scanArea = (MediaQuery.of(context).size.width < 400 ||
+    //         MediaQuery.of(context).size.height < 400)
+    //     ? 150.0
+    //     : 300.0;
+    final minScreenValue = min(
+        MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
+    final scanArea =
+        (minScreenValue < 400) ? minScreenValue - 100 : minScreenValue - 100;
 
     return Scaffold(
       body: Column(
@@ -198,7 +204,7 @@ class _QrPayScreenState extends State<QrPayScreen> {
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    print('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),

@@ -25,6 +25,8 @@ class SettingState with _$SettingState {
     @Default(false) bool addressDeleteEnable,
     JusoInfo? deleteSelectedJuso,
     @Default(false) isSearchLoading,
+    @Default('') userEmail,
+    @Default('') userName,
   }) = _SettingState;
 
   factory SettingState.fromJson(Map<String, dynamic> json) =>

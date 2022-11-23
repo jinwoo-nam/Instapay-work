@@ -46,17 +46,17 @@ class _SettingScreenState extends State<SettingScreen> {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'njw9108@instapay.kr',
-                    style: TextStyle(
+                    state.userEmail,
+                    style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
                   Text(
-                    '남진우',
-                    style: TextStyle(
+                    state.userName,
+                    style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black,
                     ),
@@ -78,10 +78,17 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
       body: Stack(
         children: [
-          ListView(
-            children: state.settingList
-                .map((e) => SettingListWidget(data: e))
-                .toList(),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ...state.settingList
+                    .map((e) => SettingListWidget(data: e))
+                    .toList(),
+                const SizedBox(
+                  height: 100,
+                ),
+              ],
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
