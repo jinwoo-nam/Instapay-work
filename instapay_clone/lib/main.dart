@@ -1,14 +1,20 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instapay_clone/di/provider_setup.dart';
+import 'package:instapay_clone/firebase_options.dart';
 import 'package:instapay_clone/presentation/root_page/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MultiProvider(

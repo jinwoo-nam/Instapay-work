@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870219019758",
+    "project_id": "instapay-flutter",
+    "storage_bucket": "instapay-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870219019758:android:01a3f04bcc81b61eae0aff",
+        "android_client_info": {
+          "package_name": "com.instapay.njw9108.instapay_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870219019758-d1jo578uvhlilc9v33psj920urvphkfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7175_PfXrZ-GnO89oP-vbFjR3YwhetzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870219019758-d1jo578uvhlilc9v33psj920urvphkfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
