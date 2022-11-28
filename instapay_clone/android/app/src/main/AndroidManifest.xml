@@ -3,11 +3,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="instapay_clone"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:label="instapay_clone">
 
-       <meta-data
+        <meta-data
            android:name="com.naver.sdk.clientId"
            android:value="@string/client_id" />
        <meta-data

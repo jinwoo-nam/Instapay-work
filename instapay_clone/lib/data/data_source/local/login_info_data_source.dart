@@ -28,16 +28,4 @@ class LoginInfoDataSource {
   Future<void> deleteSalt() async {
     await secureStorage.delete(key: 'salt');
   }
-
-  Future<String> loadEmail() async {
-    return await secureStorage.read(key: 'email') ?? '';
-  }
-
-  Future<void> saveEmail(String email) async {
-    await secureStorage.write(key: 'email', value: email);
-  }
-
-  Future<void> deleteEmail() async {
-    await secureStorage.delete(key: 'email');
-  }
 }

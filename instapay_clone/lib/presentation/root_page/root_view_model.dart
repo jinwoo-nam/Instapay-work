@@ -3,6 +3,7 @@ import 'package:instapay_clone/domain/model/app_setting_data/app_setting_data.da
 import 'package:instapay_clone/domain/use_case/local/login_pack_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
 import 'package:instapay_clone/domain/use_case/signup/login_use_case.dart';
+import 'package:instapay_clone/domain/use_case/user_info/user_info_use_case.dart';
 import 'package:instapay_clone/presentation/root_page/root_state.dart';
 import 'package:instapay_clone/util/util.dart';
 
@@ -13,12 +14,15 @@ class RootViewModel with ChangeNotifier {
   final PinCodeUseCase pinCodeUseCase;
   final LoginPackUseCase loginPackUseCacse;
   final LoginUseCase loginUsecase;
+  final UserInfoUseCase userInfoUseCase;
+
 
   RootViewModel({
     required this.appSetting,
     required this.pinCodeUseCase,
     required this.loginPackUseCacse,
     required this.loginUsecase,
+    required this.userInfoUseCase,
   });
 
   RootState _state = RootState(appSettingData: AppSettingData());
@@ -58,20 +62,22 @@ class RootViewModel with ChangeNotifier {
     return state.appSettingData.isAgreeTerms;
   }
 
-
   Future<LoginResult> instapayAutoLogin() async {
     final result = await loginUsecase.autoLogin();
 
+    final email = result['email'];
     print(result);
-    switch (result) {
+    switch (result['result']) {
       case 'email':
         //이메일 인증 미완료
         return LoginResult.email;
       case 'pin':
         //이메일 인증 완료, pin code 등록 필요
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.pin;
       case 'ok':
         //이메일 인증 완료, pin code 등록 완료
+        userInfoUseCase.setUserEmail(email);
         return LoginResult.ok;
       default:
         return LoginResult.none;

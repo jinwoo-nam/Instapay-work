@@ -10,10 +10,4 @@ abstract class LoginInfoRepository {
   Future<void> saveSalt(String salt);
 
   Future<void> deleteSalt();
-
-  Future<String> loadEmail();
-
-  Future<void> saveEmail(String email);
-
-  Future<void> deleteEmail();
 }

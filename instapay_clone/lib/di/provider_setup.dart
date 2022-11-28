@@ -8,6 +8,7 @@ import 'package:instapay_clone/data/data_source/local/pin_code_data_source.dart'
 import 'package:instapay_clone/data/data_source/setting/get_notice_data_source.dart';
 import 'package:instapay_clone/data/data_source/signup/signup_api.dart';
 import 'package:instapay_clone/data/repository/app_setting/app_setting_repository_impl.dart';
+import 'package:instapay_clone/data/repository/google_signin/google_signin_repository_impl.dart';
 import 'package:instapay_clone/data/repository/juso/jip_zip_repository_impl.dart';
 import 'package:instapay_clone/data/repository/juso/juso_repository_impl.dart';
 import 'package:instapay_clone/data/repository/kfc/kfc_repository_impl.dart';
@@ -19,6 +20,7 @@ import 'package:instapay_clone/data/repository/means/means_repository_impl.dart'
 import 'package:instapay_clone/data/repository/my_wallet/add_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/delete_bank_account_repository_impl.dart';
 import 'package:instapay_clone/data/repository/my_wallet/get_bank_account_repository_impl.dart';
+import 'package:instapay_clone/data/repository/naver_signin/naver_signin_repository_impl.dart';
 import 'package:instapay_clone/data/repository/qr_pay/search_isbn_repository_impl.dart';
 import 'package:instapay_clone/data/repository/quest/question_repository_impl.dart';
 import 'package:instapay_clone/data/repository/setting/delete_address_repository_impl.dart';
@@ -39,6 +41,8 @@ import 'package:instapay_clone/domain/use_case/kfc/kfc_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_info_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/login_pack_use_case.dart';
 import 'package:instapay_clone/domain/use_case/local/pin_code_use_case.dart';
+import 'package:instapay_clone/domain/use_case/login/google_signin/google_signin_use_case.dart';
+import 'package:instapay_clone/domain/use_case/login/naver_signin/naver_signin_use_case.dart';
 import 'package:instapay_clone/domain/use_case/means/delete_means_use_cacse.dart';
 import 'package:instapay_clone/domain/use_case/means/get_default_means_use_case.dart';
 import 'package:instapay_clone/domain/use_case/means/get_means_use_case.dart';
@@ -135,6 +139,7 @@ Future<List<SingleChildWidget>> getProviders() async {
         pinCodeUseCase: pinCodeUseCase,
         loginPackUseCacse: LoginPackUseCase(loginPackRepository),
         loginUsecase: loginUseCase,
+        userInfoUseCase: userInfoUseCase,
       ),
     ),
     ChangeNotifierProvider<MainScreenViewModel>(
@@ -213,8 +218,14 @@ Future<List<SingleChildWidget>> getProviders() async {
     ),
     ChangeNotifierProvider<SignInViewModel>(
       create: (context) => SignInViewModel(
-        loginUsecase: loginUseCase,
+        loginUseCase: loginUseCase,
         userInfoUseCase: userInfoUseCase,
+        googleSignInUseCase: GoogleSignInUseCase(
+          googleSignInRepository: GoogleSignInRepositoryImpl(),
+        ),
+        naverSignInUseCase: NaverSignInUseCase(
+          naverSignInRepository: NaverSignInRepositoryImpl(),
+        ),
       ),
     ),
     ChangeNotifierProvider<KfcViewModel>(

@@ -186,7 +186,7 @@ class SettingViewModel with ChangeNotifier {
     result.when(success: (jusoList) {
       _state = state.copyWith(
         jusoList: jusoList,
-        defaultJuso: jusoList.first,
+        defaultJuso: (jusoList.isEmpty) ? null : jusoList.first,
       );
     }, error: (message) {
       print(message);

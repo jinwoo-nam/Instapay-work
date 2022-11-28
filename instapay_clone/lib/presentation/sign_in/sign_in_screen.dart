@@ -119,8 +119,30 @@ class _SignInScreenState extends State<SignInScreen> {
                                 primary: color.lightGrey,
                                 elevation: 0,
                               ),
-                              onPressed: () {
-                                rootViewModel.setSignInResult(true);
+                              onPressed: () async {
+                                final result = await viewModel.googleSignin();
+                                if (result == LoginResult.pin) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentCodeChangeScreen(
+                                                isFirstPage: true,
+                                              )),
+                                      (Route<dynamic> route) => false);
+                                } else if (result == LoginResult.ok) {
+                                  rootViewModel.setSignInResult(true);
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen()),
+                                      (Route<dynamic> route) => false);
+                                  // Navigator.of(context).pushAndRemoveUntil(
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             const KfcScreen()),
+                                  //     (Route<dynamic> route) => false);
+                                }
+                                //rootViewModel.setSignInResult(true);
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -158,17 +180,23 @@ class _SignInScreenState extends State<SignInScreen> {
                                 elevation: 0,
                               ),
                               onPressed: () async {
-                                // print('login start');
-                                // final NaverLoginResult res = await FlutterNaverLogin.logIn();
-                                // print('login end');
-                                // NaverAccessToken token = await FlutterNaverLogin.currentAccessToken;
-                                //
-                                // String name = res.account.nickname;
-                                // //isLogin = true;
-                                // print(res);
-                                // print(name);
-                                // print(token);
-                                rootViewModel.setSignInResult(true);
+                                final result = await viewModel.naverSignin();
+                                if (result == LoginResult.pin) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentCodeChangeScreen(
+                                                isFirstPage: true,
+                                              )),
+                                      (Route<dynamic> route) => false);
+                                } else if (result == LoginResult.ok) {
+                                  rootViewModel.setSignInResult(true);
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen()),
+                                      (Route<dynamic> route) => false);
+                                }
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,

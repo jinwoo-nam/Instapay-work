@@ -49,7 +49,6 @@ class LoginUseCase {
     res.when(success: (loginResult) {
       loginInfoRepository.saveAccessToken(loginResult.token);
       loginInfoRepository.saveSalt(loginResult.salt);
-      loginInfoRepository.saveEmail(loginResult.email);
       apiResult = loginResult.result;
     }, error: (message) {
       print(message);
@@ -58,11 +57,28 @@ class LoginUseCase {
     return apiResult;
   }
 
-  Future<String> autoLogin() async {
-    String pack = await loginPackRepository.loadPack();
-    String salt = await loginInfoRepository.loadSalt();
-    String pack_h;
+  Future<String> socialLogin(
+      String email,
+      String uuid,
+      String bpxlUuid,
+      double latitude,
+      double longitude,
+      String loginType,
+      String idToken) async {
+    print('idToken : $idToken, loginType : $loginType');
+    final Map<String, dynamic> obj = makeLoginInfoObj(
+        email, uuid, bpxlUuid, latitude, longitude, loginType, idToken);
+    print(obj);
+    final json = jsonEncode(obj);
+    final String pack = _makePack(json);
+    await loginPackRepository.savePack(pack);
+
     String apiResult = '';
+    String pack_h;
+    String salt = await loginInfoRepository.loadSalt();
+    //test
+    salt = 'o20holr15p04o0611z54g10wp';
+
     if (salt.isEmpty) {
       pack_h = _makePackH(pack);
     } else {
@@ -76,13 +92,44 @@ class LoginUseCase {
     res.when(success: (loginResult) {
       loginInfoRepository.saveAccessToken(loginResult.token);
       loginInfoRepository.saveSalt(loginResult.salt);
-      loginInfoRepository.saveEmail(loginResult.email);
       apiResult = loginResult.result;
     }, error: (message) {
       print(message);
     });
 
     return apiResult;
+  }
+
+  Future<Map<String, dynamic>> autoLogin() async {
+    String pack = await loginPackRepository.loadPack();
+    String salt = await loginInfoRepository.loadSalt();
+    String pack_h;
+    String apiResult = '';
+    String email = '';
+    pack='';
+    if (salt.isEmpty) {
+      pack_h = _makePackH(pack);
+    } else {
+      pack_h = _makePackH(pack, key: salt);
+    }
+    const String aid = 'n20mn-lz22g-10t31-15t36-y24oa';
+
+    print('aid: $aid, pack: $pack, pack_h: $pack_h');
+
+    final res = await repository.login(aid, pack, pack_h);
+    res.when(success: (loginResult) {
+      loginInfoRepository.saveAccessToken(loginResult.token);
+      loginInfoRepository.saveSalt(loginResult.salt);
+      apiResult = loginResult.result;
+      email = loginResult.email;
+    }, error: (message) {
+      print(message);
+    });
+
+    return {
+      'result': apiResult,
+      'email': email,
+    };
   }
 
   String _makePack(String json) {
@@ -93,5 +140,52 @@ class LoginUseCase {
   String _makePackH(String pack, {String key = 'o20holr15p04o0611z54g10wp'}) {
     //sha1 Hmac
     return sha1HmacEncode(pack, key);
+  }
+
+  Map<String, dynamic> makeLoginInfoObj(
+      String email,
+      String uuid,
+      String bpxlUuid,
+      double latitude,
+      double longitude,
+      String loginType,
+      String idToken) {
+    switch (loginType) {
+      case 'google':
+        return {
+          'email': email,
+          'uuida': uuid,
+          'uuidb': bpxlUuid,
+          'latitude': latitude,
+          'longtitude': longitude,
+          'idtoken': idToken,
+        };
+      case 'naver':
+        return {
+          'email': email,
+          'uuida': uuid,
+          'uuidb': bpxlUuid,
+          'latitude': latitude,
+          'longtitude': longitude,
+          'nToken': idToken,
+        };
+      case 'apple':
+        return {
+          'email': email,
+          'uuida': uuid,
+          'uuidb': bpxlUuid,
+          'latitude': latitude,
+          'longtitude': longitude,
+          'atoken': idToken,
+        };
+      default:
+        return {
+          'email': email,
+          'uuida': uuid,
+          'uuidb': bpxlUuid,
+          'latitude': latitude,
+          'longtitude': longitude,
+        };
+    }
   }
 }

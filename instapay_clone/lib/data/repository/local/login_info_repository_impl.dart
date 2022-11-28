@@ -35,19 +35,4 @@ class LoginInfoRepositoryImpl implements LoginInfoRepository {
   Future<void> deleteSalt() async {
     await _dataSource.deleteSalt();
   }
-
-  @override
-  Future<String> loadEmail() async {
-    return await _dataSource.loadEmail();
-  }
-
-  @override
-  Future<void> saveEmail(String email) async {
-    await _dataSource.saveEmail(email);
-  }
-
-  @override
-  Future<void> deleteEmail() async {
-    await _dataSource.deleteEmail();
-  }
 }
