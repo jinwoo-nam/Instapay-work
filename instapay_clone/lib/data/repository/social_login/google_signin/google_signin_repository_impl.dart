@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instapay_clone/domain/repository/social_signin/social_signin_repository.dart';
 
-class GoogleSignInRepositoryImpl implements SocialSignInRepository {
+class GoogleSignInRepositoryImpl extends SocialSignInRepository {
   @override
   Future<Map<String, dynamic>> socialSigninIn() async {
     // Trigger the authentication flow

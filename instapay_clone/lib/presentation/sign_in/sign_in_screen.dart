@@ -1,7 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:instapay_clone/presentation/intro/caution_screen.dart';
-import 'package:instapay_clone/presentation/kfc/kfc_screen.dart';
 import 'package:instapay_clone/presentation/main_page/main_screen.dart';
 import 'package:instapay_clone/presentation/root_page/root_view_model.dart';
 import 'package:instapay_clone/presentation/setting/detail_page/payment_code_change/payment_code_chagne_screen.dart';
@@ -220,42 +220,70 @@ class _SignInScreenState extends State<SignInScreen> {
                               )),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: SizedBox(
-                      //     width: 300,
-                      //     height: 45,
-                      //     child: ElevatedButton(
-                      //       style: ElevatedButton.styleFrom(
-                      //         shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.circular(30.0),
-                      //         ),
-                      //         primary: Colors.white,
-                      //       ),
-                      //       onPressed: () {
-                      //         rootViewModel.setSignInResult(true);
-                      //       },
-                      //       child: Row(
-                      //         mainAxisSize: MainAxisSize.min,
-                      //         children: const [
-                      //           Image(
-                      //             image:
-                      //                 AssetImage('imgs/Left Black Logo Large@2x.png'),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 8,
-                      //           ),
-                      //           Text(
-                      //             'Apple로 로그인',
-                      //             style: TextStyle(
-                      //               color: Colors.black,
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      if (Platform.isIOS)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 300,
+                            height: 55,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                  backgroundColor: color.lightGrey,
+                                  elevation: 0,
+                                ),
+                                onPressed: () async {
+                                  final result = await viewModel.appleSignin();
+                                  if (result == LoginResult.pin) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PaymentCodeChangeScreen(
+                                                  isFirstPage: true,
+                                                )),
+                                        (Route<dynamic> route) => false);
+                                  } else if (result == LoginResult.ok) {
+                                    rootViewModel.setSignInResult(true);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MainScreen()),
+                                        (Route<dynamic> route) => false);
+                                  }
+                                  // final credential = await SignInWithApple
+                                  //     .getAppleIDCredential(
+                                  //   scopes: [
+                                  //     AppleIDAuthorizationScopes.email,
+                                  //   ],
+                                  // );
+                                  //
+                                  // print(credential.state);
+                                  // print(credential.email);
+                                  // print(credential.identityToken);
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Image(
+                                      image: AssetImage('imgs/login-apple.png'),
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text(
+                                      '애플 로그인',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
                       const SizedBox(
                         height: 50,
                       ),

@@ -65,7 +65,6 @@ class LoginUseCase {
       double longitude,
       String loginType,
       String idToken) async {
-    print('idToken : $idToken, loginType : $loginType');
     final Map<String, dynamic> obj = makeLoginInfoObj(
         email, uuid, bpxlUuid, latitude, longitude, loginType, idToken);
     print(obj);
