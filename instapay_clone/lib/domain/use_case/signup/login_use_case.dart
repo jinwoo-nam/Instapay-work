@@ -105,7 +105,6 @@ class LoginUseCase {
     String pack_h;
     String apiResult = '';
     String email = '';
-    pack='';
     if (salt.isEmpty) {
       pack_h = _makePackH(pack);
     } else {
