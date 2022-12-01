@@ -94,12 +94,15 @@ class SettingViewModel with ChangeNotifier {
       reasonList: reason,
     );
 
+    notifyListeners();
+  }
+
+  void getUserInfo() {
     final userInfo = userInfoUseCase.getUserInfo();
     _state = state.copyWith(
       userEmail: userInfo.email,
       userName: userInfo.name.isEmpty ? '실명 인증 전입니다.' : userInfo.name,
     );
-
     notifyListeners();
   }
 

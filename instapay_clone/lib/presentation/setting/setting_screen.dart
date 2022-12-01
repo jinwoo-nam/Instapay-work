@@ -25,6 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
   void initState() {
     final viewModel = context.read<SettingViewModel>();
     viewModel.getJuso();
+    viewModel.getUserInfo();
     super.initState();
   }
 
